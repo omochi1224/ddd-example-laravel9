@@ -1,0 +1,21 @@
+version: '3.7'
+
+services:
+  meibo-php:
+    container_name: default-php
+    build: ./.docker/infra/${APP_ENV}/php
+    volumes:
+      - ./backend/laravel/:/var/www:cached
+    environment:
+      PHP_IDE_CONFIG: serverName=docker-debug
+
+  meibo-nginx:
+    image: nginx
+    container_name: default-nginx
+    ports:
+      - 8201:80
+      - 8289:443
+    volumes:
+      - ./backend/laravel/:/var/www:cached
+      - ./.docker/infra/${APP_ENV}/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./.docker/infra/${APP_ENV}/nginx/certs/:/etc/nginx/certs/

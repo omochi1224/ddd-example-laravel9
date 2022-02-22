@@ -1,0 +1,39 @@
+version: '3.7'
+
+services:
+  db:
+    image: mysql:5.7
+    container_name: default-db
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      TZ: 'Asia/Tokyo'
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - ./.docker/infra/${APP_ENV}/db/data:/var/lib/mysql
+      - ./.docker/infra/${APP_ENV}/db/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./.docker/infra/${APP_ENV}/db/sql:/docker-entrypoint-initdb.d
+    ports:
+      - 8290:3306
+
+  redis:
+    image: "redis:latest"
+    container_name: default-redis
+    ports:
+      - 6297:16397
+    volumes:
+      - ./.docker/infra/${APP_ENV}/redis:/data
+
+  minio:
+    image: 'minio/minio:latest'
+    container_name: default-minio
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    entrypoint: bash
+    command: -c "/opt/bin/minio server /export --address :9999 --console-address :9001"
+    volumes:
+      - ./.docker/infra/${APP_ENV}/minio/data:/export
+    ports:
+      - '9200:9999'
+      - '9201:9001'

@@ -1,0 +1,7 @@
+version: '3.7'
+
+services:
+  default-mailhog:
+    image: mailhog/mailhog
+    ports:
+      - 8225:8025
