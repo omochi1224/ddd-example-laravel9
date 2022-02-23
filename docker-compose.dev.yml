@@ -14,13 +14,13 @@ services:
       - ./.docker/infra/${APP_ENV}/db/my.cnf:/etc/mysql/conf.d/my.cnf
       - ./.docker/infra/${APP_ENV}/db/sql:/docker-entrypoint-initdb.d
     ports:
-      - 8290:3306
+      - '8290:3306'
 
   redis:
-    image: "redis:latest"
+    image: 'redis:latest'
     container_name: default-redis
     ports:
-      - 6297:16397
+      - '6297:16397'
     volumes:
       - ./.docker/infra/${APP_ENV}/redis:/data
 
@@ -31,7 +31,7 @@ services:
       MINIO_ROOT_USER: ${MINIO_ROOT_USER}
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
     entrypoint: bash
-    command: -c "/opt/bin/minio server /export --address :9999 --console-address :9001"
+    command: -c '/opt/bin/minio server /export --address :9999 --console-address :9001'
     volumes:
       - ./.docker/infra/${APP_ENV}/minio/data:/export
     ports:

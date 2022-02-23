@@ -1,0 +1,70 @@
+name: Laravel
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  init:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: copy env
+        run: |
+          cp backend/laravel/.env.example backend/laravel/.env
+          cp .env.example .env
+      - name: Create Database
+        run: |
+          mkdir -p database
+          touch database/database.sqlite
+      - name: docker run
+        shell: bash
+        run: |
+          docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
+
+      - name: compose-run
+        shell: bash
+        run: |
+          docker-compose -f docker-compose.yml -f docker-compose.dev.yml exec -T meibo-php composer install -vvv --ignore-platform-reqs
+          docker-compose -f docker-compose.yml -f docker-compose.dev.yml exec -T meibo-php php artisan migrate:fresh --seed
+
+      - name: application key generator
+        run: |
+          
+          docker-compose -f docker-compose.yml -f docker-compose.dev.yml exec -T meibo-php php artisan jwt:secret
+          docker-compose -f docker-compose.yml -f docker-compose.dev.yml exec -T meibo-php php artisan key:gen
+
+      - name: 静的解析
+        run: docker-compose -f docker-compose.yml -f docker-compose.dev.yml exec -T meibo-php composer static-type-check
+
+      - name: コード規約チェック
+        run: docker-compose -f docker-compose.yml -f docker-compose.dev.yml exec -T meibo-php composer sniffer
+
+      - name: テスト
+        run: docker-compose -f docker-compose.yml -f docker-compose.dev.yml exec -T meibo-php php artisan test
+
+      - name: テストカバレッジ生成
+        run: docker-compose -f docker-compose.yml -f docker-compose.dev.yml exec -T meibo-php ./vendor/bin/phpunit --coverage-html document/coverage
+
+      - name: API仕様書生成
+        run: docker-compose -f docker-compose.yml -f docker-compose.dev.yml exec -T meibo-php php artisan scribe:generate
+
+      - name: ドキュメント生成
+        uses: actions/upload-artifact@v2
+        with:
+          name: Documents
+          path: backend/laravel/document/
+
+
+  slack-notify:
+    if: always()
+    needs: [ init ]
+    name: workflow notification to slack
+    runs-on: ubuntu-latest
+    steps:
+      - uses: Gamesight/slack-workflow-status@master
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
