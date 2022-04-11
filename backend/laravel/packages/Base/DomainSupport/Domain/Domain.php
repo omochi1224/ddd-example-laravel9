@@ -5,16 +5,14 @@ declare(strict_types=1);
 namespace Base\DomainSupport\Domain;
 
 /**
- * ドメイン根底抽象クラス
+ * ドメインと識別するためのmarker interface
  */
-abstract class Domain implements IDomain
+interface Domain
 {
     /**
-     * Entity同士の比較
-     *
      * @param Domain $domain
      *
      * @return bool
      */
-    abstract public function equals(Domain $domain): bool;
+    public function equals(self $domain): bool;
 }

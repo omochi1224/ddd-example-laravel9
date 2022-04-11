@@ -5,12 +5,18 @@ declare(strict_types=1);
 namespace Base\DomainSupport\ValueObject;
 
 use Base\DomainSupport\Exception\InvalidUuidException;
+use Exception;
 
 /**
  * UUID識別子根底抽象クラス
  */
 abstract class UuidIdentifier implements ValueObject
 {
+    /**
+     * UUIDフォーマット
+     */
+    private const PATTERN = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';
+
     /**
      * @var string
      */
@@ -62,5 +68,27 @@ abstract class UuidIdentifier implements ValueObject
     public function value(): string
     {
         return $this->value;
+    }
+
+    /**
+     * UUID 生成
+     *
+     * @return UuidIdentifier
+     * @throws InvalidUuidException
+     * @throws Exception
+     */
+    public static function generate(): static
+    {
+        $chars = str_split(self::PATTERN);
+
+        foreach ($chars as $i => $char) {
+            if ($char === 'x') {
+                $chars[$i] = dechex(random_int(0, 15));
+            } elseif ($char === 'y') {
+                $chars[$i] = dechex(random_int(8, 11));
+            }
+        }
+
+        return new static(implode('', $chars));
     }
 }

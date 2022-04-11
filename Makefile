@@ -20,6 +20,11 @@ stop:
 	docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.mail.yml stop
 down:
 	docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.mail.yml down
+
+restart:
+	@make down
+	@make up
+
 product-build-up:
 	docker-compose build
 	docker-compose up -d

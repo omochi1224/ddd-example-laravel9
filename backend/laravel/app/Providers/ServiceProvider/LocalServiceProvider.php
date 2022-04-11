@@ -6,14 +6,19 @@ namespace App\Providers\ServiceProvider;
 
 use App\lib\LaravelDbTransaction;
 use App\lib\LaravelLogger;
-use Auth\Domain\Models\User\UserFactory;
-use Auth\Domain\Models\User\UserRepository;
-use Auth\Infrastructure\Repositories\Eloquent\User\EloquentUserRepository;
+use Auth\Domain\Models\User\HashService;
+use Auth\Domain\Models\User\PasswordHashService;
+use Auth\Infrastructure\Encryption\PasswordHashEncryption;
+use Auth\Infrastructure\Repositories\Eloquent\EloquentUserRepository;
 use Base\LoggerSupport\Logger;
 use Base\RequestSupport\Request;
 use Base\TransactionSupport\Transaction;
+use Auth\Domain\Models\User\UserRepository;
+use Common\Domain\Models\Email\EmailSender;
+use Common\Infrastructure\Sender\Mailable\MailableEmailSender;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Http\FormRequest;
+use Auth\Infrastructure\Repositories\InMemory\InMemoryUserRepository;
 
 /**
  *
@@ -36,6 +41,9 @@ final class LocalServiceProvider implements Provider
         $this->registerFactory();
         $this->registerRepositories();
         $this->registerQueryService();
+
+        $this->app->bind(EmailSender::class, MailableEmailSender::class);
+        $this->app->bind(HashService::class, PasswordHashEncryption::class);
     }
 
     /**
@@ -62,6 +70,7 @@ final class LocalServiceProvider implements Provider
      */
     public function registerRepositories(): void
     {
+        $this->app->bind(UserRepository::class, EloquentUserRepository::class);
     }
 
     /**

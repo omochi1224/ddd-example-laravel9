@@ -2,7 +2,12 @@
 
 namespace App\Providers;
 
+use App\Providers\ServiceProvider\LocalServiceProvider;
+use App\Providers\ServiceProvider\ProductionServiceProvider;
+use App\Providers\ServiceProvider\Provider;
+use App\Providers\ServiceProvider\TestServiceProvider;
 use Illuminate\Support\ServiceProvider;
+use OutOfBoundsException;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,7 +18,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $provider = $this->provider();
+        $provider->register();
     }
 
     /**
@@ -24,5 +30,18 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         //
+    }
+
+    /**
+     * @return \App\Providers\ServiceProvider\Provider
+     */
+    private function provider(): Provider
+    {
+        $env = config('app.env');
+        return match ($env) {
+            'testing', 'local' => new LocalServiceProvider($this->app),
+            'staging', 'production' => new ProductionServiceProvider($this->app),
+            default => throw new OutOfBoundsException(),
+        };
     }
 }

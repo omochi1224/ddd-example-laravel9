@@ -1,0 +1,36 @@
+includes:
+     - ./vendor/nunomaduro/larastan/extension.neon
+parameters:
+  level: max
+  ignoreErrors:
+      - '#Property [a-zA-Z0-9\\_]+::\$[a-zA-Z0-9\\_]+ is never read, only written.#'
+  fileExtensions:
+      - php
+  checkAlwaysTrueCheckTypeFunctionCall: false
+  checkAlwaysTrueInstanceof: false
+  checkClassCaseSensitivity: false
+  checkFunctionArgumentTypes: false
+  checkArgumentsPassedByReference: false
+  checkMaybeUndefinedVariables: false
+  checkNullables: false
+  checkThisOnly: true
+  checkUnionTypes: false
+  polluteScopeWithLoopInitialAssignments: true
+  internalErrorsCountLimit: 50
+  reportUnmatchedIgnoredErrors: true
+  universalObjectCratesClasses:
+      - stdClass
+      - SimpleXMLElement
+  paths:
+    - Packages
+  excludePaths:
+    - Packages/Base #除外ディレクトリ
+services:
+  -
+    class: PHPStan\Rules\DisallowedConstructs\DisallowedEmptyRule
+    tags:
+      - phpstan.rules.rule
+  -
+    class: PHPStan\Rules\StrictCalls\StrictFunctionCallsRule
+    tags:
+      - phpstan.rules.rule

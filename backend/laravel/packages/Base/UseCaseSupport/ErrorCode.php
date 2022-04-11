@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Base\UseCaseSupport;
 
 use Base\ExceptionSupport\DomainException;
-use Base\ExceptionSupport\Exception;
+use Exception;
 
 /**
  * エラ-ラップ
@@ -20,7 +20,7 @@ final class ErrorCode
     }
 
     /**
-     * @param \DomainException|Exception $exception
+     * @param DomainException|Exception $exception
      *
      * @return static
      */

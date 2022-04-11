@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Base\UseCaseSupport;
 
 use Base\ExceptionSupport\DomainException;
-use Base\ExceptionSupport\Exception;
 
 /**
  * Class UseCaseResult
@@ -85,9 +84,9 @@ class UseCaseResult
     }
 
     /**
-     * @return Exception|null
+     * @return \Exception|DomainException|null
      */
-    public function getException(): ?Exception
+    public function getException(): null|\Exception|DomainException
     {
         return $this->errorCode?->getException();
     }

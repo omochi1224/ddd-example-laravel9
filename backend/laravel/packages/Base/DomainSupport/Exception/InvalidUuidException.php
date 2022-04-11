@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Base\DomainSupport\Exception;
 
-use Base\ExceptionSupport\Exception;
+use Base\AttributeSupport\HttpStatusCode;
+use Base\ExceptionSupport\DomainException;
 
 /**
  * 識別子エラー
  */
-final class InvalidUuidException extends Exception
+final class InvalidUuidException extends DomainException
 {
-    protected $message = '正しい識別子ではありません。';
-    protected $code = 422;
+    #[HttpStatusCode(422)]
+    private const MESSAGE = 'UUIDの形式が間違っています。';
 }
