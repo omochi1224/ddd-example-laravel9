@@ -27,29 +27,31 @@ jobs:
       - name: compose-run
         shell: bash
         run: |
-          docker-compose -f docker-compose.yml -f docker-compose.dev.yml exec -T meibo-php composer install -vvv --ignore-platform-reqs
-          docker-compose -f docker-compose.yml -f docker-compose.dev.yml exec -T meibo-php php artisan migrate:fresh --seed
+          docker-compose -f docker-compose.yml -f docker-compose.dev.yml exec -T php composer install -vvv --ignore-platform-reqs
+          docker-compose -f docker-compose.yml -f docker-compose.dev.yml exec -T php php artisan migrate:fresh --seed
 
       - name: application key generator
         run: |
-          
-          docker-compose -f docker-compose.yml -f docker-compose.dev.yml exec -T meibo-php php artisan jwt:secret
-          docker-compose -f docker-compose.yml -f docker-compose.dev.yml exec -T meibo-php php artisan key:gen
+          docker-compose -f docker-compose.yml -f docker-compose.dev.yml exec -T php php artisan jwt:secret
+          docker-compose -f docker-compose.yml -f docker-compose.dev.yml exec -T php php artisan key:gen
 
       - name: 静的解析
-        run: docker-compose -f docker-compose.yml -f docker-compose.dev.yml exec -T meibo-php composer static-type-check
+        run: docker-compose -f docker-compose.yml -f docker-compose.dev.yml exec -T php composer static-type-check
 
       - name: コード規約チェック
-        run: docker-compose -f docker-compose.yml -f docker-compose.dev.yml exec -T meibo-php composer sniffer
+        run: docker-compose -f docker-compose.yml -f docker-compose.dev.yml exec -T php composer sniffer
+
+      - name: アーキテクトチェック
+        run: docker-compose -f docker-compose.yml -f docker-compose.dev.yml exec -T php php vendor/bin/deptrac analyse
 
       - name: テスト
-        run: docker-compose -f docker-compose.yml -f docker-compose.dev.yml exec -T meibo-php php artisan test
+        run: docker-compose -f docker-compose.yml -f docker-compose.dev.yml exec -T php php artisan test
 
       - name: テストカバレッジ生成
-        run: docker-compose -f docker-compose.yml -f docker-compose.dev.yml exec -T meibo-php ./vendor/bin/phpunit --coverage-html document/coverage
+        run: docker-compose -f docker-compose.yml -f docker-compose.dev.yml exec -T php ./vendor/bin/phpunit --coverage-html document/coverage
 
       - name: API仕様書生成
-        run: docker-compose -f docker-compose.yml -f docker-compose.dev.yml exec -T meibo-php php artisan scribe:generate
+        run: docker-compose -f docker-compose.yml -f docker-compose.dev.yml exec -T php php artisan scribe:generate
 
       - name: ドキュメント生成
         uses: actions/upload-artifact@v2
