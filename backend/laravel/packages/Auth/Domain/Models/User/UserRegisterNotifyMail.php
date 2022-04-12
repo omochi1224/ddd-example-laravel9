@@ -41,6 +41,7 @@ final class UserRegisterNotifyMail extends Email
         EmailTemplate $emailTemplate,
         AccessToken $accessToken
     ) {
+//        parent::__construct($emailTo, $emailSubject, $emailText, $emailTemplate);
         $this->emailTo = $emailTo;
         $this->emailSubject = $emailSubject;
         $this->emailText = $emailText;
@@ -62,6 +63,7 @@ final class UserRegisterNotifyMail extends Email
             '
         );
 
+        $emailTo = EmailTo::of($emailTo->value());
         return new UserRegisterNotifyMail($emailTo, $subject, $text, EmailTemplate::REGI, AccessToken::generate());
     }
 

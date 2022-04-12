@@ -16,7 +16,7 @@ use Common\Domain\Models\Email\ValueObject\EmailTo;
  * @property-read EmailText     $emailText
  * @property-read EmailTemplate $emailTemplate
  */
-class Email
+abstract class Email
 {
     use Getter;
 

@@ -1,0 +1,49 @@
+paths:
+  - ./packages
+exclude_files:
+  - '#.*test.*#'
+layers:
+  - name: Auth_Infrastructure
+    collectors:
+      - type: className
+        regex: .*Auth\\Infrastructure\\Repositories\\Eloquent.*
+      - type: className
+        regex: .*Auth\\Infrastructure\\Repositories\\InMemory.*
+      - type: className
+        regex: .*Auth\\Domain\\Models\\User\\(?=.*Repository).*$.*
+
+  - name: Auth_Presentation
+    collectors:
+      - type: className
+        regex: .*Auth\\Presentation\\Controllers\\*
+      - type: className
+        regex: .*Auth\\Presentation\\Requests\\*
+      - type: className
+        regex: .*Auth\\Presentation\\Resource\\*
+
+  - name: Auth_Application
+    collectors:
+      - type: className
+        regex: .*Auth\\Application\\UseCases\\.*
+      - type: className
+        regex: .*Auth\\Application\\Dtos\\.*
+
+  - name: Auth_Domain_Service
+    collectors:
+      - type: className
+        regex: .*Auth\\Domain\\Services\\.*
+
+  - name: Auth_Domain
+    collectors:
+      - type: className
+        regex: .*Auth\\Domain\\Model\\.*
+
+ruleset:
+  Auth_Presentation:
+    - Auth_Application
+  Auth_Application:
+    - Auth_Infrastructure
+    - Auth_Domain_Service
+  Auth_Domain_Service:
+    - Auth_Infrastructure
+  Auth_Infrastructure: ~

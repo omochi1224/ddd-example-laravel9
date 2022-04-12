@@ -26,5 +26,6 @@ final class InMemoryUserRegisterNotifyMail implements UserRegisterNotifyMailRepo
     public function create(UserRegisterNotifyMail $userRegisterNotifyMail): UserRegisterNotifyMail
     {
         $this->mails[] = $userRegisterNotifyMail;
+        return $userRegisterNotifyMail;
     }
 }

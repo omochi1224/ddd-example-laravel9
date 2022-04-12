@@ -8,17 +8,18 @@ use App\lib\LaravelDbTransaction;
 use App\lib\LaravelLogger;
 use Auth\Domain\Models\User\HashService;
 use Auth\Domain\Models\User\PasswordHashService;
+use Auth\Domain\Models\User\UserRegisterNotifyMailRepository;
+use Auth\Domain\Models\User\UserRepository;
 use Auth\Infrastructure\Encryption\PasswordHashEncryption;
 use Auth\Infrastructure\Repositories\Eloquent\EloquentUserRepository;
+use Auth\Infrastructure\Repositories\InMemory\InMemoryUserRegisterNotifyMail;
 use Base\LoggerSupport\Logger;
 use Base\RequestSupport\Request;
 use Base\TransactionSupport\Transaction;
-use Auth\Domain\Models\User\UserRepository;
 use Common\Domain\Models\Email\EmailSender;
 use Common\Infrastructure\Sender\Mailable\MailableEmailSender;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Http\FormRequest;
-use Auth\Infrastructure\Repositories\InMemory\InMemoryUserRepository;
 
 /**
  *
@@ -56,6 +57,7 @@ final class LocalServiceProvider implements Provider
         $this->app->bind(Transaction::class, LaravelDbTransaction::class);
         $this->app->bind(Logger::class, LaravelLogger::class);
         $this->app->bind(Request::class, FormRequest::class);
+        $this->app->bind(UserRegisterNotifyMailRepository::class, InMemoryUserRegisterNotifyMail::class);
     }
 
     /**
