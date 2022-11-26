@@ -76,6 +76,12 @@
         "document-generator": [
             "@php artisan scribe:generate"
         ],
+        "insight": [
+            "@php artisan insights -v"
+        ],
+        "insight-fix": [
+            "@php artisan insights --fix"
+        ],
         "all" : [
             "./vendor/bin/phpcbf --standard=phpcs.xml ./packages/",
             "./vendor/bin/phpcbf --standard=phpcs.xml ./packages/",
