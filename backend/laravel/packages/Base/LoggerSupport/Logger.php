@@ -15,7 +15,7 @@ interface Logger
      * System is unusable.
      *
      * @param string  $message
-     * @param mixed[] $context
+     * @param array<mixed> $context
      *
      * @return void
      */
@@ -28,7 +28,7 @@ interface Logger
      * trigger the SMS alerts and wake you up.
      *
      * @param string  $message
-     * @param mixed[] $context
+     * @param array<mixed> $context
      *
      * @return void
      */
@@ -40,7 +40,7 @@ interface Logger
      * Example: Application component unavailable, unexpected exception.
      *
      * @param string  $message
-     * @param mixed[] $context
+     * @param array<mixed> $context
      *
      * @return void
      */
@@ -51,7 +51,7 @@ interface Logger
      * be logged and monitored.
      *
      * @param string  $message
-     * @param mixed[] $context
+     * @param array<mixed> $context
      *
      * @return void
      */
@@ -64,7 +64,7 @@ interface Logger
      * that are not necessarily wrong.
      *
      * @param string  $message
-     * @param mixed[] $context
+     * @param array<mixed> $context
      *
      * @return void
      */
@@ -74,7 +74,7 @@ interface Logger
      * Normal but significant events.
      *
      * @param string  $message
-     * @param mixed[] $context
+     * @param array<mixed> $context
      *
      * @return void
      */
@@ -86,7 +86,7 @@ interface Logger
      * Example: User logs in, SQL logs.
      *
      * @param string  $message
-     * @param mixed[] $context
+     * @param array<mixed> $context
      *
      * @return void
      */
@@ -96,7 +96,7 @@ interface Logger
      * Detailed debug information.
      *
      * @param string  $message
-     * @param mixed[] $context
+     * @param array<mixed> $context
      *
      * @return void
      */

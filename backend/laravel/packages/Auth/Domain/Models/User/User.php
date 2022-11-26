@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Auth\Domain\Models\User;
 
-use Auth\Domain\Models\User\ValueObject\UserHashPassword;
-use Base\DomainSupport\Domain\Getter;
-use Base\DomainSupport\Domain\Domain;
-use Base\DomainSupport\Exception\InvalidUuidException;
 use Auth\Domain\Models\Profile\Profile;
 use Auth\Domain\Models\User\ValueObject\UserEmail;
+use Auth\Domain\Models\User\ValueObject\UserHashPassword;
 use Auth\Domain\Models\User\ValueObject\UserId;
 use Auth\Domain\Models\User\ValueObject\UserPassword;
+use Base\DomainSupport\Domain\Domain;
+use Base\DomainSupport\Domain\Getter;
+use Base\DomainSupport\Exception\InvalidUuidException;
 
 /**
  * @property-read  UserId                        $userId
@@ -42,6 +42,7 @@ final class User implements Domain
      * @param UserPassword $userPassword
      *
      * @return self
+     *
      * @throws InvalidUuidException
      */
     public static function register(

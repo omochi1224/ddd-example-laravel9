@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Auth\Domain\Models\User\ValueObject;
 
-
 use Base\DomainSupport\ValueObject\StringValueObject;
 
 /**
@@ -17,7 +16,7 @@ final class AccessToken extends StringValueObject
      */
     public static function generate(): AccessToken
     {
-        $token = sha1(uniqid((string)mt_rand(), true));
+        $token = sha1(uniqid((string) mt_rand(), true));
         return new AccessToken($token);
     }
 }

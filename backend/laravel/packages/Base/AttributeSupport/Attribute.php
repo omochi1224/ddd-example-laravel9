@@ -17,6 +17,7 @@ final class Attribute
      * @param string $attributeClass
      *
      * @return object
+     *
      * @throws ReflectionException
      */
     final public function getAttribute(string $attributeClass): object

@@ -5,16 +5,17 @@ declare(strict_types=1);
 namespace Auth\Presentation\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Contracts\Auth\Factory as Auth;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 final class AuthController extends Controller
 {
     /**
      * CookieAuthenticationController constructor.
+     *
      * @param Auth $auth
      */
     public function __construct(
@@ -24,7 +25,9 @@ final class AuthController extends Controller
 
     /**
      * @param Request $request
+     *
      * @return JsonResponse
+     *
      * @throws Exception
      */
     public function login(Request $request): JsonResponse
@@ -45,6 +48,7 @@ final class AuthController extends Controller
 
     /**
      * @param Request $request
+     *
      * @return JsonResponse
      */
     public function logout(Request $request): JsonResponse

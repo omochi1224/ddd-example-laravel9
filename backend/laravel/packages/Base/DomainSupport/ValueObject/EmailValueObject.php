@@ -13,7 +13,7 @@ abstract class EmailValueObject extends StringValueObject
      */
     public function __construct(string $value)
     {
-        if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
+        if (! filter_var($value, FILTER_VALIDATE_EMAIL)) {
             throw new InvalidEmailAddressException(InvalidEmailAddressException::MESSAGE);
         }
         $this->value = $value;

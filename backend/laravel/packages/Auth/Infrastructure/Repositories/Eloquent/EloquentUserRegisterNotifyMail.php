@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Auth\Infrastructure\Repositories\Eloquent;
 
-
 use Auth\Domain\Models\User\UserRegisterNotifyMail;
 use Auth\Domain\Models\User\UserRegisterNotifyMailRepository;
 
@@ -17,6 +16,5 @@ final class EloquentUserRegisterNotifyMail implements UserRegisterNotifyMailRepo
      */
     public function insert(UserRegisterNotifyMail $userRegisterNotifyMail): UserRegisterNotifyMail
     {
-
     }
 }

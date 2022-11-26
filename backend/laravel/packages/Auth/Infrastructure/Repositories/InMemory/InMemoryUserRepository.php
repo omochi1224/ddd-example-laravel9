@@ -15,7 +15,7 @@ use Auth\Domain\Models\User\ValueObject\UserEmail;
 final class InMemoryUserRepository implements UserRepository
 {
     /**
-     * @var User[]
+     * @var array<User>
      */
     private array $users = [];
 
@@ -35,7 +35,7 @@ final class InMemoryUserRepository implements UserRepository
      */
     public function update(User $user): User
     {
-        if (!array_key_exists($user->userId->value(), $this->users)) {
+        if (! array_key_exists($user->userId->value(), $this->users)) {
             throw new UserNotFoundException(UserNotFoundException::MESSAGE);
         }
         return $user;

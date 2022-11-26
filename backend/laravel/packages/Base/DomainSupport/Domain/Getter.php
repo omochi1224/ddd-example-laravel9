@@ -15,7 +15,7 @@ trait Getter
      */
     public function __get(string $name): mixed
     {
-        if (!property_exists($this, $name)) {
+        if (! property_exists($this, $name)) {
             return null;
         }
         return $this->$name;

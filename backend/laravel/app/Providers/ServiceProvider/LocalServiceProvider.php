@@ -7,7 +7,6 @@ namespace App\Providers\ServiceProvider;
 use App\lib\LaravelDbTransaction;
 use App\lib\LaravelLogger;
 use Auth\Domain\Models\User\HashService;
-use Auth\Domain\Models\User\PasswordHashService;
 use Auth\Domain\Models\User\UserRegisterNotifyMailRepository;
 use Auth\Domain\Models\User\UserRepository;
 use Auth\Infrastructure\Encryption\PasswordHashEncryption;

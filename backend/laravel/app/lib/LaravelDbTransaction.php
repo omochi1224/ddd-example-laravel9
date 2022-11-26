@@ -27,6 +27,7 @@ final class LaravelDbTransaction implements Transaction
      * @param callable $transactionScope
      *
      * @return object|null
+     *
      * @throws Throwable
      */
     public function scope(callable $transactionScope): ?UseCaseResult
@@ -37,6 +38,7 @@ final class LaravelDbTransaction implements Transaction
 
     /**
      * @return void
+     *
      * @throws Exception
      */
     public function begin(): void

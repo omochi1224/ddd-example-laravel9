@@ -20,6 +20,6 @@ final class UserDomainService
      */
     public function isEmailAlready(UserEmail $userEmail): bool
     {
-        return !($this->userRepository->findByEmail($userEmail) === null);
+        return ! ($this->userRepository->findByEmail($userEmail) === null);
     }
 }

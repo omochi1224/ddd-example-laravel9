@@ -5,26 +5,21 @@ declare(strict_types=1);
 namespace Auth\Application\UseCases;
 
 use Auth\Application\Dtos\RegisterUserDto;
+use Auth\Domain\Exceptions\UserEmailAlreadyException;
 use Auth\Domain\Models\User\HashService;
-use Auth\Domain\Models\User\PasswordHashService;
+use Auth\Domain\Models\User\User;
 use Auth\Domain\Models\User\UserRegisterNotifyMail;
 use Auth\Domain\Models\User\UserRegisterNotifyMailRepository;
+use Auth\Domain\Models\User\UserRepository;
 use Auth\Domain\Models\User\ValueObject\AccessToken;
+use Auth\Domain\Models\User\ValueObject\UserEmail;
 use Auth\Domain\Models\User\ValueObject\UserHashPassword;
+use Auth\Domain\Models\User\ValueObject\UserPassword;
+use Auth\Domain\Services\UserDomainService;
 use Base\ExceptionSupport\DomainException;
 use Base\TransactionSupport\Transaction;
 use Base\UseCaseSupport\UseCaseResult;
-use Auth\Domain\Exceptions\UserEmailAlreadyException;
-use Auth\Domain\Models\User\User;
-use Auth\Domain\Models\User\UserRepository;
-use Auth\Domain\Models\User\ValueObject\UserEmail;
-use Auth\Domain\Models\User\ValueObject\UserPassword;
-use Auth\Domain\Services\UserDomainService;
-use Common\Domain\Models\Email\Email;
-use Common\Domain\Models\Email\EmailFactory;
 use Common\Domain\Models\Email\EmailSender;
-use Common\Domain\Models\Email\ValueObject\EmailTo;
-use Illuminate\Support\Facades\Mail;
 
 /**
  *
@@ -57,7 +52,6 @@ final class RegisterUserUseCase
     public function __invoke(RegisterUserDto $registerUserDto): UseCaseResult
     {
         return $this->transaction->scope(function () use ($registerUserDto): UseCaseResult {
-
             try {
                 $user = User::register(
                     UserEmail::of($registerUserDto->email),
@@ -86,7 +80,6 @@ final class RegisterUserUseCase
 
                 //メールを保存
                 $this->userRegisterNotifyMailRepository->create($email);
-
             } catch (DomainException $exception) {
                 return UseCaseResult::fail($exception);
             }

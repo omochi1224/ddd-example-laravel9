@@ -16,10 +16,10 @@ final class UserPassword extends StringValueObject
     {
         $uppercase = preg_match('@[A-Z]@', $value);
         $lowercase = preg_match('@[a-z]@', $value);
-        $number    = preg_match('@[0-9]@', $value);
+        $number = preg_match('@[0-9]@', $value);
         $specialChars = preg_match('@[^\w]@', $value);
 
-        if (!$uppercase || !$lowercase || !$number || !$specialChars || strlen($value) < 8) {
+        if (! $uppercase || ! $lowercase || ! $number || ! $specialChars || strlen($value) < 8) {
             throw new PasswordStrengthException(PasswordStrengthException::MESSAGE);
         }
 

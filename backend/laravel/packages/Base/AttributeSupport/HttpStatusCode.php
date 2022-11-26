@@ -7,14 +7,14 @@ namespace Base\AttributeSupport;
 #[\Attribute] final class HttpStatusCode
 {
     /**
-     * @param integer $status
+     * @param int $status
      */
     public function __construct(private int $status)
     {
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function value(): int
     {

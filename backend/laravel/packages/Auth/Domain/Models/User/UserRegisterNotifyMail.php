@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Auth\Domain\Models\User;
 
-
 use Auth\Domain\Models\User\ValueObject\AccessToken;
 use Base\DomainSupport\Domain\Getter;
 use Base\DomainSupport\ValueObject\EmailValueObject;
@@ -50,7 +49,6 @@ final class UserRegisterNotifyMail extends Email
     }
 
     /**
-     *
      * @param EmailValueObject|EmailTo $emailTo
      *
      * @return UserRegisterNotifyMail

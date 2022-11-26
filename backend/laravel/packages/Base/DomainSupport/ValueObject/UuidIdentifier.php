@@ -45,6 +45,7 @@ abstract class UuidIdentifier implements ValueObject
      * @param string $value
      *
      * @return static
+     *
      * @throws InvalidUuidException
      */
     public static function of(string $value): static
@@ -74,6 +75,7 @@ abstract class UuidIdentifier implements ValueObject
      * UUID 生成
      *
      * @return UuidIdentifier
+     *
      * @throws InvalidUuidException
      * @throws Exception
      */

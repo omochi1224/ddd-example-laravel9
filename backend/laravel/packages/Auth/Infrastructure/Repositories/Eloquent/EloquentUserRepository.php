@@ -47,6 +47,7 @@ final class EloquentUserRepository implements UserRepository
      * @param UserEmail $userEmail
      *
      * @return User|null
+     *
      * @throws InvalidUuidException
      */
     public function findByEmail(UserEmail $userEmail): ?User
@@ -74,7 +75,7 @@ final class EloquentUserRepository implements UserRepository
     private function toArray(User $user): array
     {
         return [
-            'user_id' =>  $user->userId->value(),
+            'user_id' => $user->userId->value(),
             'email' => $user->userEmail->value(),
             'password' => $user->userPassword->value(),
         ];

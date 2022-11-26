@@ -16,6 +16,7 @@ final class RegisterUserController
      * @param RegisterUserUseCase $useCase
      *
      * @return RegisterUserResource
+     *
      * @throws ToFrameworkException
      */
     public function __invoke(RegisterUserRequest $request, RegisterUserUseCase $useCase): RegisterUserResource

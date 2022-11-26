@@ -34,14 +34,13 @@ class UseCaseResult
     }
 
     /**
-     *
      * @param DomainException|ErrorCode $useCaseError
      *
      * @return static
      */
     public static function fail(DomainException|ErrorCode $useCaseError): self
     {
-        if (!($useCaseError instanceof ErrorCode)) {
+        if (! ($useCaseError instanceof ErrorCode)) {
             return new static(null, ErrorCode::of($useCaseError));
         }
         return new static(null, $useCaseError);
@@ -56,15 +55,16 @@ class UseCaseResult
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isError(): bool
     {
-        return !is_null($this->errorCode);
+        return ! is_null($this->errorCode);
     }
 
     /**
      * @return string|null
+     *
      * @throws \Exception
      */
     public function getErrorMessage(): ?string
