@@ -51,40 +51,41 @@ final class RegisterUserUseCase
      */
     public function __invoke(RegisterUserDto $registerUserDto): UseCaseResult
     {
-        return $this->transaction->scope(function () use ($registerUserDto): UseCaseResult {
-            try {
-                $user = User::register(
-                    UserEmail::of($registerUserDto->email),
-                    UserPassword::of($registerUserDto->password)
-                );
+        $this->transaction->begin();
+        try {
+            $user = User::register(
+                UserEmail::of($registerUserDto->email),
+                UserPassword::of($registerUserDto->password)
+            );
 
-                //email存在チェック
-                if ($this->userDomainService->isEmailAlready($user->userEmail)) {
-                    return UseCaseResult::fail(new UserEmailAlreadyException());
-                }
-
-                //パスワードをハッシュ化
-                $hashPassword = UserHashPassword::of($this->hashService->hashing($user->userPassword)->value());
-                $user->changeHashPassword($hashPassword);
-
-                //メール送信
-                $email = UserRegisterNotifyMail::registerNotificationEmail($user->userEmail);
-                $this->emailSender->send($email);
-
-                //トークンをハッシュ化
-                $hashToken = AccessToken::of($this->hashService->hashing($email->accessToken)->value());
-                $email->changeAccessToken($hashToken);
-
-                //ユーザを永続化
-                $user = $this->userRepository->create($user);
-
-                //メールを保存
-                $this->userRegisterNotifyMailRepository->create($email);
-            } catch (DomainException $exception) {
-                return UseCaseResult::fail($exception);
+            //email存在チェック
+            if ($this->userDomainService->isEmailAlready($user->userEmail)) {
+                return UseCaseResult::fail(new UserEmailAlreadyException());
             }
 
-            return UseCaseResult::success($user);
-        });
+            //パスワードをハッシュ化
+            $hashPassword = UserHashPassword::of($this->hashService->hashing($user->userPassword)->value());
+            $user->changeHashPassword($hashPassword);
+
+            //メール送信
+            $email = UserRegisterNotifyMail::registerNotificationEmail($user->userEmail);
+            $this->emailSender->send($email);
+
+            //トークンをハッシュ化
+            $hashToken = AccessToken::of($this->hashService->hashing($email->accessToken)->value());
+            $email->changeAccessToken($hashToken);
+
+            //ユーザを永続化
+            $user = $this->userRepository->create($user);
+
+            //メールを保存
+            $this->userRegisterNotifyMailRepository->create($email);
+            $this->transaction->commit();
+        } catch (DomainException $exception) {
+            $this->transaction->rollback();
+            return UseCaseResult::fail($exception);
+        }
+
+        return UseCaseResult::success($user);
     }
 }
