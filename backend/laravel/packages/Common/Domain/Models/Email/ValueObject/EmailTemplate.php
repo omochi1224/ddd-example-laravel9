@@ -6,5 +6,5 @@ namespace Common\Domain\Models\Email\ValueObject;
 
 Enum EmailTemplate: string
 {
-    case REGI = 'register';
-}
+case REGI = 'register';
+    }
