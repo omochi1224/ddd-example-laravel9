@@ -4,21 +4,23 @@ declare(strict_types=1);
 
 namespace Auth\Presentation\Resource;
 
-use Auth\Domain\Models\User\User;
+use Auth\Adapter\Http\RegisterUserOutput;
 use Base\ResourceSupport\Resource;
+use JetBrains\PhpStorm\ArrayShape;
 
 /**
- * @property-read User $data
+ * @property-read RegisterUserOutput $data
  */
 final class RegisterUserResource extends Resource
 {
     /**
      * @return array<string, mixed>
      */
+    #[ArrayShape(['email' => 'mixed|string'])]
     public function jsonSerialize(): array
     {
         return [
-            'email' => $this->data->userEmail->value(),
+            'email' => $this->data->value()['email'],
         ];
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Base\UseCaseSupport;
 
+use Auth\Adapter\Http\HttpOutput;
 use Base\ExceptionSupport\DomainException;
 
 /**
@@ -16,19 +17,21 @@ class UseCaseResult
     /**
      * UseCaseResult constructor.
      *
-     * @param object|null    $resultValue
-     * @param ErrorCode|null $errorCode
+     * @param HttpOutput|null $resultValue
+     * @param ErrorCode|null  $errorCode
      */
-    public function __construct(private ?object $resultValue, private ?ErrorCode $errorCode)
-    {
+    public function __construct(
+        private readonly ?HttpOutput $resultValue,
+        private readonly ?ErrorCode $errorCode
+    ) {
     }
 
     /**
-     * @param object $resultValue
+     * @param HttpOutput $resultValue
      *
      * @return static
      */
-    public static function success(object $resultValue): self
+    public static function success(HttpOutput $resultValue): self
     {
         return new static($resultValue, null);
     }

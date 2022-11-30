@@ -80,7 +80,7 @@
             "@php artisan insights packages/Auth -v"
         ],
         "insight-fix": [
-            "@php artisan insights --fix"
+            "@php artisan insights packages/Auth --fix"
         ],
         "all" : [
             "./vendor/bin/phpcbf --standard=phpcs.xml ./packages/",

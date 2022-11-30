@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Auth\Presentation\Requests;
 
-use Auth\Application\Dtos\RegisterUserDto;
+use Auth\Adapter\Http\RegisterUser;
 use Base\RequestSupport\Request;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -33,10 +33,10 @@ final class RegisterUserRequest extends FormRequest implements Request
     }
 
     /**
-     * @return RegisterUserDto
+     * @return RegisterUser
      */
-    public function makeDto(): RegisterUserDto
+    public function makeDto(): RegisterUser
     {
-        return new RegisterUserDto($this->email, $this->password);
+        return new RegisterUser($this->email, $this->password);
     }
 }

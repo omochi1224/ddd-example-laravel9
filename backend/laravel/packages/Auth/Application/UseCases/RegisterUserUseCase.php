@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Auth\Application\UseCases;
 
-use Auth\Application\Dtos\RegisterUserDto;
+use Auth\Adapter\Http\RegisterUser;
+use Auth\Adapter\Http\RegisterUserOutput;
 use Auth\Domain\Exceptions\UserEmailAlreadyException;
 use Auth\Domain\Models\User\HashService;
 use Auth\Domain\Models\User\User;
@@ -45,11 +46,11 @@ final class RegisterUserUseCase
     }
 
     /**
-     * @param RegisterUserDto $registerUserDto
+     * @param RegisterUser $registerUserDto
      *
      * @return UseCaseResult
      */
-    public function __invoke(RegisterUserDto $registerUserDto): UseCaseResult
+    public function __invoke(RegisterUser $registerUserDto): UseCaseResult
     {
         $this->transaction->begin();
         try {
@@ -86,6 +87,6 @@ final class RegisterUserUseCase
             return UseCaseResult::fail($exception);
         }
 
-        return UseCaseResult::success($user);
+        return UseCaseResult::success(RegisterUserOutput::invoke($user));
     }
 }

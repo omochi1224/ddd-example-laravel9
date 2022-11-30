@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Auth\Application\Dtos;
+namespace Auth\Adapter\Http;
 
-final class RegisterUserDto
+final class RegisterUser
 {
     /**
      * @param string $email
