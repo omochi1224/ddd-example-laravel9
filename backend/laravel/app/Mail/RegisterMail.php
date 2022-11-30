@@ -17,7 +17,6 @@ class RegisterMail extends Mailable
      */
     public function __construct()
     {
-        
     }
 
     /**

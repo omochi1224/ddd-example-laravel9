@@ -77,7 +77,7 @@
             "@php artisan scribe:generate"
         ],
         "insight": [
-            "@php artisan insights -v"
+            "@php artisan insights packages/Auth -v"
         ],
         "insight-fix": [
             "@php artisan insights --fix"

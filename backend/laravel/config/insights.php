@@ -2,13 +2,17 @@
 
 declare(strict_types=1);
 
+use NunoMaduro\PhpInsights\Domain\Insights\CyclomaticComplexityIsHigh;
 use NunoMaduro\PhpInsights\Domain\Insights\ForbiddenDefineFunctions;
 use NunoMaduro\PhpInsights\Domain\Insights\ForbiddenFinalClasses;
 use NunoMaduro\PhpInsights\Domain\Insights\ForbiddenNormalClasses;
 use NunoMaduro\PhpInsights\Domain\Insights\ForbiddenPrivateMethods;
 use NunoMaduro\PhpInsights\Domain\Insights\ForbiddenTraits;
 use NunoMaduro\PhpInsights\Domain\Metrics\Architecture\Classes;
+use PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff;
+use SlevomatCodingStandard\Sniffs\Classes\ForbiddenPublicPropertySniff;
 use SlevomatCodingStandard\Sniffs\Commenting\UselessFunctionDocCommentSniff;
+use SlevomatCodingStandard\Sniffs\Functions\FunctionLengthSniff;
 use SlevomatCodingStandard\Sniffs\Namespaces\AlphabeticallySortedUsesSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\DeclareStrictTypesSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\DisallowMixedTypeHintSniff;
@@ -65,16 +69,17 @@ return [
     */
 
     'exclude' => [
-        //  'path/to/directory-or-file'
+        'Domain/Exceptions'
     ],
 
     'add' => [
         Classes::class => [
-            ForbiddenFinalClasses::class,
+//            ForbiddenFinalClasses::class,
         ],
     ],
 
     'remove' => [
+        ForbiddenPublicPropertySniff::class,
         AlphabeticallySortedUsesSniff::class,
         DeclareStrictTypesSniff::class,
         DisallowMixedTypeHintSniff::class,
@@ -91,6 +96,16 @@ return [
         ForbiddenPrivateMethods::class => [
             'title' => 'The usage of private methods is not idiomatic in Laravel.',
         ],
+        LineLengthSniff::class => [
+            'lineLimit' => 120,
+            'absoluteLineLimit' => 160
+        ],
+        FunctionLengthSniff::class => [
+            'maxLength' => 30,
+        ],
+        CyclomaticComplexityIsHigh::class => [
+            'maxComplexity' => 6,
+        ]
     ],
 
     /*
