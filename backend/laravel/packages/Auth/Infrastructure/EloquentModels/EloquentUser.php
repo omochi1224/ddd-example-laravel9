@@ -14,6 +14,7 @@ final class EloquentUser extends Authenticatable
     use HasApiTokens;
     use HasFactory;
     use Notifiable;
+
     public $incrementing = false;
 
     protected $table = 'users';
