@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Auth\Feature\UseCase;
 
 use App\Mail\RegisterMail;
-use Auth\Application\Dtos\RegisterUserDto;
+use Auth\Adapter\Http\RegisterUser;
+use Auth\Adapter\Http\RegisterUserOutput;
 use Auth\Application\UseCases\RegisterUserUseCase;
 use Auth\Domain\Exceptions\UserEmailAlreadyException;
 use Auth\Domain\Models\User\User;
@@ -27,7 +28,7 @@ final class RegisterUserUseCaseTest extends TestCase
         Mail::fake();
 
         $password = 'U4s_qtL,';
-        $dto = new RegisterUserDto($this->faker->safeEmail, $password);
+        $dto = new RegisterUser($this->faker->safeEmail, $password);
 
         /** @var RegisterUserUseCase $useCase */
         $useCase = app(RegisterUserUseCase::class);
@@ -37,7 +38,7 @@ final class RegisterUserUseCaseTest extends TestCase
 
         self::assertIsObject($result->getResultValue());
 
-        self::assertInstanceOf(User::class, $result->getResultValue());
+        self::assertInstanceOf(RegisterUserOutput::class, $result->getResultValue());
 
         Mail::assertSent(RegisterMail::class, function ($mail) use ($dto) {
            return $mail->hasTo($dto->email);
@@ -49,7 +50,7 @@ final class RegisterUserUseCaseTest extends TestCase
         $email = $this->faker->safeEmail;
         $password = 'U4s_qtL,';
 
-        $dto = new RegisterUserDto($email, $password);
+        $dto = new RegisterUser($email, $password);
         $userDomain = User::register(UserEmail::of($dto->email), UserPassword::of($dto->password));
 
         $repository = new InMemoryUserRepository();
@@ -70,7 +71,7 @@ final class RegisterUserUseCaseTest extends TestCase
         $email = 'test@aaaaa';
         $password = 'U4s_qtL,';
 
-        $dto = new RegisterUserDto($email, $password);
+        $dto = new RegisterUser($email, $password);
 
         /** @var RegisterUserUseCase $useCase */
         $useCase = app(RegisterUserUseCase::class);
@@ -86,7 +87,7 @@ final class RegisterUserUseCaseTest extends TestCase
         $password = 'aaaa';
         $email = $this->faker->safeEmail;
 
-        $dto = new RegisterUserDto($email, $password);
+        $dto = new RegisterUser($email, $password);
 
         /** @var RegisterUserUseCase $useCase */
         $useCase = app(RegisterUserUseCase::class);
