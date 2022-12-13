@@ -1,19 +1,16 @@
 <?php
 
-namespace Tests;
+declare(strict_types=1);
+
+namespace Auth\Infrastructure\Encryption;
 
 use Auth\Domain\Models\User\HashService;
 use Auth\Domain\Models\User\ValueObject\UserHashPassword;
 use Base\DomainSupport\ValueObject\StringValueObject;
-use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Support\Facades\Hash;
 
-abstract class TestCase extends BaseTestCase
+final class PasswordHashEncryption implements HashService
 {
-    use CreatesApplication;
-}
-
-class ConcreteHash implements HashService {
-
     /**
      * @param StringValueObject $raw
      *
@@ -21,6 +18,6 @@ class ConcreteHash implements HashService {
      */
     public function hashing(StringValueObject $raw): UserHashPassword
     {
-        return UserHashPassword::of(hash('sha256', $raw->value()));
+        return UserHashPassword::of(Hash::make($raw->value()));
     }
 }

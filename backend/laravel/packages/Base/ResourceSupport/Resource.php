@@ -20,34 +20,24 @@ abstract class Resource implements JsonSerializable
     /**
      * @param UseCaseResult $useCaseResult
      *
+     * @return Resource
      * @throws ToFrameworkException
-     * @throws Exception
      */
-    public function __construct(protected readonly UseCaseResult $useCaseResult)
+    public function __invoke(UseCaseResult $useCaseResult): static
     {
-        if ($this->useCaseResult->isError()) {
+        $useCaseResult1 = $useCaseResult;
+        if ($useCaseResult1->isError()) {
             throw new ToFrameworkException(
-                $this->useCaseResult->getErrorMessage(),
-                $this->useCaseResult->getHttpStatus()
+                $useCaseResult1->getErrorMessage(),
+                $useCaseResult1->getHttpStatus()
             );
         }
-        $this->data = $this->useCaseResult->getResultValue();
+        $this->data = $useCaseResult1->getResultValue();
+        return $this;
     }
 
     /**
      * @return array
      */
     abstract public function jsonSerialize(): array;
-
-    /**
-     * @param array $array
-     *
-     * @return array
-     */
-    protected function toStringId(array $array): array
-    {
-        return array_map(function (object $object) {
-            return $object->value();
-        }, $array);
-    }
 }

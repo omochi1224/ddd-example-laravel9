@@ -32,8 +32,8 @@
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/",
             "Base\\": "packages/Base",
-            "Auth\\": "packages/Auth",
-            "Common\\": "packages/Common"
+            "Auth\\": "packages/Example/Auth",
+            "Common\\": "packages/Example/Common"
         }
     },
     "autoload-dev": {

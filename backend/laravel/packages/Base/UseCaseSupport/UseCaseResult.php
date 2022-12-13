@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Base\UseCaseSupport;
 
-use Auth\Adapter\Http\HttpOutput;
+use Base\AdapterSupport\HttpOutput;
 use Base\ExceptionSupport\DomainException;
 
 /**
