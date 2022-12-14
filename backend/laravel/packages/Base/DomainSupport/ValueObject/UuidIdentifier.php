@@ -10,7 +10,7 @@ use Exception;
 /**
  * UUID識別子根底抽象クラス
  */
-abstract class UuidIdentifier implements ValueObject
+readonly abstract class UuidIdentifier implements ValueObject
 {
     /**
      * UUIDフォーマット

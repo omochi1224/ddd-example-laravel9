@@ -7,10 +7,10 @@ namespace Auth\Domain\Models\User\ValueObject;
 use Auth\Domain\Models\User\Exception\PasswordStrengthException;
 use Base\DomainSupport\ValueObject\StringValueObject;
 
-final class UserPassword extends StringValueObject
+readonly final class UserPassword extends StringValueObject
 {
     /**
-     * @throws \Auth\Domain\Models\User\Exception\PasswordStrengthException
+     * @throws PasswordStrengthException
      */
     public function __construct(string $value)
     {
@@ -23,6 +23,6 @@ final class UserPassword extends StringValueObject
             throw new PasswordStrengthException(PasswordStrengthException::MESSAGE);
         }
 
-        $this->value = $value;
+        parent::__construct($value);
     }
 }

@@ -12,28 +12,28 @@ use Base\ExceptionSupport\DomainException;
  *
  * @package Basic\UseCaseSupport
  */
-class UseCaseResult
+final readonly class UseCaseResult
 {
     /**
      * UseCaseResult constructor.
      *
-     * @param HttpOutput|null $resultValue
+     * @param mixed $resultValue
      * @param ErrorCode|null  $errorCode
      */
     public function __construct(
-        private readonly ?HttpOutput $resultValue,
-        private readonly ?ErrorCode $errorCode
+        private mixed $resultValue,
+        private ?ErrorCode $errorCode
     ) {
     }
 
     /**
-     * @param HttpOutput $resultValue
+     * @param mixed $resultValue
      *
      * @return static
      */
-    public static function success(HttpOutput $resultValue): self
+    public static function success(mixed $resultValue): self
     {
-        return new static($resultValue, null);
+        return new UseCaseResult($resultValue, null);
     }
 
     /**
@@ -44,9 +44,9 @@ class UseCaseResult
     public static function fail(DomainException|ErrorCode $useCaseError): self
     {
         if (! ($useCaseError instanceof ErrorCode)) {
-            return new static(null, ErrorCode::of($useCaseError));
+            return new UseCaseResult(null, ErrorCode::of($useCaseError));
         }
-        return new static(null, $useCaseError);
+        return new UseCaseResult(null, $useCaseError);
     }
 
     /**

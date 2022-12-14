@@ -7,16 +7,15 @@ namespace Base\ResourceSupport;
 use Base\DomainSupport\Domain\Domain;
 use Base\ExceptionSupport\ToFrameworkException;
 use Base\UseCaseSupport\UseCaseResult;
-use Exception;
 use JsonSerializable;
 
 /**
  * 共通 Resource
- *
- * @property Domain|object|array|null $data
  */
-abstract class Resource implements JsonSerializable
+readonly abstract class Resource implements JsonSerializable
 {
+    protected mixed $data;
+
     /**
      * @param UseCaseResult $useCaseResult
      *
@@ -25,14 +24,13 @@ abstract class Resource implements JsonSerializable
      */
     public function __invoke(UseCaseResult $useCaseResult): static
     {
-        $useCaseResult1 = $useCaseResult;
-        if ($useCaseResult1->isError()) {
+        if ($useCaseResult->isError()) {
             throw new ToFrameworkException(
-                $useCaseResult1->getErrorMessage(),
-                $useCaseResult1->getHttpStatus()
+                $useCaseResult->getErrorMessage(),
+                $useCaseResult->getHttpStatus()
             );
         }
-        $this->data = $useCaseResult1->getResultValue();
+        $this->data = $useCaseResult->getResultValue();
         return $this;
     }
 

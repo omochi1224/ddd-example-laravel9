@@ -5,25 +5,22 @@ declare(strict_types=1);
 namespace Auth\Application\UseCases\Register\Adapter;
 
 use Auth\Domain\Models\User\User;
-use Base\AdapterSupport\HttpOutput;
 
 /**
  *
  */
-final class RegisterUserOutput extends HttpOutput
+interface RegisterUserOutput
 {
+
     /**
      * @param User $user
+     *
+     * @return User
      */
-    public function __construct(private readonly User $user)
-    {
-    }
+    public function setUser(User $user): User;
 
     /**
      * @return User
      */
-    public function value(): User
-    {
-        return $this->user;
-    }
+    public function getUser(): User;
 }

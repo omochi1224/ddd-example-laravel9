@@ -7,9 +7,9 @@ namespace Auth\Domain\Services;
 use Auth\Domain\Models\User\UserRepository;
 use Auth\Domain\Models\User\ValueObject\UserEmail;
 
-final class UserDomainService
+final readonly class UserDomainService
 {
-    public function __construct(private readonly UserRepository $userRepository)
+    public function __construct(private UserRepository $userRepository)
     {
     }
 

@@ -7,13 +7,12 @@ namespace Auth\Presentation\Controllers;
 use Auth\Application\UseCases\Register\Adapter\RegisterUserInput;
 use Auth\Application\UseCases\Register\RegisterUserUseCase;
 use Auth\Presentation\Resource\RegisterUserResource;
-use Auth\Presentation\Sender\Sender;
 use Base\ExceptionSupport\ToFrameworkException;
 
 /**
  *
  */
-final class RegisterUserController
+readonly final class RegisterUserController
 {
     /**
      * @param RegisterUserInput    $input

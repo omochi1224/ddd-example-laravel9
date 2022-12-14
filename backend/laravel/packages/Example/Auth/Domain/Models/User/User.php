@@ -18,7 +18,6 @@ use Base\DomainSupport\Exception\InvalidUuidException;
  * @property-read  UserId                        $userId
  * @property-read  UserEmail                     $userEmail
  * @property-read  UserPassword|UserHashPassword $userPassword
- * @property-read  Profile|null                  $profile
  */
 final class User implements Domain
 {
@@ -28,13 +27,11 @@ final class User implements Domain
      * @param UserId                        $userId
      * @param UserEmail                     $userEmail
      * @param UserPassword|UserHashPassword $userPassword
-     * @param Profile|null                  $profile
      */
     private function __construct(
         private readonly UserId $userId,
-        private UserEmail $userEmail,
+        private readonly UserEmail $userEmail,
         private UserPassword|UserHashPassword $userPassword,
-        private ?Profile $profile,
     ) {
     }
 
@@ -57,7 +54,6 @@ final class User implements Domain
             UserId::generate(),
             $userEmail,
             $userPassword,
-            null,
         );
 
         $user->changeHashPassword($hashService);
@@ -69,7 +65,6 @@ final class User implements Domain
      * @param UserId           $userId
      * @param UserEmail        $userEmail
      * @param UserHashPassword $userHashPassword
-     * @param Profile|null     $profile
      *
      * @return self
      */
@@ -77,13 +72,11 @@ final class User implements Domain
         UserId $userId,
         UserEmail $userEmail,
         UserHashPassword $userHashPassword,
-        ?Profile $profile,
     ): User {
         return new User(
             $userId,
             $userEmail,
             $userHashPassword,
-            $profile,
         );
     }
 
@@ -111,26 +104,6 @@ final class User implements Domain
 
         $password = $this->userPassword->value();
         $this->userPassword = $hashService->hashing(UserPassword::of($password));
-    }
-
-    /**
-     * @param UserEmail $userEmail
-     *
-     * @return void
-     */
-    public function changeEmail(UserEmail $userEmail): void
-    {
-        $this->userEmail = $userEmail;
-    }
-
-    /**
-     * @param Profile $profile
-     *
-     * @return void
-     */
-    public function changeProfile(Profile $profile): void
-    {
-        $this->profile = $profile;
     }
 
     /**

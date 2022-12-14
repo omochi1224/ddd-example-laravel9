@@ -9,6 +9,6 @@ use Base\DomainSupport\ValueObject\EmailValueObject;
 /**
  *
  */
-final class UserEmail extends EmailValueObject
+readonly final class UserEmail extends EmailValueObject
 {
 }

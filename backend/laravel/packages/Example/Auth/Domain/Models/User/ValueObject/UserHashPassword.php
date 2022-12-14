@@ -6,6 +6,6 @@ namespace Auth\Domain\Models\User\ValueObject;
 
 use Base\DomainSupport\ValueObject\StringValueObject;
 
-final class UserHashPassword extends StringValueObject
+readonly final class UserHashPassword extends StringValueObject
 {
 }

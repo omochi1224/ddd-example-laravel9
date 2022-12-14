@@ -6,13 +6,10 @@ namespace Auth\Unit\Domain;
 
 
 use Auth\Domain\Models\User\Exception\PasswordStrengthException;
-use Auth\Domain\Models\User\HashService;
 use Auth\Domain\Models\User\User;
 use Auth\Domain\Models\User\ValueObject\UserEmail;
-use Auth\Domain\Models\User\ValueObject\UserHashPassword;
 use Auth\Domain\Models\User\ValueObject\UserPassword;
 use Base\DomainSupport\Exception\InvalidEmailAddressException;
-use Base\DomainSupport\ValueObject\StringValueObject;
 use Tests\ConcreteHash;
 use Tests\TestCase;
 
@@ -50,5 +47,31 @@ final class UserTest extends TestCase
         $this->fail('メールアドレスの設定がおかしくなっています。');
     }
 
+    public function test_パスワードの変更がハッシュ化されたパスワードでしか変更できないことを確認()
+    {
+        $noHashPass = UserPassword::of('AAccddssAA1234!3%ja');
+
+        $hashService = new ConcreteHash();
+        $email = UserEmail::of('example@example.com');
+        $pass = UserPassword::of('AAccddssAA1234!3%ja');
+        $user = User::register($email, $pass, $hashService);
+
+
+        $this->expectException(\TypeError::class);
+        $user->changePassword($noHashPass);
+
+
+        $hashPass = (new ConcreteHash())->hashing(UserPassword::of('AAccddssAA1234!3%ja'));
+
+        $hashService = new ConcreteHash();
+        $email = UserEmail::of('example@example.com');
+        $pass = UserPassword::of('AAccddssAA1234!3%ja');
+        $user = User::register($email, $pass, $hashService);
+
+
+        $user->changePassword($hashPass);
+
+        self::assertSame($hashPass->value(), $user->userPassword->value());
+    }
 }
 

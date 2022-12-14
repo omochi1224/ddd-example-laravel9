@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Auth\Application\UseCases\Register;
 
 use Auth\Application\UseCases\Register\Adapter\RegisterUserInput;
-use Auth\Application\UseCases\Register\Adapter\RegisterUserOutput;
 use Auth\Domain\Models\User\Exception\UserEmailAlreadyException;
 use Auth\Domain\Models\User\HashService;
 use Auth\Domain\Models\User\User;
@@ -20,7 +19,7 @@ use Base\UseCaseSupport\UseCaseResult;
 /**
  *
  */
-final class RegisterUserUseCase
+readonly final class RegisterUserUseCase
 {
     /**
      * @param Transaction       $transaction
@@ -28,11 +27,11 @@ final class RegisterUserUseCase
      * @param UserRepository    $userRepository
      * @param HashService       $hashService
      */
-    public function __construct(
-        private readonly Transaction $transaction,
-        private readonly UserDomainService $userDomainService,
-        private readonly UserRepository $userRepository,
-        private readonly HashService $hashService,
+    final public function __construct(
+        private Transaction $transaction,
+        private UserDomainService $userDomainService,
+        private UserRepository $userRepository,
+        private HashService $hashService,
     ) {
     }
 
@@ -41,7 +40,7 @@ final class RegisterUserUseCase
      *
      * @return UseCaseResult
      */
-    public function __invoke(RegisterUserInput $registerUserDto): UseCaseResult
+    final public function __invoke(RegisterUserInput $registerUserDto): UseCaseResult
     {
         $this->transaction->begin();
         try {
@@ -65,6 +64,6 @@ final class RegisterUserUseCase
             return UseCaseResult::fail($exception);
         }
 
-        return UseCaseResult::success(new RegisterUserOutput($user));
+        return UseCaseResult::success($user);
     }
 }

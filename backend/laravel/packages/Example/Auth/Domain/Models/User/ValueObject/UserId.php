@@ -6,6 +6,6 @@ namespace Auth\Domain\Models\User\ValueObject;
 
 use Base\DomainSupport\ValueObject\UuidIdentifier;
 
-final class UserId extends UuidIdentifier
+readonly final class UserId extends UuidIdentifier
 {
 }
