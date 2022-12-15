@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Auth\Unit\Repository;
 
 
-use Auth\Domain\Models\User\User;
-use Auth\Domain\Models\User\ValueObject\UserEmail;
-use Auth\Domain\Models\User\ValueObject\UserPassword;
-use Auth\Infrastructure\EloquentModels\EloquentUser;
-use Auth\Infrastructure\Repositories\Eloquent\EloquentUserRepository;
+use SampleHR\Domain\Models\User\User;
+use SampleHR\Domain\Models\User\ValueObject\UserEmail;
+use SampleHR\Domain\Models\User\ValueObject\UserPassword;
+use SampleHR\Infrastructure\EloquentModels\EloquentUser;
+use SampleHR\Infrastructure\Repositories\Eloquent\EloquentUserRepository;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\ConcreteHash;
 use Tests\TestCase;

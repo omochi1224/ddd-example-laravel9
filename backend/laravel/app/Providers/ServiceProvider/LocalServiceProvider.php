@@ -5,17 +5,18 @@ declare(strict_types=1);
 namespace App\Providers\ServiceProvider;
 
 use App\lib\LaravelDbTransaction;
+use App\lib\LaravelInput;
 use App\lib\LaravelLogger;
-use Auth\Application\UseCases\Register\Adapter\RegisterUserInput;
-use Auth\Domain\Models\User\HashService;
-use Auth\Domain\Models\User\UserRegisterNotifyMailRepository;
-use Auth\Domain\Models\User\UserRepository;
-use Auth\Infrastructure\Encryption\PasswordHashEncryption;
-use Auth\Infrastructure\Repositories\Eloquent\EloquentUserRepository;
-use Auth\Infrastructure\Repositories\InMemory\InMemoryUserRegisterNotifyMail;
-use Auth\Infrastructure\Transfer\EmailTransfer;
-use Auth\Presentation\Request\RegisterUserLaravelInputRequest;
-use Auth\Presentation\Sender\Sender;
+use Base\RequestSupport\Input;
+use SampleHR\Application\UseCases\Register\Adapter\RegisterUserInput;
+use SampleHR\Domain\Models\User\HashService;
+use SampleHR\Domain\Models\User\UserRepository;
+use SampleHR\Infrastructure\Encryption\PasswordHashEncryption;
+use SampleHR\Infrastructure\Repositories\Eloquent\EloquentUserRepository;
+use SampleHR\Infrastructure\Repositories\InMemory\InMemoryUserRegisterNotifyMail;
+use SampleHR\Infrastructure\Transfer\EmailTransfer;
+use SampleHR\Presentation\Request\RegisterUserLaravelInputRequest;
+use SampleHR\Presentation\Sender\Sender;
 use Base\LoggerSupport\Logger;
 use Base\RequestSupport\Request;
 use Base\TransactionSupport\Transaction;
@@ -59,7 +60,6 @@ final class LocalServiceProvider implements Provider
         $this->app->bind(Transaction::class, LaravelDbTransaction::class);
         $this->app->bind(Logger::class, LaravelLogger::class);
         $this->app->bind(Request::class, FormRequest::class);
-        $this->app->bind(UserRegisterNotifyMailRepository::class, InMemoryUserRegisterNotifyMail::class);
     }
 
     /**

@@ -14,5 +14,5 @@ interface Domain
      *
      * @return bool
      */
-    public function equals(self $domain): bool;
+    public function equals(Domain $domain): bool;
 }

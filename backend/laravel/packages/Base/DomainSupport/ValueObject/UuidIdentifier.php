@@ -20,17 +20,17 @@ readonly abstract class UuidIdentifier implements ValueObject
     /**
      * @var string
      */
-    private readonly string $pattern;
+    private string $pattern;
 
     /**
      * @var string
      */
-    private readonly string $value;
+    private string $value;
 
     /**
      * @throws InvalidUuidException
      */
-    public function __construct(string $value)
+    final public function __construct(string $value)
     {
         $this->pattern = '/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i';
 
@@ -48,7 +48,7 @@ readonly abstract class UuidIdentifier implements ValueObject
      *
      * @throws InvalidUuidException
      */
-    public static function of(string $value): static
+    final public static function of(string $value): static
     {
         return new static($value);
     }
@@ -58,7 +58,7 @@ readonly abstract class UuidIdentifier implements ValueObject
      *
      * @return bool
      */
-    public function equals(ValueObject $valueObject): bool
+    final public function equals(ValueObject $valueObject): bool
     {
         return $valueObject->value() === $this->value();
     }
@@ -66,7 +66,7 @@ readonly abstract class UuidIdentifier implements ValueObject
     /**
      * @return string
      */
-    public function value(): string
+    final public function value(): string
     {
         return $this->value;
     }
@@ -79,7 +79,7 @@ readonly abstract class UuidIdentifier implements ValueObject
      * @throws InvalidUuidException
      * @throws Exception
      */
-    public static function generate(): static
+    final public static function generate(): static
     {
         $chars = str_split(self::PATTERN);
 

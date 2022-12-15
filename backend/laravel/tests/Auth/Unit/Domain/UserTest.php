@@ -2,19 +2,33 @@
 
 declare(strict_types=1);
 
-namespace Auth\Unit\Domain;
+namespace SampleHR\Unit\Domain;
 
 
-use Auth\Domain\Models\User\Exception\PasswordStrengthException;
-use Auth\Domain\Models\User\User;
-use Auth\Domain\Models\User\ValueObject\UserEmail;
-use Auth\Domain\Models\User\ValueObject\UserPassword;
+use SampleHR\Domain\Models\Email\Email;
+use SampleHR\Domain\Models\User\Exception\PasswordStrengthException;
+use SampleHR\Domain\Models\User\User;
+use SampleHR\Domain\Models\User\ValueObject\UserEmail;
+use SampleHR\Domain\Models\User\ValueObject\UserPassword;
 use Base\DomainSupport\Exception\InvalidEmailAddressException;
 use Tests\ConcreteHash;
 use Tests\TestCase;
 
 final class UserTest extends TestCase
 {
+//    public function test_A()
+//    {
+//        $noti = new Email(
+//            'test@example.com',
+//            'test@example.com',
+//            'test',
+//            'testBody'
+//        );
+//
+//
+//        dd($noti);
+//    }
+
     public function test_正常()
     {
         $hashService = new ConcreteHash();

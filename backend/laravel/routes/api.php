@@ -1,6 +1,6 @@
 <?php
 
-use Auth\Presentation\Controllers\RegisterUserController;
+use SampleHR\Presentation\Controllers\RegisterUserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
