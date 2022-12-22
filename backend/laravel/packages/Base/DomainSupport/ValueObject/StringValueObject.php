@@ -43,4 +43,12 @@ readonly abstract class StringValueObject implements ValueObject
     {
         return $this->value;
     }
+
+    /**
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->value;
+    }
 }

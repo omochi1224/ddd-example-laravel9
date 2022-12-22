@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace SampleHR\Unit\Domain;
 
 
-use SampleHR\Domain\Models\Email\Email;
+use Base\DomainSupport\Exception\InvalidEmailAddressException;
 use SampleHR\Domain\Models\User\Exception\PasswordStrengthException;
 use SampleHR\Domain\Models\User\User;
 use SampleHR\Domain\Models\User\ValueObject\UserEmail;
-use SampleHR\Domain\Models\User\ValueObject\UserPassword;
-use Base\DomainSupport\Exception\InvalidEmailAddressException;
+use SampleHR\Domain\Models\User\ValueObject\UserRawPassword;
 use Tests\ConcreteHash;
 use Tests\TestCase;
 
@@ -33,7 +32,7 @@ final class UserTest extends TestCase
     {
         $hashService = new ConcreteHash();
         $email = UserEmail::of('example@example.com');
-        $pass = UserPassword::of('AAccddssAA1234!3%ja');
+        $pass = UserRawPassword::of('AAccddssAA1234!3%ja');
         $user = User::register($email, $pass, $hashService);
 
 
@@ -48,7 +47,7 @@ final class UserTest extends TestCase
         $this->expectException(PasswordStrengthException::class);
         $this->expectExceptionMessage(PasswordStrengthException::MESSAGE);
 
-        $pass = UserPassword::of('123');
+        $pass = UserRawPassword::of('123');
         $this->fail('パスワードの設定がおかしくなっています。');
     }
 
@@ -63,11 +62,11 @@ final class UserTest extends TestCase
 
     public function test_パスワードの変更がハッシュ化されたパスワードでしか変更できないことを確認()
     {
-        $noHashPass = UserPassword::of('AAccddssAA1234!3%ja');
+        $noHashPass = UserRawPassword::of('AAccddssAA1234!3%ja');
 
         $hashService = new ConcreteHash();
         $email = UserEmail::of('example@example.com');
-        $pass = UserPassword::of('AAccddssAA1234!3%ja');
+        $pass = UserRawPassword::of('AAccddssAA1234!3%ja');
         $user = User::register($email, $pass, $hashService);
 
 
@@ -75,11 +74,11 @@ final class UserTest extends TestCase
         $user->changePassword($noHashPass);
 
 
-        $hashPass = (new ConcreteHash())->hashing(UserPassword::of('AAccddssAA1234!3%ja'));
+        $hashPass = (new ConcreteHash())->hashing(UserRawPassword::of('AAccddssAA1234!3%ja'));
 
         $hashService = new ConcreteHash();
         $email = UserEmail::of('example@example.com');
-        $pass = UserPassword::of('AAccddssAA1234!3%ja');
+        $pass = UserRawPassword::of('AAccddssAA1234!3%ja');
         $user = User::register($email, $pass, $hashService);
 
 

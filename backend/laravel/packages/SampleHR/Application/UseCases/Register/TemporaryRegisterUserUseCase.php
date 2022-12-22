@@ -8,18 +8,20 @@ use Base\ExceptionSupport\DomainException;
 use Base\TransactionSupport\Transaction;
 use Base\UseCaseSupport\UseCaseResult;
 use SampleHR\Application\UseCases\Register\Adapter\RegisterUserInput;
+use SampleHR\Application\UseCases\Register\Adapter\RegisterUserOutput;
 use SampleHR\Domain\Models\User\Exception\UserEmailAlreadyException;
 use SampleHR\Domain\Models\User\HashService;
 use SampleHR\Domain\Models\User\User;
+use SampleHR\Domain\Models\User\UserRegisterNotify;
 use SampleHR\Domain\Models\User\UserRepository;
 use SampleHR\Domain\Models\User\ValueObject\UserEmail;
-use SampleHR\Domain\Models\User\ValueObject\UserPassword;
+use SampleHR\Domain\Models\User\ValueObject\UserRawPassword;
 use SampleHR\Domain\Services\UserDomainService;
 
 /**
  *
  */
-readonly final class RegisterUserUseCase
+final readonly class TemporaryRegisterUserUseCase
 {
     /**
      * @param Transaction       $transaction
@@ -38,15 +40,15 @@ readonly final class RegisterUserUseCase
     /**
      * @param RegisterUserInput $registerUserDto
      *
-     * @return UseCaseResult
+     * @return UseCaseResult<RegisterUserOutput>
      */
     final public function __invoke(RegisterUserInput $registerUserDto): UseCaseResult
     {
         $this->transaction->begin();
         try {
-            $user = User::register(
+            $user = User::temporaryRegister(
                 UserEmail::of($registerUserDto->getEmail()),
-                UserPassword::of($registerUserDto->getPassword()),
+                UserRawPassword::of($registerUserDto->getPassword()),
                 $this->hashService,
             );
 
@@ -55,8 +57,13 @@ readonly final class RegisterUserUseCase
                 return UseCaseResult::fail(new UserEmailAlreadyException());
             }
 
+            //通知
+            $notify = UserRegisterNotify::of($user);
+
+            $output = new RegisterUserOutput($user, $notify);
+
             //ユーザを永続化
-            $user = $this->userRepository->create($user);
+            $this->userRepository->create($user);
 
             $this->transaction->commit();
         } catch (DomainException $exception) {
@@ -64,6 +71,6 @@ readonly final class RegisterUserUseCase
             return UseCaseResult::fail($exception);
         }
 
-        return UseCaseResult::success($user);
+        return UseCaseResult::success($output);
     }
 }

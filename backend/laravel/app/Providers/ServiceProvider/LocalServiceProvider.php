@@ -7,21 +7,20 @@ namespace App\Providers\ServiceProvider;
 use App\lib\LaravelDbTransaction;
 use App\lib\LaravelInput;
 use App\lib\LaravelLogger;
-use Base\RequestSupport\Input;
-use SampleHR\Application\UseCases\Register\Adapter\RegisterUserInput;
-use SampleHR\Domain\Models\User\HashService;
-use SampleHR\Domain\Models\User\UserRepository;
-use SampleHR\Infrastructure\Encryption\PasswordHashEncryption;
-use SampleHR\Infrastructure\Repositories\Eloquent\EloquentUserRepository;
-use SampleHR\Infrastructure\Repositories\InMemory\InMemoryUserRegisterNotifyMail;
-use SampleHR\Infrastructure\Transfer\EmailTransfer;
-use SampleHR\Presentation\Request\RegisterUserLaravelInputRequest;
-use SampleHR\Presentation\Sender\Sender;
 use Base\LoggerSupport\Logger;
 use Base\RequestSupport\Request;
 use Base\TransactionSupport\Transaction;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Http\FormRequest;
+use SampleHR\Application\UseCases\Register\Adapter\RegisterUserInput;
+use SampleHR\Domain\Models\Notification\NotificationSender;
+use SampleHR\Domain\Models\User\HashService;
+use SampleHR\Domain\Models\User\UserRepository;
+use SampleHR\Infrastructure\Encryption\PasswordHashEncryption;
+use SampleHR\Infrastructure\Notification\DummyNotificationSender;
+use SampleHR\Infrastructure\Repositories\Eloquent\EloquentUserRepository;
+use SampleHR\Infrastructure\Transfer\EmailTransfer;
+use SampleHR\Presentation\Request\RegisterUserLaravelInputRequest;
 
 /**
  *
@@ -47,7 +46,8 @@ final class LocalServiceProvider implements Provider
         $this->registerIO();
 
         $this->app->bind(HashService::class, PasswordHashEncryption::class);
-        $this->app->bind(Sender::class, EmailTransfer::class);
+//        $this->app->bind(Sender::class, EmailTransfer::class);
+        $this->app->bind(NotificationSender::class, DummyNotificationSender::class);
     }
 
     /**

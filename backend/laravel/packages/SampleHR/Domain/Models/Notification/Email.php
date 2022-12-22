@@ -25,7 +25,7 @@ interface Email
     public function getSubject(): string;
 
     /**
-     * @return string
+     * @return array|string
      */
-    public function getBody(): string;
+    public function getBody(): array|string;
 }

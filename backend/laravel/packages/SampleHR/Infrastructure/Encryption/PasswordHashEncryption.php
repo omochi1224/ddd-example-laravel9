@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace SampleHR\Infrastructure\Encryption;
 
-use SampleHR\Domain\Models\User\HashService;
-use SampleHR\Domain\Models\User\ValueObject\UserHashPassword;
 use Base\DomainSupport\ValueObject\StringValueObject;
 use Illuminate\Support\Facades\Hash;
+use SampleHR\Domain\Models\User\HashService;
+use SampleHR\Domain\Models\User\ValueObject\UserHashPassword;
 
 final class PasswordHashEncryption implements HashService
 {

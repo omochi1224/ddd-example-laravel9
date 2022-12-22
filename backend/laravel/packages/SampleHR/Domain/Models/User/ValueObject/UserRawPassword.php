@@ -7,7 +7,7 @@ namespace SampleHR\Domain\Models\User\ValueObject;
 use Base\DomainSupport\ValueObject\StringValueObject;
 use SampleHR\Domain\Models\User\Exception\PasswordStrengthException;
 
-readonly final class UserPassword extends StringValueObject
+readonly final class UserRawPassword extends StringValueObject
 {
     /**
      * @throws PasswordStrengthException

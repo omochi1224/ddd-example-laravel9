@@ -4,17 +4,22 @@ declare(strict_types=1);
 
 namespace SampleHR\Presentation\Resource;
 
-use SampleHR\Presentation\Sender\Sender;
 use Base\ResourceSupport\Resource;
 use JetBrains\PhpStorm\ArrayShape;
+use SampleHR\Application\UseCases\Register\Adapter\RegisterUserOutput;
+use SampleHR\Domain\Models\Notification\NotificationSender;
 
+/**
+ * @property-read RegisterUserOutput $data
+ */
 readonly final class RegisterUserResource extends Resource
 {
     /**
-     * @param Sender $sender
+     * @param NotificationSender $sender
      */
-    public function __construct(private Sender $sender)
-    {
+    public function __construct(
+        private NotificationSender $sender
+    ) {
     }
 
     /**
@@ -25,18 +30,10 @@ readonly final class RegisterUserResource extends Resource
     ])]
     public function jsonSerialize(): array
     {
-        $this->send();
-        $user = $this->data;
+        $this->sender->send($this->data->notify);
+        $user = $this->data->user;
         return [
             'email' => $user->userEmail->value(),
         ];
-    }
-
-    /**
-     * @return void
-     */
-    private function send(): void
-    {
-        $this->sender->send($this->data);
     }
 }

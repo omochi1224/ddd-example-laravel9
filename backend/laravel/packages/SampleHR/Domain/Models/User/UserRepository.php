@@ -11,16 +11,16 @@ interface UserRepository
     /**
      * @param User $user
      *
-     * @return User
+     * @return void
      */
-    public function create(User $user): User;
+    public function create(User $user): void;
 
     /**
      * @param User $user
      *
      * @return User
      */
-    public function update(User $user): User;
+    public function update(User $user): void;
 
     /**
      * @param UserEmail $userEmail

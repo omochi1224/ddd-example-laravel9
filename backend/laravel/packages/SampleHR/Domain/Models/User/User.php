@@ -7,52 +7,58 @@ namespace SampleHR\Domain\Models\User;
 use Base\DomainSupport\Domain\Domain;
 use Base\DomainSupport\Domain\Getter;
 use Base\DomainSupport\Exception\InvalidUuidException;
+use SampleHR\Domain\Models\Profile\Profile;
 use SampleHR\Domain\Models\User\Exception\PasswordEncryptionException;
 use SampleHR\Domain\Models\User\ValueObject\UserEmail;
 use SampleHR\Domain\Models\User\ValueObject\UserHashPassword;
 use SampleHR\Domain\Models\User\ValueObject\UserId;
-use SampleHR\Domain\Models\User\ValueObject\UserPassword;
+use SampleHR\Domain\Models\User\ValueObject\UserRawPassword;
 
 /**
- * @property-read  UserId                        $userId
- * @property-read  UserEmail                     $userEmail
- * @property-read  UserPassword|UserHashPassword $userPassword
+ * @property-read  UserId                           $userId
+ * @property-read  UserEmail                        $userEmail
+ * @property-read  UserRawPassword|UserHashPassword $userPassword
+ * @property-read  Profile                          $profile
  */
 final class User implements Domain
 {
     use Getter;
 
     /**
-     * @param UserId                        $userId
-     * @param UserEmail                     $userEmail
-     * @param UserPassword|UserHashPassword $userPassword
+     * @param UserId                           $userId
+     * @param UserEmail                        $userEmail
+     * @param UserRawPassword|UserHashPassword $userPassword
+     * @param Profile                          $profile
      */
     private function __construct(
         private readonly UserId $userId,
         private readonly UserEmail $userEmail,
-        private UserPassword|UserHashPassword $userPassword,
+        private UserRawPassword|UserHashPassword $userPassword,
+        private readonly Profile $profile,
     ) {
     }
 
     /**
-     * @param UserEmail    $userEmail
-     * @param UserPassword $userPassword
-     * @param HashService  $hashService
+     *  仮登録
      *
-     * @return self
+     * @param UserEmail       $userEmail
+     * @param UserRawPassword $userPassword
+     * @param HashService     $hashService
      *
+     * @return User
      * @throws InvalidUuidException
      * @throws PasswordEncryptionException
      */
-    public static function register(
+    public static function temporaryRegister(
         UserEmail $userEmail,
-        UserPassword $userPassword,
+        UserRawPassword $userPassword,
         HashService $hashService,
-    ): self {
+    ): User {
         $user = new User(
             UserId::generate(),
             $userEmail,
             $userPassword,
+            Profile::temporaryRegister(),
         );
 
         $user->changeHashPassword($hashService);
@@ -61,9 +67,23 @@ final class User implements Domain
     }
 
     /**
+     * 本登録処理
+     *
+     * @param Profile $profile
+     *
+     * @return void
+     */
+    public function changeDefinitive(Profile $profile): void
+    {
+        $this->profile->changeDefinitive($profile);
+    }
+
+
+    /**
      * @param UserId           $userId
      * @param UserEmail        $userEmail
      * @param UserHashPassword $userHashPassword
+     * @param Profile          $profile
      *
      * @return self
      */
@@ -71,13 +91,16 @@ final class User implements Domain
         UserId $userId,
         UserEmail $userEmail,
         UserHashPassword $userHashPassword,
+        Profile $profile,
     ): User {
         return new User(
             $userId,
             $userEmail,
             $userHashPassword,
+            $profile,
         );
     }
+
 
     /**
      * @param UserHashPassword $password
@@ -113,6 +136,6 @@ final class User implements Domain
         }
 
         $password = $this->userPassword->value();
-        $this->userPassword = $hashService->hashing(UserPassword::of($password));
+        $this->userPassword = $hashService->hashing(UserRawPassword::of($password));
     }
 }

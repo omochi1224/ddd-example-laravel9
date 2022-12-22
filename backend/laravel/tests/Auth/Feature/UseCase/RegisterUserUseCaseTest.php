@@ -4,19 +4,17 @@ declare(strict_types=1);
 
 namespace Auth\Feature\UseCase;
 
-use App\Mail\RegisterMail;
+use Base\DomainSupport\Exception\InvalidEmailAddressException;
+use Illuminate\Foundation\Testing\WithFaker;
 use SampleHR\Application\UseCases\Register\Adapter\RegisterUserInput;
 use SampleHR\Application\UseCases\Register\Adapter\RegisterUserOutput;
-use SampleHR\Application\UseCases\Register\RegisterUserUseCase;
+use SampleHR\Application\UseCases\Register\TemporaryRegisterUserUseCase;
 use SampleHR\Domain\Models\User\Exception\UserEmailAlreadyException;
 use SampleHR\Domain\Models\User\User;
 use SampleHR\Domain\Models\User\UserRepository;
 use SampleHR\Domain\Models\User\ValueObject\UserEmail;
-use SampleHR\Domain\Models\User\ValueObject\UserPassword;
+use SampleHR\Domain\Models\User\ValueObject\UserRawPassword;
 use SampleHR\Infrastructure\Repositories\InMemory\InMemoryUserRepository;
-use Base\DomainSupport\Exception\InvalidEmailAddressException;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\Mail;
 use Tests\ConcreteHash;
 use Tests\TestCase;
 
@@ -29,21 +27,13 @@ final class RegisterUserUseCaseTest extends TestCase
         $password = 'U4s_qtL,';
         $dto = new ConcreteInput($this->faker->safeEmail, $password);
 
-        /** @var RegisterUserUseCase $useCase */
-        $useCase = app(RegisterUserUseCase::class);
+        /** @var TemporaryRegisterUserUseCase $useCase */
+        $useCase = app(TemporaryRegisterUserUseCase::class);
         $result = $useCase($dto);
 
         self::assertFalse($result->isError());
-
         self::assertIsObject($result->getResultValue());
-
-        dump($result->getResultValue());
-
-//        self::assertInstanceOf(RegisterUserOutput::class, $result->getResultValue());
-
-//        Mail::assertSent(RegisterMail::class, function ($mail) use ($dto) {
-//           return $mail->hasTo($dto->getEmail());
-//        });
+        self::assertInstanceOf(RegisterUserOutput::class, $result->getResultValue());
     }
 
     public function test_メールアドレスの重複()
@@ -53,18 +43,21 @@ final class RegisterUserUseCaseTest extends TestCase
         $password = 'U4s_qtL,';
 
         $dto = new ConcreteInput($email, $password);
-        $userDomain = User::register(UserEmail::of($dto->getEmail()), UserPassword::of($dto->getPassword()), $hashService);
+        $userDomain = User::register(
+            UserEmail::of($dto->getEmail()),
+            UserRawPassword::of($dto->getPassword()),
+            $hashService
+        );
 
         $repository = new InMemoryUserRepository();
         $repository->create($userDomain);
 
         $this->app->instance(UserRepository::class, $repository);
-        /** @var RegisterUserUseCase $useCase */
-        $useCase = app(RegisterUserUseCase::class);
+        /** @var TemporaryRegisterUserUseCase $useCase */
+        $useCase = app(TemporaryRegisterUserUseCase::class);
         $result = $useCase($dto);
 
         self::assertTrue($result->isError());
-
         self::assertInstanceOf(UserEmailAlreadyException::class, $result->getException());
     }
 
@@ -75,12 +68,11 @@ final class RegisterUserUseCaseTest extends TestCase
 
         $dto = new ConcreteInput($email, $password);
 
-        /** @var RegisterUserUseCase $useCase */
-        $useCase = app(RegisterUserUseCase::class);
+        /** @var TemporaryRegisterUserUseCase $useCase */
+        $useCase = app(TemporaryRegisterUserUseCase::class);
         $result = $useCase($dto);
 
         self::assertTrue($result->isError());
-
         self::assertInstanceOf(InvalidEmailAddressException::class, $result->getException());
     }
 
@@ -91,8 +83,8 @@ final class RegisterUserUseCaseTest extends TestCase
 
         $dto = new ConcreteInput($email, $password);
 
-        /** @var RegisterUserUseCase $useCase */
-        $useCase = app(RegisterUserUseCase::class);
+        /** @var TemporaryRegisterUserUseCase $useCase */
+        $useCase = app(TemporaryRegisterUserUseCase::class);
         $result = $useCase($dto);
 
         self::assertTrue($result->isError());
@@ -100,12 +92,12 @@ final class RegisterUserUseCaseTest extends TestCase
 
 }
 
-class ConcreteInput implements RegisterUserInput
+readonly class ConcreteInput implements RegisterUserInput
 {
 
     public function __construct(
-        private readonly string $email,
-        private readonly string $password,
+        private string $email,
+        private string $password,
     ) {
     }
 

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace SampleHR\Presentation\Request;
 
-
 use Illuminate\Http\Request;
 
 abstract readonly class BaseRequest
@@ -17,5 +16,5 @@ abstract readonly class BaseRequest
         $this->request->validate($this->rules());
     }
 
-    abstract function rules(): array;
+    abstract public function rules(): array;
 }

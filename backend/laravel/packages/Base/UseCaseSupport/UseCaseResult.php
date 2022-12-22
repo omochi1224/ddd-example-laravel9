@@ -4,36 +4,37 @@ declare(strict_types=1);
 
 namespace Base\UseCaseSupport;
 
-use Base\AdapterSupport\HttpOutput;
+use Base\AdapterSupport\AdapterOutput;
 use Base\ExceptionSupport\DomainException;
+use Exception;
 
 /**
  * Class UseCaseResult
  *
  * @package Basic\UseCaseSupport
  */
-final readonly class UseCaseResult
+readonly final class UseCaseResult
 {
     /**
      * UseCaseResult constructor.
      *
-     * @param mixed $resultValue
-     * @param ErrorCode|null  $errorCode
+     * @param AdapterOutput|null $resultValue
+     * @param ErrorCode|null     $errorCode
      */
     public function __construct(
-        private mixed $resultValue,
-        private ?ErrorCode $errorCode
+        private ?AdapterOutput $resultValue = null,
+        private ?ErrorCode $errorCode = null,
     ) {
     }
 
     /**
-     * @param mixed $resultValue
+     * @param mixed $adapterOutput
      *
      * @return static
      */
-    public static function success(mixed $resultValue): self
+    public static function success(AdapterOutput $adapterOutput): self
     {
-        return new UseCaseResult($resultValue, null);
+        return new UseCaseResult($adapterOutput);
     }
 
     /**
@@ -44,15 +45,15 @@ final readonly class UseCaseResult
     public static function fail(DomainException|ErrorCode $useCaseError): self
     {
         if (! ($useCaseError instanceof ErrorCode)) {
-            return new UseCaseResult(null, ErrorCode::of($useCaseError));
+            return new UseCaseResult(errorCode: ErrorCode::of($useCaseError));
         }
-        return new UseCaseResult(null, $useCaseError);
+        return new UseCaseResult(errorCode: $useCaseError);
     }
 
     /**
-     * @return object|null
+     * @return AdapterOutput
      */
-    public function getResultValue(): null|object
+    public function getResultValue(): AdapterOutput
     {
         return $this->resultValue;
     }
@@ -68,7 +69,7 @@ final readonly class UseCaseResult
     /**
      * @return string|null
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function getErrorMessage(): ?string
     {
@@ -87,9 +88,9 @@ final readonly class UseCaseResult
     }
 
     /**
-     * @return \Exception|DomainException|null
+     * @return Exception|DomainException|null
      */
-    public function getException(): null|\Exception|DomainException
+    public function getException(): null|Exception|DomainException
     {
         return $this->errorCode?->getException();
     }

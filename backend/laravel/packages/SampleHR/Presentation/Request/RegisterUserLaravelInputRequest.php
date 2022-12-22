@@ -37,5 +37,4 @@ final readonly class RegisterUserLaravelInputRequest extends BaseRequest impleme
     {
         return $this->request->get('password');
     }
-
 }

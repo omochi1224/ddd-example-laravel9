@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Base\ResourceSupport;
 
-use Base\DomainSupport\Domain\Domain;
 use Base\ExceptionSupport\ToFrameworkException;
 use Base\UseCaseSupport\UseCaseResult;
 use JsonSerializable;
@@ -14,6 +13,9 @@ use JsonSerializable;
  */
 readonly abstract class Resource implements JsonSerializable
 {
+    /**
+     * @var mixed
+     */
     protected mixed $data;
 
     /**

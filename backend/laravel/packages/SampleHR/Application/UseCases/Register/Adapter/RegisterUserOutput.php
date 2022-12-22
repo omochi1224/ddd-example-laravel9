@@ -4,22 +4,22 @@ declare(strict_types=1);
 
 namespace SampleHR\Application\UseCases\Register\Adapter;
 
+use Base\AdapterSupport\AdapterOutput;
 use SampleHR\Domain\Models\User\User;
+use SampleHR\Domain\Models\User\UserRegisterNotify;
 
 /**
  *
  */
-interface RegisterUserOutput
+readonly final class RegisterUserOutput implements AdapterOutput
 {
     /**
-     * @param User $user
-     *
-     * @return User
+     * @param User               $user
+     * @param UserRegisterNotify $notify
      */
-    public function setUser(User $user): User;
-
-    /**
-     * @return User
-     */
-    public function getUser(): User;
+    public function __construct(
+        public User $user,
+        public UserRegisterNotify $notify
+    ) {
+    }
 }
