@@ -22,6 +22,7 @@ readonly abstract class Resource implements JsonSerializable
      * @param UseCaseResult $useCaseResult
      *
      * @return Resource
+     *
      * @throws ToFrameworkException
      */
     public function __invoke(UseCaseResult $useCaseResult): static

@@ -1,8 +1,8 @@
 <?php
 
-use SampleHR\Presentation\Controllers\RegisterUserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Sample\Presentation\Controllers\RegisterUserController;
 
 /*
 |--------------------------------------------------------------------------

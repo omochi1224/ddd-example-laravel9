@@ -17,6 +17,14 @@ readonly abstract class StringValueObject implements ValueObject
     }
 
     /**
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->value;
+    }
+
+    /**
      * @param string $value
      *
      * @return static
@@ -40,14 +48,6 @@ readonly abstract class StringValueObject implements ValueObject
      * @return string
      */
     public function value(): string
-    {
-        return $this->value;
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString(): string
     {
         return $this->value;
     }

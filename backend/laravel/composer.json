@@ -11,6 +11,7 @@
         "laravel/framework": "^9.1",
         "laravel/sanctum": "^2.14",
         "laravel/tinker": "^2.7",
+        "paquettg/php-html-parser": "^3.1",
         "php-open-source-saver/jwt-auth": "^1.4.1",
         "vyuldashev/laravel-openapi": "^1.8"
     },
@@ -33,7 +34,7 @@
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/",
             "Base\\": "packages/Base",
-            "SampleHR\\": "packages/SampleHR"
+            "Sample\\": "packages/Sample"
         }
     },
     "autoload-dev": {
@@ -77,10 +78,10 @@
             "@php artisan scribe:generate"
         ],
         "insight": [
-            "@php artisan insights packages/SampleHR -v"
+            "@php artisan insights packages/ -v"
         ],
         "insight-fix": [
-            "@php artisan insights packages/SampleHR --fix"
+            "@php artisan insights packages/ --fix"
         ],
         "all" : [
             "./vendor/bin/phpcbf --standard=phpcs.xml ./packages/",

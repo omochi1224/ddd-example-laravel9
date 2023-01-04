@@ -16,8 +16,8 @@ trait DomainToArray
     /**
      * ドメインを配列['propertyName'=>value]に変換します
      *
-     * @param Domain   $domain
-     * @param string[] $hiddenOption
+     * @param Domain        $domain
+     * @param array<string> $hiddenOption
      *
      * @return array<string, mixed>
      */
@@ -52,8 +52,8 @@ trait DomainToArray
     }
 
     /**
-     * @param array    $array
-     * @param string[] $hiddenOption
+     * @param array         $array
+     * @param array<string> $hiddenOption
      *
      * @return array<string, mixed>
      */

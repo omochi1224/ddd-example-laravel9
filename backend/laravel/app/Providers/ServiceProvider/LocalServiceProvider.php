@@ -5,22 +5,20 @@ declare(strict_types=1);
 namespace App\Providers\ServiceProvider;
 
 use App\lib\LaravelDbTransaction;
-use App\lib\LaravelInput;
 use App\lib\LaravelLogger;
 use Base\LoggerSupport\Logger;
 use Base\RequestSupport\Request;
 use Base\TransactionSupport\Transaction;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Http\FormRequest;
-use SampleHR\Application\UseCases\Register\Adapter\RegisterUserInput;
-use SampleHR\Domain\Models\Notification\NotificationSender;
-use SampleHR\Domain\Models\User\HashService;
-use SampleHR\Domain\Models\User\UserRepository;
-use SampleHR\Infrastructure\Encryption\PasswordHashEncryption;
-use SampleHR\Infrastructure\Notification\DummyNotificationSender;
-use SampleHR\Infrastructure\Repositories\Eloquent\EloquentUserRepository;
-use SampleHR\Infrastructure\Transfer\EmailTransfer;
-use SampleHR\Presentation\Request\RegisterUserLaravelInputRequest;
+use Sample\Application\UseCases\User\Adapter\TemporaryRegisterUserInput;
+use Sample\Domain\Models\Notification\NotificationSender;
+use Sample\Domain\Models\User\HashService;
+use Sample\Domain\Models\User\UserRepository;
+use Sample\Infrastructure\Encryption\PasswordHashEncryption;
+use Sample\Infrastructure\Notification\DummyNotificationSender;
+use Sample\Infrastructure\Repositories\Eloquent\EloquentUserRepository;
+use Sample\Presentation\Request\RegisterUserLaravelInputRequest;
 
 /**
  *
@@ -96,6 +94,6 @@ final class LocalServiceProvider implements Provider
      */
     public function registerIO(): void
     {
-        $this->app->bind(RegisterUserInput::class, RegisterUserLaravelInputRequest::class);
+        $this->app->bind(TemporaryRegisterUserInput::class, RegisterUserLaravelInputRequest::class);
     }
 }
