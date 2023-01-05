@@ -2,7 +2,7 @@ name: Laravel
 
 on:
   push:
-    branches: [ main, develop, feature/**]
+    branches: [ main, develop, feature/**, pre]
 jobs:
   Coverage:
     name: カバレッジ
