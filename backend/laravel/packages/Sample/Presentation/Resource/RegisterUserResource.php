@@ -6,12 +6,7 @@ namespace Sample\Presentation\Resource;
 
 use Base\ResourceSupport\Resource;
 use JetBrains\PhpStorm\ArrayShape;
-use Sample\Application\UseCases\User\Adapter\TemporaryRegisterUserOutput;
 use Sample\Domain\Models\Notification\NotificationSender;
-
-/**
- * @property-read TemporaryRegisterUserOutput $data
- */
 
 readonly final class RegisterUserResource extends Resource
 {

@@ -7,7 +7,7 @@ namespace Sample\Domain\Models\Profile;
 use Base\DomainSupport\Domain\Domain;
 use Base\DomainSupport\Domain\Getter;
 use Base\DomainSupport\Exception\InvalidUuidException;
-use Sample\Domain\Models\Profile\ValueObject\ProfileBirthday;
+use Sample\Domain\Models\Profile\ValueObject\ProfileBirthDay;
 use Sample\Domain\Models\Profile\ValueObject\ProfileGender;
 use Sample\Domain\Models\Profile\ValueObject\ProfileId;
 use Sample\Domain\Models\Profile\ValueObject\ProfileImage;
@@ -16,7 +16,7 @@ use Sample\Domain\Models\Profile\ValueObject\ProfileName;
 /**
  * @property-read ProfileId       $id
  * @property-read ProfileName     $name
- * @property-read ProfileBirthday $birthDay
+ * @property-read ProfileBirthDay $birthDay
  * @property-read ProfileGender   $gender
  * @property-read ProfileImage    $image
  */
@@ -27,14 +27,14 @@ final class Profile implements IProfile
     /**
      * @param ProfileId       $id
      * @param ProfileName     $name
-     * @param ProfileBirthday $birthDay
+     * @param ProfileBirthDay $birthDay
      * @param ProfileGender   $gender
      * @param ProfileImage    $image
      */
     private function __construct(
         private readonly ProfileId $id,
         private ProfileName $name,
-        private ProfileBirthday $birthDay,
+        private ProfileBirthDay $birthDay,
         private ProfileGender $gender,
         private ProfileImage $image,
     ) {
@@ -44,7 +44,7 @@ final class Profile implements IProfile
      * 本登録用のプロフィール作成
      *
      * @param ProfileName     $name
-     * @param ProfileBirthday $birthDay
+     * @param ProfileBirthDay $birthDay
      * @param ProfileGender   $gender
      * @param ProfileImage    $image
      *
@@ -54,7 +54,7 @@ final class Profile implements IProfile
      */
     public static function definitive(
         ProfileName $name,
-        ProfileBirthday $birthDay,
+        ProfileBirthDay $birthDay,
         ProfileGender $gender,
         ProfileImage $image,
     ): Profile {
@@ -70,7 +70,7 @@ final class Profile implements IProfile
     /**
      * @param ProfileId       $id
      * @param ProfileName     $name
-     * @param ProfileBirthday $birthDay
+     * @param ProfileBirthDay $birthDay
      * @param ProfileGender   $gender
      * @param ProfileImage    $image
      *
@@ -79,7 +79,7 @@ final class Profile implements IProfile
     public static function restoreFromDB(
         ProfileId $id,
         ProfileName $name,
-        ProfileBirthday $birthDay,
+        ProfileBirthDay $birthDay,
         ProfileGender $gender,
         ProfileImage $image,
     ): Profile {
@@ -111,9 +111,9 @@ final class Profile implements IProfile
     }
 
     /**
-     * @param ProfileBirthday $birthDay
+     * @param ProfileBirthDay $birthDay
      */
-    public function changeBirthDay(ProfileBirthday $birthDay): void
+    public function changeBirthDay(ProfileBirthDay $birthDay): void
     {
         $this->birthDay = $birthDay;
     }

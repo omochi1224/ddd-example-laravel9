@@ -9,10 +9,6 @@ use Sample\Application\UseCases\User\Adapter\TemporaryRegisterUserInput;
 use Sample\Application\UseCases\User\TemporaryRegisterUserUseCase;
 use Sample\Presentation\Resource\RegisterUserResource;
 
-/**
- *
- */
-
 readonly final class RegisterUserController
 {
     /**

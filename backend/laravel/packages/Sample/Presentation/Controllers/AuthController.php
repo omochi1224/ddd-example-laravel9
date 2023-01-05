@@ -7,6 +7,7 @@ namespace Sample\Presentation\Controllers;
 use App\Http\Controllers\Controller;
 use Exception;
 use Illuminate\Contracts\Auth\Factory as Auth;
+use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -61,9 +62,9 @@ final class AuthController extends Controller
     }
 
     /**
-     * @return StatefulGuard
+     * @return StatefulGuard|Guard
      */
-    private function getGuard(): StatefulGuard
+    private function getGuard(): StatefulGuard|Guard
     {
         return $this->auth->guard(config('auth.defaults.guard'));
     }

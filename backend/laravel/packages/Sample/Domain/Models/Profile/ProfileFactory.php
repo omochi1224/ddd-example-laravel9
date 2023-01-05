@@ -11,6 +11,7 @@ use Sample\Domain\Models\Profile\Exception\ProfileGenderException;
 use Sample\Domain\Models\Profile\Exception\ProfileInvalidImageUrlException;
 use Sample\Domain\Models\Profile\ValueObject\ProfileBirthDay;
 use Sample\Domain\Models\Profile\ValueObject\ProfileGender;
+use Sample\Domain\Models\Profile\ValueObject\ProfileId;
 use Sample\Domain\Models\Profile\ValueObject\ProfileImage;
 use Sample\Domain\Models\Profile\ValueObject\ProfileName;
 
@@ -45,8 +46,18 @@ final readonly class ProfileFactory implements Factory
      * @param object $ormObject
      *
      * @return Profile
+     *
+     * @throws InvalidUuidException
+     * @throws ProfileInvalidImageUrlException|ProfileGenderException
      */
     public static function makeFromRecord(object $ormObject): Profile
     {
+        return Profile::restoreFromDB(
+            ProfileId::of($ormObject->profile_id),
+            ProfileName::of($ormObject->firstName->value(), $ormObject->lastName->value()),
+            ProfileBirthday::of($ormObject->profile_birthday),
+            ProfileGender::of($ormObject->gender),
+            ProfileImage::of($ormObject->profile_image)
+        );
     }
 }

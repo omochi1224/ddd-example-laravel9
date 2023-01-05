@@ -6,6 +6,9 @@ namespace Sample\Presentation\Request;
 
 use Illuminate\Http\Request;
 
+/**
+ *
+ */
 abstract readonly class BaseRequest
 {
     /**
@@ -16,5 +19,8 @@ abstract readonly class BaseRequest
         $this->request->validate($this->rules());
     }
 
+    /**
+     * @return array<mixed>
+     */
     abstract public function rules(): array;
 }

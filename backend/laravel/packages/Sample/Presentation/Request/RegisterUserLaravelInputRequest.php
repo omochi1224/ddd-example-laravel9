@@ -12,7 +12,7 @@ use Sample\Application\UseCases\User\Adapter\TemporaryRegisterUserInput;
 final readonly class RegisterUserLaravelInputRequest extends BaseRequest implements TemporaryRegisterUserInput
 {
     /**
-     * @return array<array<\string>>
+     * @return  array<string, array<int, string>>
      */
     public function rules(): array
     {

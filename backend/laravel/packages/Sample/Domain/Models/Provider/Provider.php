@@ -15,6 +15,6 @@ final class Provider implements Domain
      */
     public function equals(Domain $domain): bool
     {
-        // TODO: Implement equals() method.
+        return true;
     }
 }

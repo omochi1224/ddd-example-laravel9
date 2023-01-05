@@ -8,7 +8,7 @@ use Base\DomainSupport\Domain\DomainToArray;
 use Base\DomainSupport\Exception\InvalidUuidException;
 use Sample\Domain\Models\Profile\Exception\ProfileInvalidImageUrlException;
 use Sample\Domain\Models\Profile\Profile;
-use Sample\Domain\Models\Profile\ValueObject\ProfileBirthday;
+use Sample\Domain\Models\Profile\ValueObject\ProfileBirthDay;
 use Sample\Domain\Models\Profile\ValueObject\ProfileFirstName;
 use Sample\Domain\Models\Profile\ValueObject\ProfileGender;
 use Sample\Domain\Models\Profile\ValueObject\ProfileId;
@@ -20,6 +20,7 @@ use Sample\Domain\Models\User\UserRepository;
 use Sample\Domain\Models\User\ValueObject\UserEmail;
 use Sample\Domain\Models\User\ValueObject\UserHashPassword;
 use Sample\Domain\Models\User\ValueObject\UserId;
+use Sample\Domain\Models\User\ValueObject\UserStatus;
 use Sample\Infrastructure\EloquentModels\EloquentUser;
 
 /**
@@ -36,7 +37,6 @@ final class EloquentUserRepository implements UserRepository
      */
     public function create(User $user): void
     {
-        dd($this->toArray($user));
         $model = new EloquentUser();
         $model
             ->fill($this->toArray($user))
@@ -74,8 +74,8 @@ final class EloquentUserRepository implements UserRepository
         $lastName = ProfileLastName::of($user->profile_first_name);
         $profile = Profile::restoreFromDB(
             ProfileId::of($user->profile_id),
-            ProfileName::of($firstName, $lastName),
-            ProfileBirthday::of($user->profile_birthday),
+            ProfileName::of($firstName->value(), $lastName->value()),
+            ProfileBirthDay::of($user->profile_birthday),
             ProfileGender::Other,
             ProfileImage::of($user->profile_image)
         );
@@ -84,6 +84,7 @@ final class EloquentUserRepository implements UserRepository
             UserId::of($user->user_id),
             UserEmail::of($user->email),
             UserHashPassword::of($user->password),
+            UserStatus::of($user->status),
             $profile,
         );
     }

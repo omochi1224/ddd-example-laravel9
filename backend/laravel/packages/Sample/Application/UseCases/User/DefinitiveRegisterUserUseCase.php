@@ -14,9 +14,6 @@ use Sample\Domain\Models\User\UserRepository;
 use Sample\Domain\Models\User\ValueObject\UserId;
 use Sample\Domain\Services\UserDomainService;
 
-/**
- *
- */
 final readonly class DefinitiveRegisterUserUseCase
 {
     /**

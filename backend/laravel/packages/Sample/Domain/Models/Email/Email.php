@@ -8,10 +8,19 @@ use Base\DomainSupport\Domain\Getter;
 use Sample\Domain\Models\Notification\Email as IEmail;
 use Sample\Domain\Models\Notification\Notification;
 
+/**
+ *
+ */
 abstract readonly class Email implements Notification, IEmail
 {
     use Getter;
 
+    /**
+     * @param string       $toEmailAddress
+     * @param string       $fromEmailAddress
+     * @param string       $subject
+     * @param array<mixed>|string $body
+     */
     public function __construct(
         private string $toEmailAddress,
         private string $fromEmailAddress,
@@ -25,7 +34,7 @@ abstract readonly class Email implements Notification, IEmail
      */
     public function getEmailAddress(): string
     {
-        // TODO: Implement getEmailAddress() method.
+        return $this->toEmailAddress;
     }
 
     /**
@@ -33,7 +42,7 @@ abstract readonly class Email implements Notification, IEmail
      */
     public function getFromEmailAddress(): string
     {
-        // TODO: Implement getFromEmailAddress() method.
+        return $this->fromEmailAddress;
     }
 
     /**
@@ -41,14 +50,14 @@ abstract readonly class Email implements Notification, IEmail
      */
     public function getSubject(): string
     {
-        // TODO: Implement getSubject() method.
+        return $this->subject;
     }
 
     /**
-     * @return array|string
+     * @return array<mixed>|string
      */
     public function getBody(): array|string
     {
-        // TODO: Implement getBody() method.
+        return $this->body;
     }
 }

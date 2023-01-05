@@ -40,7 +40,7 @@ final readonly class TemporaryRegisterUserUseCase
     /**
      * @param TemporaryRegisterUserInput $registerUserDto
      *
-     * @return UseCaseResult<TemporaryRegisterUserOutput>
+     * @return UseCaseResult
      */
     public function __invoke(TemporaryRegisterUserInput $registerUserDto): UseCaseResult
     {

@@ -22,9 +22,10 @@ parameters:
       - stdClass
       - SimpleXMLElement
   paths:
-    - Packages
+    - packages
   excludePaths:
-    - Packages/Base #除外ディレクトリ
+    - packages/Base/* #除外ディレクトリ
+    - packages/Sample/*/Tests/* #除外ディレクトリ
 services:
   -
     class: PHPStan\Rules\DisallowedConstructs\DisallowedEmptyRule

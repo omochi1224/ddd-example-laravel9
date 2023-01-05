@@ -21,10 +21,6 @@ use Sample\Domain\Models\User\ValueObject\UserStatus;
  * @property-read  UserStatus                       $userStatus
  * @property-read  ?Profile                         $profile
  *
- * @method void changeTemporary()                   仮登録
- * @method void changeDefinitive()                  本番登録
- * @method void changeUnsubscribe()                 退会
- * @method void changeBan()                         アカウントBAN
  */
 interface IUser extends Domain
 {
