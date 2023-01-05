@@ -85,6 +85,9 @@
         "insights-fix": [
             "@php artisan insights packages/Sample --fix"
         ],
+        "deptrac": [
+            "@php vendor/bin/deptrac analyse"
+        ],
         "all" : [
             "./vendor/bin/phpcbf --standard=phpcs.xml ./packages/",
             "./vendor/bin/phpcbf --standard=phpcs.xml ./packages/",
