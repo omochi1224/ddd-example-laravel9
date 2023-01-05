@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   php:
-    container_name: default-php
+    container_name: example-php
     build: ./.docker/infra/${APP_ENV}/php
     volumes:
       - ./backend/laravel/:/var/www:cached
@@ -11,11 +11,11 @@ services:
 
   nginx:
     image: nginx
-    container_name: default-nginx
+    container_name: example-nginx
     ports:
       - '8200:80'
       - '8289:443'
     volumes:
       - ./backend/laravel/:/var/www:cached
-      - ./.docker/infra/${APP_ENV}/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./.docker/infra/${APP_ENV}/nginx/example.conf:/etc/nginx/conf.d/example.conf
       - ./.docker/infra/${APP_ENV}/nginx/certs/:/etc/nginx/certs/

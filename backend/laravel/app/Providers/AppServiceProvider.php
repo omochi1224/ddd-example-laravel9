@@ -29,7 +29,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
     }
 
     /**
@@ -39,7 +38,8 @@ class AppServiceProvider extends ServiceProvider
     {
         $env = config('app.env');
         return match ($env) {
-            'testing', 'local' => new LocalServiceProvider($this->app),
+            'testing' => new TestServiceProvider($this->app),
+            'local' => new LocalServiceProvider($this->app),
             'staging', 'production' => new ProductionServiceProvider($this->app),
             default => throw new OutOfBoundsException(),
         };

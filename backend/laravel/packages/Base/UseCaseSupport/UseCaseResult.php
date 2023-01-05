@@ -4,68 +4,73 @@ declare(strict_types=1);
 
 namespace Base\UseCaseSupport;
 
+use Base\AdapterSupport\AdapterOutput;
 use Base\ExceptionSupport\DomainException;
+use Exception;
 
 /**
  * Class UseCaseResult
  *
  * @package Basic\UseCaseSupport
  */
-class UseCaseResult
+
+readonly final class UseCaseResult
 {
     /**
      * UseCaseResult constructor.
      *
-     * @param object|null    $resultValue
-     * @param ErrorCode|null $errorCode
+     * @param AdapterOutput|null $resultValue
+     * @param ErrorCode|null     $errorCode
      */
-    public function __construct(private ?object $resultValue, private ?ErrorCode $errorCode)
-    {
+    public function __construct(
+        private ?AdapterOutput $resultValue = null,
+        private ?ErrorCode $errorCode = null,
+    ) {
     }
 
     /**
-     * @param object $resultValue
+     * @param mixed $adapterOutput
      *
      * @return static
      */
-    public static function success(object $resultValue): self
+    public static function success(AdapterOutput $adapterOutput): self
     {
-        return new static($resultValue, null);
+        return new UseCaseResult($adapterOutput);
     }
 
     /**
-     *
      * @param DomainException|ErrorCode $useCaseError
      *
      * @return static
      */
     public static function fail(DomainException|ErrorCode $useCaseError): self
     {
-        if (!($useCaseError instanceof ErrorCode)) {
-            return new static(null, ErrorCode::of($useCaseError));
+        if (! ($useCaseError instanceof ErrorCode)) {
+            return new UseCaseResult(errorCode: ErrorCode::of($useCaseError));
         }
-        return new static(null, $useCaseError);
+        return new UseCaseResult(errorCode: $useCaseError);
     }
 
     /**
-     * @return object|null
+     * @return AdapterOutput
      */
-    public function getResultValue(): null|object
+    public function getResultValue(): AdapterOutput
     {
         return $this->resultValue;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isError(): bool
     {
-        return !is_null($this->errorCode);
+        return ! is_null($this->errorCode);
     }
 
     /**
      * @return string|null
-     * @throws \Exception
+     *
+     * @throws Exception
      */
     public function getErrorMessage(): ?string
     {
@@ -84,9 +89,9 @@ class UseCaseResult
     }
 
     /**
-     * @return \Exception|DomainException|null
+     * @return Exception|DomainException|null
      */
-    public function getException(): null|\Exception|DomainException
+    public function getException(): null|Exception|DomainException
     {
         return $this->errorCode?->getException();
     }

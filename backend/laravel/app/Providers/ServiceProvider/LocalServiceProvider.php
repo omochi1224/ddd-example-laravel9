@@ -6,20 +6,19 @@ namespace App\Providers\ServiceProvider;
 
 use App\lib\LaravelDbTransaction;
 use App\lib\LaravelLogger;
-use Auth\Domain\Models\User\HashService;
-use Auth\Domain\Models\User\PasswordHashService;
-use Auth\Domain\Models\User\UserRegisterNotifyMailRepository;
-use Auth\Domain\Models\User\UserRepository;
-use Auth\Infrastructure\Encryption\PasswordHashEncryption;
-use Auth\Infrastructure\Repositories\Eloquent\EloquentUserRepository;
-use Auth\Infrastructure\Repositories\InMemory\InMemoryUserRegisterNotifyMail;
 use Base\LoggerSupport\Logger;
 use Base\RequestSupport\Request;
 use Base\TransactionSupport\Transaction;
-use Common\Domain\Models\Email\EmailSender;
-use Common\Infrastructure\Sender\Mailable\MailableEmailSender;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Http\FormRequest;
+use Sample\Application\UseCases\User\Adapter\TemporaryRegisterUserInput;
+use Sample\Domain\Models\Notification\NotificationSender;
+use Sample\Domain\Models\User\HashService;
+use Sample\Domain\Models\User\UserRepository;
+use Sample\Infrastructure\Encryption\PasswordHashEncryption;
+use Sample\Infrastructure\Notification\DummyNotificationSender;
+use Sample\Infrastructure\Repositories\Eloquent\EloquentUserRepository;
+use Sample\Presentation\Request\RegisterUserLaravelInputRequest;
 
 /**
  *
@@ -42,9 +41,11 @@ final class LocalServiceProvider implements Provider
         $this->registerFactory();
         $this->registerRepositories();
         $this->registerQueryService();
+        $this->registerIO();
 
-        $this->app->bind(EmailSender::class, MailableEmailSender::class);
         $this->app->bind(HashService::class, PasswordHashEncryption::class);
+//        $this->app->bind(Sender::class, EmailTransfer::class);
+        $this->app->bind(NotificationSender::class, DummyNotificationSender::class);
     }
 
     /**
@@ -57,7 +58,6 @@ final class LocalServiceProvider implements Provider
         $this->app->bind(Transaction::class, LaravelDbTransaction::class);
         $this->app->bind(Logger::class, LaravelLogger::class);
         $this->app->bind(Request::class, FormRequest::class);
-        $this->app->bind(UserRegisterNotifyMailRepository::class, InMemoryUserRegisterNotifyMail::class);
     }
 
     /**
@@ -87,5 +87,13 @@ final class LocalServiceProvider implements Provider
      */
     public function boot(): void
     {
+    }
+
+    /**
+     * @return void
+     */
+    public function registerIO(): void
+    {
+        $this->app->bind(TemporaryRegisterUserInput::class, RegisterUserLaravelInputRequest::class);
     }
 }

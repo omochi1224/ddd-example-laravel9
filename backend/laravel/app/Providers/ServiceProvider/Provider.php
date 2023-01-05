@@ -40,4 +40,9 @@ interface Provider
      * @return void
      */
     public function registerQueryService(): void;
+
+    /**
+     * @return void
+     */
+    public function registerIO(): void;
 }

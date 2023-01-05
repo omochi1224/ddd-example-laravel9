@@ -10,7 +10,8 @@ use Exception;
 /**
  * UUID識別子根底抽象クラス
  */
-abstract class UuidIdentifier implements ValueObject
+
+readonly abstract class UuidIdentifier implements ValueObject
 {
     /**
      * UUIDフォーマット
@@ -20,17 +21,17 @@ abstract class UuidIdentifier implements ValueObject
     /**
      * @var string
      */
-    private readonly string $pattern;
+    private string $pattern;
 
     /**
      * @var string
      */
-    private readonly string $value;
+    private string $value;
 
     /**
      * @throws InvalidUuidException
      */
-    public function __construct(string $value)
+    final public function __construct(string $value)
     {
         $this->pattern = '/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i';
 
@@ -45,9 +46,10 @@ abstract class UuidIdentifier implements ValueObject
      * @param string $value
      *
      * @return static
+     *
      * @throws InvalidUuidException
      */
-    public static function of(string $value): static
+    final public static function of(string $value): static
     {
         return new static($value);
     }
@@ -57,7 +59,7 @@ abstract class UuidIdentifier implements ValueObject
      *
      * @return bool
      */
-    public function equals(ValueObject $valueObject): bool
+    final public function equals(ValueObject $valueObject): bool
     {
         return $valueObject->value() === $this->value();
     }
@@ -65,7 +67,7 @@ abstract class UuidIdentifier implements ValueObject
     /**
      * @return string
      */
-    public function value(): string
+    final public function value(): string
     {
         return $this->value;
     }
@@ -74,10 +76,11 @@ abstract class UuidIdentifier implements ValueObject
      * UUID 生成
      *
      * @return UuidIdentifier
+     *
      * @throws InvalidUuidException
      * @throws Exception
      */
-    public static function generate(): static
+    final public static function generate(): static
     {
         $chars = str_split(self::PATTERN);
 

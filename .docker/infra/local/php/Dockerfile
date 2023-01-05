@@ -1,4 +1,4 @@
-FROM php:8.1-fpm
+FROM php:8.2-fpm
 COPY php.ini /usr/local/etc/php/
 
 RUN apt-get update \
@@ -6,7 +6,7 @@ RUN apt-get update \
     && docker-php-ext-install zip pdo_mysql
 
 #Xdebug
-RUN pecl install xdebug-3.1.0 && docker-php-ext-enable xdebug
+RUN pecl install xdebug-3.2.0 && docker-php-ext-enable xdebug
 
 #Redis
 RUN git clone https://github.com/phpredis/phpredis.git /usr/src/php/ext/redis

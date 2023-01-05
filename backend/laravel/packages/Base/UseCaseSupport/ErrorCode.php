@@ -31,6 +31,7 @@ final class ErrorCode
 
     /**
      * @return string|null
+     *
      * @throws \Exception
      */
     public function getMessage(): ?string

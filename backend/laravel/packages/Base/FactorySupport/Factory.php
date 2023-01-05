@@ -12,9 +12,11 @@ use Base\DomainSupport\Domain\Domain;
 interface Factory
 {
     /**
+     * 永続化からの復帰
+     *
      * @param object $ormObject
      *
      * @return Domain
      */
-    public function makeFromRecord(object $ormObject): Domain;
+    public static function makeFromRecord(object $ormObject): Domain;
 }

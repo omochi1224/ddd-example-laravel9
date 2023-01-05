@@ -3,7 +3,7 @@ version: '3.7'
 services:
   db:
     image: mysql:5.7
-    container_name: default-db
+    container_name: example-db
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: ${DB_DATABASE}
@@ -18,7 +18,7 @@ services:
 
   redis:
     image: 'redis:latest'
-    container_name: default-redis
+    container_name: example-redis
     ports:
       - '6297:16397'
     volumes:
@@ -26,7 +26,7 @@ services:
 
   minio:
     image: 'minio/minio:latest'
-    container_name: default-minio
+    container_name: example-minio
     environment:
       MINIO_ROOT_USER: ${MINIO_ROOT_USER}
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}

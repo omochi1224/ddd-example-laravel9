@@ -1,0 +1,64 @@
+deptrac:
+  paths:
+    - ./packages
+  exclude_files:
+    - '#.*test.*#'
+    - '#.*Factory.*#'
+  layers:
+    - name: Sample_Infrastructure
+      collectors:
+        - type: className
+          regex: .*Sample\\Infrastructure\\Repositories\\Eloquent.*
+
+    - name: Sample_Presentation
+      collectors:
+        - type: className
+          regex: .*Sample\\Presentation\\Controllers\\*
+        - type: className
+          regex: .*Sample\\Presentation\\Requests\\*
+        - type: className
+          regex: .*Sample\\Presentation\\Resource\\*
+
+    - name: Sample_Application
+      collectors:
+        - type: className
+          regex: .*Sample\\Application\\UseCases.*
+        - type: className
+          regex: .*Sample\\Application\\Dtos.*
+
+    - name: Sample_Domain_Service
+      collectors:
+        - type: className
+          regex: .*Sample\\Domain\\Services.*
+
+    - name: Sample_Domain
+      collectors:
+        - type: className
+          regex: .*Sample\\Domain\\Models\\*\\.*
+        - type: className
+          regex: .*Sample\\Domain\\Exception\\*\\*.*
+
+    - name: Base
+      collectors:
+        - type: className
+          regex: Base\\*\\*\\*.*
+
+  ruleset:
+    Sample_Domain:
+      - Base
+    Sample_Presentation:
+      - Sample_Application
+      - Sample_Domain
+      - Base
+    Sample_Application:
+      - Sample_Infrastructure
+      - Sample_Domain_Service
+      - Sample_Domain
+      - Base
+    Sample_Domain_Service:
+      - Sample_Domain
+      - Sample_Infrastructure
+      - Base
+    Sample_Infrastructure:
+      - Sample_Domain
+      - Base

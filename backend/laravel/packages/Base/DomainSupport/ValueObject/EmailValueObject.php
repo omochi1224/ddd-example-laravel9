@@ -6,16 +6,16 @@ namespace Base\DomainSupport\ValueObject;
 
 use Base\DomainSupport\Exception\InvalidEmailAddressException;
 
-abstract class EmailValueObject extends StringValueObject
+readonly abstract class EmailValueObject extends StringValueObject
 {
     /**
      * @throws InvalidEmailAddressException
      */
     public function __construct(string $value)
     {
-        if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
+        if (! filter_var($value, FILTER_VALIDATE_EMAIL)) {
             throw new InvalidEmailAddressException(InvalidEmailAddressException::MESSAGE);
         }
-        $this->value = $value;
+        parent::__construct($value);
     }
 }

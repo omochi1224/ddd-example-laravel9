@@ -53,7 +53,6 @@ class AddPackage extends Command
         }
         $this->info($this->packageName . 'を作成します。');
 
-
         if ($this->isExistDirectory()) {
             $this->error('すでに同じ機能名が作られています。');
             return;
@@ -85,7 +84,7 @@ class AddPackage extends Command
             'Application' => ['Dtos', 'UseCases'],
             'Domain' => ['Exceptions', 'Models', 'Services'],
             'Infrastructure' => ['EloquentModels', 'QueryServices', 'Repositories', 'Factories'],
-            'Presentation' => ['Requests', 'Controllers']
+            'Presentation' => ['Requests', 'Controllers'],
         ];
 
         $this->createDirectoryFromArray(self::PACKAGES_PATH, $dirs);
@@ -93,7 +92,7 @@ class AddPackage extends Command
         mkdir(self::TESTING_PATH . $this->packageName, 0755, true);
         $testingDirs = [
             'Feature' => ['Controller', 'UseCase'],
-            'Unit' => ['Domain', 'ValueObject', 'Repository', 'Factory', 'Dto', 'Request']
+            'Unit' => ['Domain', 'ValueObject', 'Repository', 'Factory', 'Dto', 'Request'],
         ];
 
         $this->createDirectoryFromArray(self::TESTING_PATH, $testingDirs);

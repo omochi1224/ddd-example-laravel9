@@ -7,7 +7,7 @@ init:
 ps:
 	docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.mail.yml ps
 install:
-	docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.mail.yml exec php composer install -vvv --ignore-platform-reqs
+	docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.mail.yml exec php composer install -vvv
 migrate:
 	docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.mail.yml exec php php artisan migrate
 refresh_seeder:
@@ -32,10 +32,10 @@ product-build-up:
 clear:
 	docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.mail.yml exec php composer cache:clear
 
-testing:
+test:
 	docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.mail.yml exec php php artisan test
 
-exec_php:
+app:
 	docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.mail.yml exec php bash
 
 tinker:

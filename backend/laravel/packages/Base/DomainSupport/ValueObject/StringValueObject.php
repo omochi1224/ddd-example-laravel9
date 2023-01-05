@@ -7,13 +7,22 @@ namespace Base\DomainSupport\ValueObject;
 /**
  * 文字列根底抽象クラス
  */
-abstract class StringValueObject implements ValueObject
+
+readonly abstract class StringValueObject implements ValueObject
 {
     /**
      * @param string $value
      */
     public function __construct(protected string $value)
     {
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->value;
     }
 
     /**
