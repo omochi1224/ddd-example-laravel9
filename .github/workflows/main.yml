@@ -2,67 +2,165 @@ name: Laravel
 
 on:
   push:
-    branches: [ main, develop ]
-  pull_request:
-    branches: [ main, develop ]
-
+    branches: [ main, develop, feature/**]
 jobs:
-  init:
+  Coverage:
+    name: カバレッジ
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend/laravel
+    services:
+      mysql:
+        image: mysql:8.0.19
+        ports:
+          - 3306:3306
+        options: --health-cmd "mysqladmin ping -h localhost" --health-interval 20s --health-timeout 10s --health-retries 10
+        env:
+          MYSQL_ROOT_PASSWORD: pass
+          MYSQL_DATABASE: test
+    env:
+      DB_CONNECTION: mysql
+      DB_HOST: 127.0.0.1
+      DB_PORT: 3306
+      DB_DATABASE: test
+      DB_USERNAME: root
+      DB_PASSWORD: pass
     steps:
       - uses: actions/checkout@v2
-      - name: copy env
-        run: |
-          cp backend/laravel/.env.example backend/laravel/.env
-          cp .env.example .env
-      - name: Create Database
-        run: |
-          mkdir -p database
-          touch database/database.sqlite
-      - name: docker run
-        shell: bash
-        run: |
-          docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
-
-      - name: compose-run
-        shell: bash
-        run: |
-          docker-compose -f docker-compose.yml -f docker-compose.dev.yml exec -T php composer install -vvv --ignore-platform-reqs
-          docker-compose -f docker-compose.yml -f docker-compose.dev.yml exec -T php php artisan migrate:fresh --seed
-
-      - name: application key generator
-        run: |
-          docker-compose -f docker-compose.yml -f docker-compose.dev.yml exec -T php php artisan jwt:secret
-          docker-compose -f docker-compose.yml -f docker-compose.dev.yml exec -T php php artisan key:gen
-
-      - name: 静的解析
-        run: docker-compose -f docker-compose.yml -f docker-compose.dev.yml exec -T php composer static-type-check
-
-      - name: コード規約チェック
-        run: docker-compose -f docker-compose.yml -f docker-compose.dev.yml exec -T php composer sniffer
-
-      - name: アーキテクトチェック
-        run: docker-compose -f docker-compose.yml -f docker-compose.dev.yml exec -T php php vendor/bin/deptrac analyse
-
-      - name: テスト
-        run: docker-compose -f docker-compose.yml -f docker-compose.dev.yml exec -T php php artisan test
-
-      - name: テストカバレッジ生成
-        run: docker-compose -f docker-compose.yml -f docker-compose.dev.yml exec -T php ./vendor/bin/phpunit --coverage-html document/coverage
-
-      - name: API仕様書生成
-        run: docker-compose -f docker-compose.yml -f docker-compose.dev.yml exec -T php php artisan scribe:generate
-
-      - name: ドキュメント生成
-        uses: actions/upload-artifact@v2
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
         with:
-          name: Documents
-          path: backend/laravel/document/
+          php-version: '8.2'
+          coverage: xdebug
 
+      - name: composer install
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: composer install -n --prefer-dist
+
+      - name: copy .env
+        run: cp .env.ci .env
+
+      - name: generate key
+        run: php artisan key:generate
+
+      - name: migrate
+        run: php artisan migrate
+
+      - name: coverage
+        run: php ./vendor/bin/phpunit --coverage-clover storage/logs/coverage.xml
+
+      - name: upload coverage
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./backend/laravel/storage/logs/coverage.xml
+
+  Testing:
+    name: テスト
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend/laravel
+    services:
+      mysql:
+        image: mysql:8.0.19
+        ports:
+          - 3306:3306
+        options: --health-cmd "mysqladmin ping -h localhost" --health-interval 20s --health-timeout 10s --health-retries 10
+        env:
+          MYSQL_ROOT_PASSWORD: pass
+          MYSQL_DATABASE: test
+    env:
+      DB_CONNECTION: mysql
+      DB_HOST: 127.0.0.1
+      DB_PORT: 3306
+      DB_DATABASE: test
+      DB_USERNAME: root
+      DB_PASSWORD: pass
+    steps:
+      - uses: actions/checkout@v2
+      - name: cache vendor
+        id: cache
+        uses: actions/cache@v1
+        with:
+          path: ./vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+      - name: composer install
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: composer install -n --prefer-dist
+
+      - name: copy .env
+        run: cp .env.ci .env
+
+      - name: generate key
+        run: php artisan key:generate
+
+      - name: migrate
+        run: php artisan migrate
+
+      - name: unit test
+        run: ./vendor/bin/phpunit
+
+  Analysis:
+    name: コード解析
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend/laravel
+    services:
+      mysql:
+        image: mysql:8.0.19
+        ports:
+          - 3306:3306
+        options: --health-cmd "mysqladmin ping -h localhost" --health-interval 20s --health-timeout 10s --health-retries 10
+        env:
+          MYSQL_ROOT_PASSWORD: pass
+          MYSQL_DATABASE: test
+    env:
+      DB_CONNECTION: mysql
+      DB_HOST: 127.0.0.1
+      DB_PORT: 3306
+      DB_DATABASE: test
+      DB_USERNAME: root
+      DB_PASSWORD: pass
+    steps:
+      - uses: actions/checkout@v2
+      - name: cache vendor
+        id: cache
+        uses: actions/cache@v1
+        with:
+          path: ./vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+      - name: composer install
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: composer install -n --prefer-dist
+
+      - name: copy .env
+        run: cp .env.ci .env
+
+      - name: generate key
+        run: php artisan key:generate
+
+      - name: migrate
+        run: php artisan migrate
+
+      - name: sniffer test
+        run: composer sniffer
+
+      - name: deptrac
+        run: composer deptrac
+
+      - name: insights
+        run: composer insights-github
 
   slack-notify:
     if: always()
-    needs: [ init ]
+    needs: [ Testing,  Coverage, Analysis ]
     name: workflow notification to slack
     runs-on: ubuntu-latest
     steps:
