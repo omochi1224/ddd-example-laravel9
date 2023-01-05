@@ -85,6 +85,12 @@
         "insights-fix": [
             "@php artisan insights packages/Sample --fix"
         ],
+        "insights-github": [
+            "@php artisan insights packages/Sample -n --ansi --format=github-action"
+        ],
+        "deptrac": [
+            "@php vendor/bin/deptrac analyse"
+        ],
         "all" : [
             "./vendor/bin/phpcbf --standard=phpcs.xml ./packages/",
             "./vendor/bin/phpcbf --standard=phpcs.xml ./packages/",
