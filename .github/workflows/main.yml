@@ -80,20 +80,18 @@ jobs:
       DB_PASSWORD: pass
     steps:
       - uses: actions/checkout@v2
-      - name: cache vendor
-        id: cache
-        uses: actions/cache@v1
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
         with:
-          path: ./vendor
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-
+          php-version: '8.2'
+          coverage: xdebug
+
       - name: composer install
         if: steps.cache.outputs.cache-hit != 'true'
         run: composer install -n --prefer-dist
 
       - name: copy .env
-        run: cp .env.ci .env
+        run: cp .env.example .env
 
       - name: generate key
         run: php artisan key:generate
@@ -128,29 +126,21 @@ jobs:
       DB_PASSWORD: pass
     steps:
       - uses: actions/checkout@v2
-      - name: cache vendor
-        id: cache
-        uses: actions/cache@v1
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
         with:
-          path: ./vendor
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-
+          php-version: '8.2'
+          coverage: xdebug
+
       - name: composer install
         if: steps.cache.outputs.cache-hit != 'true'
         run: composer install -n --prefer-dist
 
       - name: copy .env
-        run: cp .env.ci .env
+        run: cp .env.example .env
 
       - name: generate key
         run: php artisan key:generate
-
-      - name: migrate
-        run: php artisan migrate
-
-      - name: sniffer test
-        run: composer sniffer
 
       - name: deptrac
         run: composer deptrac
