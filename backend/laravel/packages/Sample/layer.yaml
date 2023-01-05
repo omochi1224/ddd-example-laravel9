@@ -1,49 +1,64 @@
-paths:
-  - ./packages
-exclude_files:
-  - '#.*test.*#'
-layers:
-  - name: Auth_Infrastructure
-    collectors:
-      - type: className
-        regex: .*Auth\\Infrastructure\\Repositories\\Eloquent.*
-      - type: className
-        regex: .*Auth\\Infrastructure\\Repositories\\InMemory.*
-      - type: className
-        regex: .*Auth\\Domain\\Models\\User\\(?=.*Repository).*$.*
+deptrac:
+  paths:
+    - ./packages
+  exclude_files:
+    - '#.*test.*#'
+    - '#.*Factory.*#'
+  layers:
+    - name: Sample_Infrastructure
+      collectors:
+        - type: className
+          regex: .*Sample\\Infrastructure\\Repositories\\Eloquent.*
 
-  - name: Auth_Presentation
-    collectors:
-      - type: className
-        regex: .*Auth\\Presentation\\Controllers\\*
-      - type: className
-        regex: .*Auth\\Presentation\\Requests\\*
-      - type: className
-        regex: .*Auth\\Presentation\\Resource\\*
+    - name: Sample_Presentation
+      collectors:
+        - type: className
+          regex: .*Sample\\Presentation\\Controllers\\*
+        - type: className
+          regex: .*Sample\\Presentation\\Requests\\*
+        - type: className
+          regex: .*Sample\\Presentation\\Resource\\*
 
-  - name: Auth_Application
-    collectors:
-      - type: className
-        regex: .*Auth\\Application\\UseCases\\.*
-      - type: className
-        regex: .*Auth\\Application\\Dtos\\.*
+    - name: Sample_Application
+      collectors:
+        - type: className
+          regex: .*Sample\\Application\\UseCases.*
+        - type: className
+          regex: .*Sample\\Application\\Dtos.*
 
-  - name: Auth_Domain_Service
-    collectors:
-      - type: className
-        regex: .*Auth\\Domain\\Services\\.*
+    - name: Sample_Domain_Service
+      collectors:
+        - type: className
+          regex: .*Sample\\Domain\\Services.*
 
-  - name: Auth_Domain
-    collectors:
-      - type: className
-        regex: .*Auth\\Domain\\Model\\.*
+    - name: Sample_Domain
+      collectors:
+        - type: className
+          regex: .*Sample\\Domain\\Models\\*\\.*
+        - type: className
+          regex: .*Sample\\Domain\\Exception\\*\\*.*
 
-ruleset:
-  Auth_Presentation:
-    - Auth_Application
-  Auth_Application:
-    - Auth_Infrastructure
-    - Auth_Domain_Service
-  Auth_Domain_Service:
-    - Auth_Infrastructure
-  Auth_Infrastructure: ~
+    - name: Base
+      collectors:
+        - type: className
+          regex: Base\\*\\*\\*.*
+
+  ruleset:
+    Sample_Domain:
+      - Base
+    Sample_Presentation:
+      - Sample_Application
+      - Sample_Domain
+      - Base
+    Sample_Application:
+      - Sample_Infrastructure
+      - Sample_Domain_Service
+      - Sample_Domain
+      - Base
+    Sample_Domain_Service:
+      - Sample_Domain
+      - Sample_Infrastructure
+      - Base
+    Sample_Infrastructure:
+      - Sample_Domain
+      - Base
