@@ -7,7 +7,7 @@ namespace Sample\Domain\Models\Profile;
 use Base\DomainSupport\Domain\Domain;
 use Base\DomainSupport\Domain\Getter;
 use Base\DomainSupport\Exception\InvalidUuidException;
-use Sample\Domain\Models\Profile\ValueObject\ProfileBirthDay;
+use Sample\Domain\Models\Profile\ValueObject\ProfileBirthday;
 use Sample\Domain\Models\Profile\ValueObject\ProfileGender;
 use Sample\Domain\Models\Profile\ValueObject\ProfileId;
 use Sample\Domain\Models\Profile\ValueObject\ProfileImage;
@@ -16,7 +16,7 @@ use Sample\Domain\Models\Profile\ValueObject\ProfileName;
 /**
  * @property-read ProfileId       $id
  * @property-read ProfileName     $name
- * @property-read ProfileBirthDay $birthDay
+ * @property-read ProfileBirthday $birthDay
  * @property-read ProfileGender   $gender
  * @property-read ProfileImage    $image
  */
@@ -27,7 +27,7 @@ final class Profile implements IProfile
     /**
      * @param ProfileId       $id
      * @param ProfileName     $name
-     * @param ProfileBirthDay $birthDay
+     * @param ProfileBirthday $birthDay
      * @param ProfileGender   $gender
      * @param ProfileImage    $image
      */
@@ -44,7 +44,7 @@ final class Profile implements IProfile
      * 本登録用のプロフィール作成
      *
      * @param ProfileName     $name
-     * @param ProfileBirthDay $birthDay
+     * @param ProfileBirthday $birthDay
      * @param ProfileGender   $gender
      * @param ProfileImage    $image
      *
@@ -70,7 +70,7 @@ final class Profile implements IProfile
     /**
      * @param ProfileId       $id
      * @param ProfileName     $name
-     * @param ProfileBirthDay $birthDay
+     * @param ProfileBirthday $birthDay
      * @param ProfileGender   $gender
      * @param ProfileImage    $image
      *
@@ -111,9 +111,9 @@ final class Profile implements IProfile
     }
 
     /**
-     * @param ProfileBirthDay $birthDay
+     * @param ProfileBirthday $birthDay
      */
-    public function changeBirthDay(ProfileBirthDay $birthDay): void
+    public function changeBirthDay(ProfileBirthday $birthDay): void
     {
         $this->birthDay = $birthDay;
     }

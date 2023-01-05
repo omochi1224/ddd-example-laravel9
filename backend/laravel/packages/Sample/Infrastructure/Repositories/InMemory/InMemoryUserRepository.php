@@ -35,7 +35,7 @@ final class InMemoryUserRepository implements UserRepository
      */
     public function update(User $user): void
     {
-        if (!array_key_exists($user->userId->value(), $this->users)) {
+        if (! array_key_exists($user->userId->value(), $this->users)) {
             throw new UserNotFoundException(UserNotFoundException::MESSAGE);
         }
 
@@ -49,8 +49,7 @@ final class InMemoryUserRepository implements UserRepository
      */
     public function findByEmail(UserEmail $userEmail): ?User
     {
-        $users = array_filter($this->users, function (User $user) use ($userEmail)
-        {
+        $users = array_filter($this->users, function (User $user) use ($userEmail) {
             return $user->userEmail->equals($userEmail);
         });
 
@@ -70,7 +69,7 @@ final class InMemoryUserRepository implements UserRepository
      */
     public function getByUserId(UserId $userId): User
     {
-        if (!array_key_exists($userId->value(), $this->users)) {
+        if (! array_key_exists($userId->value(), $this->users)) {
             throw new UserNotFoundException(UserNotFoundException::MESSAGE);
         }
 

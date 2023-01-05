@@ -45,6 +45,7 @@ enum UserStatus: int implements ValueObject
 
     /**
      * @return string
+     *
      * @throws \ReflectionException
      */
     public function description(): string
@@ -60,6 +61,7 @@ enum UserStatus: int implements ValueObject
      * @param string $value
      *
      * @return UserStatus
+     *
      * @throws \Exception
      */
     public static function of(string $value): UserStatus

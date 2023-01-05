@@ -13,6 +13,7 @@ use Exception;
  *
  * @package Basic\UseCaseSupport
  */
+
 readonly final class UseCaseResult
 {
     /**

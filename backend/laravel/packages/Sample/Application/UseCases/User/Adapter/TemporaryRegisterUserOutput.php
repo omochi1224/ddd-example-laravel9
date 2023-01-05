@@ -11,6 +11,7 @@ use Sample\Domain\Models\User\UserRegisterNotify;
 /**
  *
  */
+
 readonly final class TemporaryRegisterUserOutput implements AdapterOutput
 {
     /**

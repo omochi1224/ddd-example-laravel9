@@ -11,6 +11,7 @@ use Sample\Domain\Models\Profile\Exception\ProfileBirthdayException;
 /**
  *
  */
+
 readonly final class ProfileBirthDay extends DateTimeValueObject
 {
     /**

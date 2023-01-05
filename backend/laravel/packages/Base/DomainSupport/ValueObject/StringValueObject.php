@@ -7,6 +7,7 @@ namespace Base\DomainSupport\ValueObject;
 /**
  * 文字列根底抽象クラス
  */
+
 readonly abstract class StringValueObject implements ValueObject
 {
     /**

@@ -206,5 +206,4 @@ final class User implements IUser
         $password = $this->userPassword->value();
         $this->userPassword = $hashService->hashing(UserRawPassword::of($password));
     }
-
 }

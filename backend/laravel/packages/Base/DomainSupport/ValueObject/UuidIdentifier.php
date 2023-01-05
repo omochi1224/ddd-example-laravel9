@@ -10,6 +10,7 @@ use Exception;
 /**
  * UUID識別子根底抽象クラス
  */
+
 readonly abstract class UuidIdentifier implements ValueObject
 {
     /**

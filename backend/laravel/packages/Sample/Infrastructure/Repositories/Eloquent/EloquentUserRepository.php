@@ -8,7 +8,7 @@ use Base\DomainSupport\Domain\DomainToArray;
 use Base\DomainSupport\Exception\InvalidUuidException;
 use Sample\Domain\Models\Profile\Exception\ProfileInvalidImageUrlException;
 use Sample\Domain\Models\Profile\Profile;
-use Sample\Domain\Models\Profile\ValueObject\ProfileBirthDay;
+use Sample\Domain\Models\Profile\ValueObject\ProfileBirthday;
 use Sample\Domain\Models\Profile\ValueObject\ProfileFirstName;
 use Sample\Domain\Models\Profile\ValueObject\ProfileGender;
 use Sample\Domain\Models\Profile\ValueObject\ProfileId;
@@ -89,6 +89,19 @@ final class EloquentUserRepository implements UserRepository
     }
 
     /**
+     * @param UserId $userId
+     *
+     * @return User
+     */
+    public function getByUserId(UserId $userId): User
+    {
+        $user = EloquentUser::where('user_id', $userId->value())
+            ->first();
+
+        dd($user);
+    }
+
+    /**
      * @param User $user
      *
      * @return array<string, mixed>
@@ -108,18 +121,5 @@ final class EloquentUserRepository implements UserRepository
             'profile_gender' => $profile->gender->value(),
             'profile_image' => $profile->image->value(),
         ];
-    }
-
-    /**
-     * @param UserId $userId
-     *
-     * @return User
-     */
-    public function getByUserId(UserId $userId): User
-    {
-        $user = EloquentUser::where('user_id', $userId->value())
-            ->first();
-
-        dd($user);
     }
 }

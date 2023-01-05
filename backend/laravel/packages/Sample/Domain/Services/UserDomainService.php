@@ -28,7 +28,7 @@ final readonly class UserDomainService
      */
     public function isEmailAlready(IUser $user): bool
     {
-        return !($this->userRepository->findByEmail($user->userEmail) === null);
+        return ! ($this->userRepository->findByEmail($user->userEmail) === null);
     }
 
     /**

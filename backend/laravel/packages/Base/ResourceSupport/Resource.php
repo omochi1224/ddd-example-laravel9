@@ -11,6 +11,7 @@ use JsonSerializable;
 /**
  * 共通 Resource
  */
+
 readonly abstract class Resource implements JsonSerializable
 {
     /**

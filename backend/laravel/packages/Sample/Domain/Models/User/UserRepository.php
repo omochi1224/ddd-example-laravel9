@@ -35,6 +35,7 @@ interface UserRepository
      * @param UserId $userId
      *
      * @return User
+     *
      * @throws UserNotFoundException
      */
     public function getByUserId(UserId $userId): User;

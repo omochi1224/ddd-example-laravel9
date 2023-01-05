@@ -27,8 +27,7 @@ trait DomainToArray
             call_user_func_array(
                 'array_merge',
                 array_map(
-                    function ($property) use ($domain)
-                    {
+                    function ($property) use ($domain) {
                         $propertyName = $property->name;
                         if ($domain->$propertyName?->value() instanceof Domain) {
                             $array[$this->underscore($propertyName)] = $this->domainToArray(
@@ -61,8 +60,7 @@ trait DomainToArray
     {
         return $hiddenOption !== [] ? array_filter(
             $array,
-            static function ($value, string $key) use ($hiddenOption)
-            {
+            static function ($value, string $key) use ($hiddenOption) {
                 foreach ($hiddenOption as $option) {
                     return $option !== $key;
                 }

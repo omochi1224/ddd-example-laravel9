@@ -12,6 +12,7 @@ use Sample\Domain\Models\Notification\NotificationSender;
 /**
  * @property-read TemporaryRegisterUserOutput $data
  */
+
 readonly final class RegisterUserResource extends Resource
 {
     /**

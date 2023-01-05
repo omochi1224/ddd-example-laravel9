@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Sample\Presentation\Request;
 
-
 use Sample\Application\UseCases\User\Adapter\TemporaryRegisterUserInput;
 
 /**
