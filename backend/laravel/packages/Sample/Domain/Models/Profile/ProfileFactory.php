@@ -55,7 +55,7 @@ final readonly class ProfileFactory implements Factory
         return Profile::restoreFromDB(
             ProfileId::of($ormObject->profile_id),
             ProfileName::of($ormObject->firstName->value(), $ormObject->lastName->value()),
-            ProfileBirthday::of($ormObject->profile_birthday),
+            ProfileBirthDay::of($ormObject->profile_birthday),
             ProfileGender::of($ormObject->gender),
             ProfileImage::of($ormObject->profile_image)
         );

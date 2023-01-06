@@ -20,7 +20,6 @@ use Sample\Domain\Models\User\ValueObject\UserStatus;
  * @property-read  UserRawPassword|UserHashPassword $userPassword
  * @property-read  UserStatus                       $userStatus
  * @property-read  ?Profile                         $profile
- *
  */
 interface IUser extends Domain
 {

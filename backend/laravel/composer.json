@@ -92,11 +92,12 @@
             "@php vendor/bin/deptrac analyse"
         ],
         "all" : [
-            "./vendor/bin/phpcbf --standard=phpcs.xml ./packages/",
-            "./vendor/bin/phpcbf --standard=phpcs.xml ./packages/",
-            "./vendor/bin/phpcs --standard=phpcs.xml ./packages/",
+            "./vendor/bin/phpcbf --standard=phpcs.xml ./packages/Sample",
+            "./vendor/bin/phpcs --standard=phpcs.xml ./packages/Sample",
             "./vendor/bin/phpstan analyse -c phpstan.neon",
-            "@php artisan insights packages/ --fix",
+            "@php artisan insights packages/Sample --fix",
+            "@php artisan insights packages/Sample",
+            "@php vendor/bin/deptrac analyse",
             "./vendor/bin/phpunit"
         ],
         "cache:clear": [
