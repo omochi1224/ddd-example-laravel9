@@ -11,6 +11,7 @@ use Todo\Domain\Models\Profile\IProfile;
 use Todo\Domain\Models\Profile\Profile;
 use Todo\Domain\Models\User\Exception\PasswordEncryptionException;
 use Todo\Domain\Models\User\Exception\UserAlreadyDefinitiveException;
+use Todo\Domain\Models\User\Exception\UserPasswordChangeException;
 use Todo\Domain\Models\User\ValueObject\Password;
 use Todo\Domain\Models\User\ValueObject\SocialLoginNoPassword;
 use Todo\Domain\Models\User\ValueObject\UserEmail;
@@ -42,8 +43,6 @@ final class User implements IUser
     /**
      * ソーシャルログイン　仮登録
      *
-     *
-     *
      * @throws InvalidUuidException
      */
     public static function socialTemporaryRegister(
@@ -60,8 +59,6 @@ final class User implements IUser
 
     /**
      *  仮登録
-     *
-     *
      *
      * @throws InvalidUuidException
      * @throws PasswordEncryptionException
@@ -110,25 +107,26 @@ final class User implements IUser
         $this->userStatus = $userStatus;
     }
 
+    /**
+     * @throws UserPasswordChangeException
+     */
     public function changePassword(Password $password, ?HashService $hashService = null): void
     {
-        if ($password instanceof UserRawPassword || $hashService !== null) {
+        if ($password instanceof UserRawPassword) {
+            if ($hashService === null) {
+                throw new UserPasswordChangeException(UserPasswordChangeException::MESSAGE);
+            }
             $password = $hashService->hashing($password);
         }
         $this->userPassword = $password;
     }
 
-    /**
-     * @param User $domain
-     */
-    public function equals(Domain $domain): bool
+    public function equals(self|Domain $domain): bool
     {
         return $this->userId->equals($domain->userId);
     }
 
     /**
-     *
-     *
      * @throws UserAlreadyDefinitiveException
      */
     public function changeDefinitiveRegister(IProfile $profile): void
@@ -146,8 +144,6 @@ final class User implements IUser
     }
 
     /**
-     *
-     *
      * @throws PasswordEncryptionException
      */
     private function changeHashPassword(HashService $hashService): void

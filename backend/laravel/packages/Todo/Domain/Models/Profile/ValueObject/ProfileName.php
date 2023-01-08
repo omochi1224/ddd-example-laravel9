@@ -25,11 +25,12 @@ final readonly class ProfileName implements ValueObject
         );
     }
 
-    /**
-     * @param ProfileName $valueObject
-     */
-    public function equals(ValueObject $valueObject): bool
+    public function equals(self|ValueObject $valueObject): bool
     {
+        if (!($valueObject instanceof ProfileName)){
+            throw new \TypeError();
+        }
+
         $lastName = $valueObject->lastName;
         $firstName = $valueObject->firstName;
 

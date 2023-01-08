@@ -71,10 +71,7 @@ final class Profile implements IProfile
         );
     }
 
-    /**
-     * @param Profile $domain
-     */
-    public function equals(Domain $domain): bool
+    public function equals(self|Domain $domain): bool
     {
         return $this->id->equals($domain->id);
     }

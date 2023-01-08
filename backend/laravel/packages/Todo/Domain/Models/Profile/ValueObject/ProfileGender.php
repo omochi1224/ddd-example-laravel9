@@ -16,10 +16,7 @@ enum ProfileGender: int implements ValueObject
     case Man = 1;
     case Other = 2;
 
-    /**
-     * @param ProfileGender $valueObject
-     */
-    public function equals(ValueObject $valueObject): bool
+    public function equals(self|ValueObject $valueObject): bool
     {
         return $this->value === $valueObject->value;
     }

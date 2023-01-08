@@ -6,18 +6,12 @@ namespace Base\AttributeSupport;
 
 use ReflectionClass;
 use ReflectionClassConstant;
-use ReflectionException;
 
 /**
  * Attributeの内容を取得する
  */
 final class Attribute
 {
-    /**
-     *
-     *
-     * @throws ReflectionException
-     */
     final public function getAttribute(string $attributeClass): object
     {
         $reflection = new ReflectionClass(self::class);

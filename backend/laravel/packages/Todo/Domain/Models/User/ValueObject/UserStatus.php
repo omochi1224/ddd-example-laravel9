@@ -9,7 +9,7 @@ use Base\DomainSupport\ValueObject\ValueObject;
 use ReflectionEnum;
 
 /**
- *
+ * @psalm-suppress MoreSpecificImplementedParamType
  */
 enum UserStatus: int implements ValueObject
 {
@@ -25,10 +25,7 @@ enum UserStatus: int implements ValueObject
     #[Text('退会')]
     case Unsubscribe = 900;
 
-    /**
-     * @param UserStatus $valueObject
-     */
-    public function equals(ValueObject $valueObject): bool
+    public function equals(self|ValueObject $valueObject): bool
     {
         return $this->value === $valueObject->value;
     }

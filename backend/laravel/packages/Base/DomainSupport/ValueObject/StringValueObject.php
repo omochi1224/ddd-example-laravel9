@@ -10,9 +10,6 @@ namespace Base\DomainSupport\ValueObject;
 
 readonly abstract class StringValueObject implements ValueObject, \Stringable
 {
-    /**
-     * @param string $value
-     */
     public function __construct(protected string $value)
     {
     }
@@ -25,27 +22,16 @@ readonly abstract class StringValueObject implements ValueObject, \Stringable
         return $this->value;
     }
 
-    /**
-     * @return static
-     */
     public static function of(string $value): static
     {
         return new static($value);
     }
 
-    /**
-     * @param StringValueObject|ValueObject $valueObject
-     *
-     * @return bool
-     */
     public function equals(StringValueObject|ValueObject $valueObject): bool
     {
         return $valueObject->value() === $this->value();
     }
 
-    /**
-     * @return string
-     */
     public function value(): string
     {
         return $this->value;
