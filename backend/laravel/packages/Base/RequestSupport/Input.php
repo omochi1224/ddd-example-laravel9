@@ -6,8 +6,5 @@ namespace Base\RequestSupport;
 
 interface Input
 {
-    /**
-     * @return array
-     */
     public function rules(): array;
 }

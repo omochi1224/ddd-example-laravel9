@@ -7,19 +7,12 @@ namespace Base\AttributeSupport;
 /**
  *
  */
-#[\Attribute]
-final class Text
+#[\Attribute]final readonly class Text
 {
-    /**
-     * @param string $value
-     */
     public function __construct(private string $value)
     {
     }
 
-    /**
-     * @return string
-     */
     public function value(): string
     {
         return $this->value;

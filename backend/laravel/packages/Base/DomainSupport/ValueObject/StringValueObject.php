@@ -8,7 +8,7 @@ namespace Base\DomainSupport\ValueObject;
  * 文字列根底抽象クラス
  */
 
-readonly abstract class StringValueObject implements ValueObject
+readonly abstract class StringValueObject implements ValueObject, \Stringable
 {
     /**
      * @param string $value
@@ -26,8 +26,6 @@ readonly abstract class StringValueObject implements ValueObject
     }
 
     /**
-     * @param string $value
-     *
      * @return static
      */
     public static function of(string $value): static

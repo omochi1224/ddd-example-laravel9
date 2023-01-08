@@ -18,9 +18,6 @@ readonly final class UseCaseResult
 {
     /**
      * UseCaseResult constructor.
-     *
-     * @param AdapterOutput|null $resultValue
-     * @param ErrorCode|null     $errorCode
      */
     public function __construct(
         private ?AdapterOutput $resultValue = null,
@@ -30,19 +27,12 @@ readonly final class UseCaseResult
 
     /**
      * @param mixed $adapterOutput
-     *
-     * @return static
      */
     public static function success(AdapterOutput $adapterOutput): self
     {
         return new UseCaseResult($adapterOutput);
     }
 
-    /**
-     * @param DomainException|ErrorCode $useCaseError
-     *
-     * @return static
-     */
     public static function fail(DomainException|ErrorCode $useCaseError): self
     {
         if (! ($useCaseError instanceof ErrorCode)) {
@@ -51,25 +41,17 @@ readonly final class UseCaseResult
         return new UseCaseResult(errorCode: $useCaseError);
     }
 
-    /**
-     * @return AdapterOutput
-     */
     public function getResultValue(): AdapterOutput
     {
         return $this->resultValue;
     }
 
-    /**
-     * @return bool
-     */
     public function isError(): bool
     {
         return ! is_null($this->errorCode);
     }
 
     /**
-     * @return string|null
-     *
      * @throws Exception
      */
     public function getErrorMessage(): ?string
@@ -77,9 +59,6 @@ readonly final class UseCaseResult
         return $this->errorCode?->getMessage();
     }
 
-    /**
-     * @return int|null
-     */
     public function getHttpStatus(): ?int
     {
         if ($this->getException() === null) {

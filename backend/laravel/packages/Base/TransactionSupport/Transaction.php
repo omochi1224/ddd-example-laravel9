@@ -14,24 +14,13 @@ use Base\UseCaseSupport\UseCaseResult;
 interface Transaction
 {
     /**
-     * @param callable $transactionScope
-     *
      * @return object|null
      */
     public function scope(callable $transactionScope): ?UseCaseResult;
 
-    /**
-     * @return void
-     */
     public function begin(): void;
 
-    /**
-     * @return void
-     */
     public function commit(): void;
 
-    /**
-     * @return void
-     */
     public function rollback(): void;
 }

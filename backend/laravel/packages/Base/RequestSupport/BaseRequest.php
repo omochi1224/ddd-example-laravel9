@@ -11,13 +11,7 @@ abstract class BaseRequest extends FormRequest
 {
     use ApiFormRequestTrait;
 
-    /**
-     * @return bool
-     */
     abstract public function authorize(): bool;
 
-    /**
-     * @return array
-     */
     abstract public function rules(): array;
 }

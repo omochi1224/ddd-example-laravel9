@@ -40,9 +40,7 @@ trait UUIDValueObject
     }
 
     /**
-     * @param string $value
      *
-     * @return static
      *
      * @throws InvalidUuidException
      */
@@ -51,19 +49,11 @@ trait UUIDValueObject
         return new static($value);
     }
 
-    /**
-     * @param ValueObject $valueObject
-     *
-     * @return bool
-     */
     final public function equals(ValueObject $valueObject): bool
     {
         return $valueObject->value() === $this->value();
     }
 
-    /**
-     * @return string
-     */
     final public function value(): string
     {
         return $this->value;

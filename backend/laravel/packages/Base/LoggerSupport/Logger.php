@@ -14,10 +14,8 @@ interface Logger
     /**
      * System is unusable.
      *
-     * @param string  $message
      * @param array<mixed> $context
      *
-     * @return void
      */
     public function emergency(string $message, array $context = []): void;
 
@@ -29,8 +27,6 @@ interface Logger
      *
      * @param string  $message
      * @param array<mixed> $context
-     *
-     * @return void
      */
     public function alert(string $message, array $context = []): void;
 
@@ -41,8 +37,6 @@ interface Logger
      *
      * @param string  $message
      * @param array<mixed> $context
-     *
-     * @return void
      */
     public function critical(string $message, array $context = []): void;
 
@@ -50,10 +44,8 @@ interface Logger
      * Runtime errors that do not require immediate action but should typically
      * be logged and monitored.
      *
-     * @param string  $message
      * @param array<mixed> $context
      *
-     * @return void
      */
     public function error(string $message, array $context = []): void;
 
@@ -65,18 +57,14 @@ interface Logger
      *
      * @param string  $message
      * @param array<mixed> $context
-     *
-     * @return void
      */
     public function warning(string $message, array $context = []): void;
 
     /**
      * Normal but significant events.
      *
-     * @param string  $message
      * @param array<mixed> $context
      *
-     * @return void
      */
     public function notice(string $message, array $context = []): void;
 
@@ -87,18 +75,14 @@ interface Logger
      *
      * @param string  $message
      * @param array<mixed> $context
-     *
-     * @return void
      */
     public function info(string $message, array $context = []): void;
 
     /**
      * Detailed debug information.
      *
-     * @param string  $message
      * @param array<mixed> $context
      *
-     * @return void
      */
     public function debug(string $message, array $context = []): void;
 }

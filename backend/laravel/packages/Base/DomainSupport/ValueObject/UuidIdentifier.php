@@ -21,7 +21,7 @@ readonly abstract class UuidIdentifier implements ValueObject
     /**
      * @var string
      */
-    private string $pattern;
+    private string $pattern = '/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i';
 
     /**
      * @var string
@@ -33,8 +33,6 @@ readonly abstract class UuidIdentifier implements ValueObject
      */
     final public function __construct(string $value)
     {
-        $this->pattern = '/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i';
-
         if (preg_match($this->pattern, $value) !== 1) {
             throw new InvalidUuidException();
         }
@@ -43,9 +41,7 @@ readonly abstract class UuidIdentifier implements ValueObject
     }
 
     /**
-     * @param string $value
      *
-     * @return static
      *
      * @throws InvalidUuidException
      */
@@ -54,19 +50,11 @@ readonly abstract class UuidIdentifier implements ValueObject
         return new static($value);
     }
 
-    /**
-     * @param ValueObject $valueObject
-     *
-     * @return bool
-     */
     final public function equals(ValueObject $valueObject): bool
     {
         return $valueObject->value() === $this->value();
     }
 
-    /**
-     * @return string
-     */
     final public function value(): string
     {
         return $this->value;
@@ -75,7 +63,6 @@ readonly abstract class UuidIdentifier implements ValueObject
     /**
      * UUID 生成
      *
-     * @return UuidIdentifier
      *
      * @throws InvalidUuidException
      * @throws Exception

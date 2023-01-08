@@ -10,12 +10,11 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 trait ApiFormRequestTrait
 {
     /**
-     * @param Validator $validator
-     *
      * @return void
      */
     protected function failedValidation(Validator $validator)
     {
+        $response = [];
         $response['errors'] = [];
 
         $messages = $validator->errors()->toArray();

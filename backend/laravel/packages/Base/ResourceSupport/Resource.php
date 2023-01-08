@@ -20,10 +20,8 @@ readonly abstract class Resource implements JsonSerializable
     protected mixed $data;
 
     /**
-     * @param UseCaseResult $useCaseResult
      *
      * @return Resource
-     *
      * @throws ToFrameworkException
      */
     public function __invoke(UseCaseResult $useCaseResult): static
@@ -38,8 +36,5 @@ readonly abstract class Resource implements JsonSerializable
         return $this;
     }
 
-    /**
-     * @return array
-     */
     abstract public function jsonSerialize(): array;
 }

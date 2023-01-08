@@ -12,14 +12,13 @@ class DomainException extends \Exception
     /**
      * AttributeからHttpStatusを取得する
      *
-     * @param string $attributeKey
      *
      * @return mixed
      */
     final public function getHttpStatus(string $attributeKey = 'MESSAGE'): HttpStatusCode
     {
         $attributeClass = HttpStatusCode::class;
-        $constantReflection = new ReflectionClassConstant($this::class, $attributeKey);
+        $constantReflection = new ReflectionClassConstant(static::class, $attributeKey);
         $attribute = $constantReflection->getAttributes($attributeClass)[0];
         return $attribute->newInstance();
     }
