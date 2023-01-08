@@ -14,7 +14,7 @@ interface ValueObject
      *
      * @return bool
      */
-    public function equals(ValueObject $valueObject): bool;
+    public function equals(self $valueObject): bool;
 
     /**
      * @return mixed

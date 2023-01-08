@@ -24,11 +24,14 @@
         "nunomaduro/collision": "^6.1",
         "nunomaduro/larastan": "^2.0",
         "nunomaduro/phpinsights": "^2.6",
+        "phpmd/phpmd": "@stable",
         "phpstan/phpstan-strict-rules": "^1.1",
         "phpunit/phpunit": "^9.5.10",
         "qossmic/deptrac-shim": "^1.0.2",
+        "rector/rector": "^0.15.2",
         "spatie/laravel-ignition": "^1.0",
-        "squizlabs/php_codesniffer": "3.7.1"
+        "squizlabs/php_codesniffer": "3.7.1",
+        "vimeo/psalm": "^5.4"
     },
     "autoload": {
         "psr-4": {
@@ -36,7 +39,7 @@
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/",
             "Base\\": "packages/Base",
-            "Sample\\": "packages/Sample"
+            "Todo\\": "packages/Todo"
         }
     },
     "autoload-dev": {
@@ -80,23 +83,26 @@
             "@php artisan scribe:generate"
         ],
         "insights": [
-            "@php artisan insights packages/Sample -v"
+            "@php artisan insights packages/Todo -v"
         ],
         "insights-fix": [
-            "@php artisan insights packages/Sample --fix"
+            "@php artisan insights packages/Todo --fix"
         ],
         "insights-github": [
-            "@php artisan insights packages/Sample -n --ansi --format=github-action"
+            "@php artisan insights packages/Todo -n --ansi --format=github-action"
         ],
         "deptrac": [
             "@php vendor/bin/deptrac analyse"
         ],
+        "rector-fix": [
+            "./vendor/bin/rector process packages/Todo/"
+        ],
         "all" : [
-            "./vendor/bin/phpcbf --standard=phpcs.xml ./packages/Sample",
-            "./vendor/bin/phpcs --standard=phpcs.xml ./packages/Sample",
+            "./vendor/bin/phpcbf --standard=phpcs.xml ./packages/Todo",
+            "./vendor/bin/phpcs --standard=phpcs.xml ./packages/Todo",
             "./vendor/bin/phpstan analyse -c phpstan.neon",
-            "@php artisan insights packages/Sample --fix",
-            "@php artisan insights packages/Sample",
+            "@php artisan insights packages/Todo --fix",
+            "@php artisan insights packages/Todo",
             "@php vendor/bin/deptrac analyse",
             "./vendor/bin/phpunit"
         ],

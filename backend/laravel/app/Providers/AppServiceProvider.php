@@ -2,12 +2,9 @@
 
 namespace App\Providers;
 
-use App\Providers\ServiceProvider\LocalServiceProvider;
-use App\Providers\ServiceProvider\ProductionServiceProvider;
-use App\Providers\ServiceProvider\Provider;
-use App\Providers\ServiceProvider\TestServiceProvider;
+use Base\LaravelProviderSupport\Provider;
 use Illuminate\Support\ServiceProvider;
-use OutOfBoundsException;
+use Todo\Infrastructure\Provider\TodoProvider as TodoProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -18,8 +15,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $provider = $this->provider();
-        $provider->register();
+        array_map(fn(Provider $provider) => $provider->provider()->register(), $this->provider());
     }
 
     /**
@@ -29,19 +25,17 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        array_map(fn(Provider $provider) => $provider->provider()->boot(), $this->provider());
     }
 
     /**
-     * @return \App\Providers\ServiceProvider\Provider
+     * @return Provider[]
      */
-    private function provider(): Provider
+    private function provider(): array
     {
         $env = config('app.env');
-        return match ($env) {
-            'testing' => new TestServiceProvider($this->app),
-            'local' => new LocalServiceProvider($this->app),
-            'staging', 'production' => new ProductionServiceProvider($this->app),
-            default => throw new OutOfBoundsException(),
-        };
+        return [
+            new TodoProvider($this->app, $env),
+        ];
     }
 }

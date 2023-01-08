@@ -36,11 +36,11 @@ readonly abstract class StringValueObject implements ValueObject
     }
 
     /**
-     * @param ValueObject $valueObject
+     * @param StringValueObject|ValueObject $valueObject
      *
      * @return bool
      */
-    public function equals(ValueObject $valueObject): bool
+    public function equals(StringValueObject|ValueObject $valueObject): bool
     {
         return $valueObject->value() === $this->value();
     }
