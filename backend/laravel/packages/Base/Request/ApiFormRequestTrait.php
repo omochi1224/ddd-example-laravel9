@@ -10,7 +10,7 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 trait ApiFormRequestTrait
 {
     /**
-     * @return void
+     * @return never
      */
     protected function failedValidation(Validator $validator)
     {

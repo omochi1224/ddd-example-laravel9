@@ -29,7 +29,7 @@ use Todo\Domain\Models\User\ValueObject\UserStatus;
 final class UserTest extends TestCase
 {
 
-    public function test_SNS認証からの仮登録()
+    public function test_SNS認証からの仮登録(): void
     {
         $email = UserEmail::of('example@example.com');
         $pass = SocialLoginNoPassword::of();
@@ -40,7 +40,7 @@ final class UserTest extends TestCase
     }
 
 
-    public function test_仮登録()
+    public function test_仮登録(): void
     {
         $hashService = new ConcreteHash();
         $email = UserEmail::of('example@example.com');
@@ -51,7 +51,7 @@ final class UserTest extends TestCase
         self::assertFalse($pass->value() === $user->userPassword->value());
     }
 
-    public function test_仮登録から本登録へ変更()
+    public function test_仮登録から本登録へ変更(): void
     {
         $hashService = new ConcreteHash();
         $email = UserEmail::of('example@example.com');
@@ -80,7 +80,7 @@ final class UserTest extends TestCase
         self::assertEquals(UserStatus::Definitive->value(), $user->userStatus->value());
     }
 
-    public function test_本登録状態から本登録に変更すると例外が発生()
+    public function test_本登録状態から本登録に変更すると例外が発生(): void
     {
         $hashService = new ConcreteHash();
         $email = UserEmail::of('example@example.com');
@@ -133,7 +133,7 @@ final class UserTest extends TestCase
         $this->fail('メールアドレスの設定がおかしくなっています。');
     }
 
-    public function test_パスワードの変更をハッシュ化されていない場合ハッシュ化して変更する()
+    public function test_パスワードの変更をハッシュ化されていない場合ハッシュ化して変更する(): void
     {
         $noHashPass = UserRawPassword::of('AAccddssAA1234!3%ja');
 
@@ -150,7 +150,7 @@ final class UserTest extends TestCase
     }
 
 
-    public function test_パスワードの変更がハッシュ化されたパスワードで変更できる()
+    public function test_パスワードの変更がハッシュ化されたパスワードで変更できる(): void
     {
         $hashService = new ConcreteHash();
         $email = UserEmail::of('example@example.com');
@@ -166,7 +166,7 @@ final class UserTest extends TestCase
         self::assertSame($hashPass->value(), $user->userPassword->value());
     }
 
-    public function test_永続化からの復帰()
+    public function test_永続化からの復帰(): void
     {
         $user = User::restoreFromDB(
             UserId::generate(),
@@ -199,7 +199,7 @@ final class UserTest extends TestCase
         self::assertInstanceOf(Profile::class, $user->profile);
     }
 
-    public function test_ユーザ同士で同じIDの比較()
+    public function test_ユーザ同士で同じIDの比較(): void
     {
         $user = User::restoreFromDB(
             UserId::generate(),
@@ -212,7 +212,7 @@ final class UserTest extends TestCase
         self::assertTrue($user->equals($user));
     }
 
-    public function test_別のユーザの比較()
+    public function test_別のユーザの比較(): void
     {
         $user = User::restoreFromDB(
             UserId::generate(),
@@ -234,7 +234,7 @@ final class UserTest extends TestCase
         self::assertFalse($user->equals($diffUser));
     }
 
-    public function test_二重でパスワードをハッシュ化しようとすると例外出ることを確認()
+    public function test_二重でパスワードをハッシュ化しようとすると例外出ることを確認(): void
     {
         $user = User::restoreFromDB(
             UserId::generate(),

@@ -15,7 +15,7 @@ use Todo\Domain\Models\Profile\ValueObject\ProfileName;
 
 final class ProfileTest extends TestCase
 {
-    public function test_永続化から復帰()
+    public function test_永続化から復帰(): void
     {
         $profile = Profile::restoreFromDB(
             ProfileId::generate(),
@@ -28,7 +28,7 @@ final class ProfileTest extends TestCase
         self::assertInstanceOf(Profile::class, $profile);
     }
 
-    public function test_プロフィールの比較()
+    public function test_プロフィールの比較(): void
     {
         $profile = Profile::restoreFromDB(
             ProfileId::generate(),
@@ -41,7 +41,7 @@ final class ProfileTest extends TestCase
         self::assertTrue($profile->equals($profile));
     }
 
-    public function test_違うIDのプロフィールの比較()
+    public function test_違うIDのプロフィールの比較(): void
     {
         $profile = Profile::restoreFromDB(
             ProfileId::generate(),
@@ -64,7 +64,7 @@ final class ProfileTest extends TestCase
     }
 
 
-    public function test_誕生日変更()
+    public function test_誕生日変更(): void
     {
         $profile = Profile::restoreFromDB(
             ProfileId::generate(),

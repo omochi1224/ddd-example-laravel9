@@ -20,8 +20,6 @@ readonly abstract class Resource implements JsonSerializable
     protected mixed $data;
 
     /**
-     *
-     * @return Resource
      * @throws ToFrameworkException
      */
     public function __invoke(UseCaseResult $useCaseResult): static

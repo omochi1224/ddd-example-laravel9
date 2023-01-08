@@ -41,7 +41,7 @@ readonly final class UseCaseResult
         return new UseCaseResult(errorCode: $useCaseError);
     }
 
-    public function getResultValue(): AdapterOutput
+    public function getResultValue(): AdapterOutput|null
     {
         return $this->resultValue;
     }

@@ -13,10 +13,7 @@ use Base\UseCaseSupport\UseCaseResult;
  */
 interface Transaction
 {
-    /**
-     * @return object|null
-     */
-    public function scope(callable $transactionScope): ?UseCaseResult;
+    public function scope(callable $transactionScope): UseCaseResult|null;
 
     public function begin(): void;
 
