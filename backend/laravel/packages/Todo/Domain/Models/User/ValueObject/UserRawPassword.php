@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace Todo\Domain\Models\User\ValueObject;
 
-use Base\DomainSupport\ValueObject\StringValueObject;
 use Todo\Domain\Models\User\Exception\PasswordStrengthException;
 
-readonly final class UserRawPassword extends StringValueObject implements Password
+readonly final class UserRawPassword extends Password
 {
     /**
      * @throws PasswordStrengthException
      */
-    public function __construct(string $value)
+    private function __construct(string $value)
     {
         $uppercase = preg_match('@[A-Z]@', $value);
         $lowercase = preg_match('@[a-z]@', $value);
@@ -24,5 +23,18 @@ readonly final class UserRawPassword extends StringValueObject implements Passwo
         }
 
         parent::__construct($value);
+    }
+
+    /**
+     * @throws PasswordStrengthException
+     */
+    public static function of(string $password): UserRawPassword
+    {
+        return new UserRawPassword($password);
+    }
+
+    public function value(): string|null
+    {
+        return $this->value;
     }
 }

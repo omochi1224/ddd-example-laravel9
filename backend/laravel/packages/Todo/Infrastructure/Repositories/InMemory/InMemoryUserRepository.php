@@ -36,7 +36,7 @@ final class InMemoryUserRepository implements UserRepository
 
     public function findByEmail(UserEmail $userEmail): ?User
     {
-        $users = array_filter($this->users, fn(User $user) => $user->userEmail->equals($userEmail));
+        $users = array_filter($this->users, fn (User $user) => $user->userEmail->equals($userEmail));
 
         if (count($users) === 0) {
             return null;
@@ -46,8 +46,6 @@ final class InMemoryUserRepository implements UserRepository
     }
 
     /**
-     *
-     *
      * @throws UserNotFoundException
      */
     public function getByUserId(UserId $userId): User

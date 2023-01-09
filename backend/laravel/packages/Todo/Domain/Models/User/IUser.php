@@ -25,8 +25,6 @@ interface IUser extends Domain
 {
     /**
      * 仮登録
-     *
-     *
      */
     public static function emailAndPasswordTemporaryRegister(
         UserEmail $userEmail,
@@ -37,8 +35,6 @@ interface IUser extends Domain
     /**
      * ソーシャルログイン　仮登録
      *
-     *
-     *
      * @throws InvalidUuidException
      */
     public static function socialTemporaryRegister(
@@ -47,8 +43,6 @@ interface IUser extends Domain
 
     /**
      * 仮登録から本登録に変更
-     *
-     *
      */
     public function changeDefinitiveRegister(Profile $profile): void;
 
@@ -59,8 +53,6 @@ interface IUser extends Domain
 
     /**
      * DBからの復帰
-     *
-     *
      */
     public static function restoreFromDB(
         UserId $userId,
@@ -72,8 +64,6 @@ interface IUser extends Domain
 
     /**
      * パスワードの変更
-     *
-     *
      */
     public function changePassword(
         UserHashPassword|UserRawPassword $password,

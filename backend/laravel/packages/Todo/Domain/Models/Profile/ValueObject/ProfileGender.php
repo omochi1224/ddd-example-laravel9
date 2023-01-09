@@ -18,7 +18,7 @@ enum ProfileGender: int implements ValueObject
 
     public function equals(self|ValueObject $valueObject): bool
     {
-        return $this->value === $valueObject->value;
+        return $this->value() === $valueObject->value();
     }
 
     public function value(): int
@@ -27,8 +27,6 @@ enum ProfileGender: int implements ValueObject
     }
 
     /**
-     *
-     *
      * @throws ProfileGenderException
      */
     public static function of(int $genderValue): ProfileGender

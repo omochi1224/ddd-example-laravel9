@@ -27,7 +27,7 @@ final readonly class ProfileName implements ValueObject
 
     public function equals(self|ValueObject $valueObject): bool
     {
-        if (!($valueObject instanceof ProfileName)){
+        if (! ($valueObject instanceof ProfileName)) {
             throw new \TypeError();
         }
 

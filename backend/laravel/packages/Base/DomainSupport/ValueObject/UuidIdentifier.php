@@ -13,15 +13,7 @@ use Exception;
 
 readonly abstract class UuidIdentifier implements ValueObject
 {
-    /**
-     * UUIDフォーマット
-     */
-    private const PATTERN = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';
-
-    /**
-     * @var string
-     */
-    private string $pattern = '/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i';
+    private const PATTERN = '/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i';
 
     /**
      * @var string
@@ -33,7 +25,7 @@ readonly abstract class UuidIdentifier implements ValueObject
      */
     final public function __construct(string $value)
     {
-        if (preg_match($this->pattern, $value) !== 1) {
+        if (preg_match(self::PATTERN, $value) !== 1) {
             throw new InvalidUuidException();
         }
 
@@ -41,8 +33,6 @@ readonly abstract class UuidIdentifier implements ValueObject
     }
 
     /**
-     *
-     *
      * @throws InvalidUuidException
      */
     final public static function of(string $value): static
@@ -69,16 +59,14 @@ readonly abstract class UuidIdentifier implements ValueObject
      */
     final public static function generate(): static
     {
-        $chars = str_split(self::PATTERN);
+        $uuid = preg_replace_callback(
+            '/x|y/',
+            function($m) {
+                return dechex($m[0] === 'x' ? random_int(0, 15) : random_int(8, 11));
+            },
+            'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
+        );
 
-        foreach ($chars as $i => $char) {
-            if ($char === 'x') {
-                $chars[$i] = dechex(random_int(0, 15));
-            } elseif ($char === 'y') {
-                $chars[$i] = dechex(random_int(8, 11));
-            }
-        }
-
-        return new static(implode('', $chars));
+        return new static($uuid);
     }
 }

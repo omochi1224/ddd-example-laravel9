@@ -145,6 +145,7 @@ final class User implements IUser
 
     /**
      * @throws PasswordEncryptionException
+     * @throws UserPasswordChangeException
      */
     private function changeHashPassword(HashService $hashService): void
     {
@@ -153,6 +154,14 @@ final class User implements IUser
         }
 
         $password = $this->userPassword->value();
-        $this->userPassword = $hashService->hashing(UserRawPassword::of($password));
+        if ($password === null) {
+            throw new UserPasswordChangeException(UserPasswordChangeException::MESSAGE);
+        }
+
+        try {
+            $this->userPassword = $hashService->hashing(UserRawPassword::of($password));
+        } catch (Exception\PasswordStrengthException $e) {
+            throw new UserPasswordChangeException($e->getMessage());
+        }
     }
 }

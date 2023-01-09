@@ -19,9 +19,6 @@ abstract readonly class NullValueObject implements ValueObject
         return $this->value() === $valueObject->value();
     }
 
-    /**
-     * @return mixed
-     */
     public function value(): null
     {
         return null;

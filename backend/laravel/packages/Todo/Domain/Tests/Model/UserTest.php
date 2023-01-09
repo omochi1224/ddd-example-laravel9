@@ -6,7 +6,6 @@ namespace Todo\Domain\Tests\Model;
 
 
 use Base\DomainSupport\Exception\InvalidEmailAddressException;
-use Base\DomainSupport\ValueObject\StringValueObject;
 use PHPUnit\Framework\TestCase;
 use Todo\Domain\Models\Profile\Profile;
 use Todo\Domain\Models\Profile\ValueObject\ProfileBirthDay;
@@ -19,6 +18,7 @@ use Todo\Domain\Models\User\Exception\PasswordStrengthException;
 use Todo\Domain\Models\User\Exception\UserAlreadyDefinitiveException;
 use Todo\Domain\Models\User\HashService;
 use Todo\Domain\Models\User\User;
+use Todo\Domain\Models\User\ValueObject\Password;
 use Todo\Domain\Models\User\ValueObject\SocialLoginNoPassword;
 use Todo\Domain\Models\User\ValueObject\UserEmail;
 use Todo\Domain\Models\User\ValueObject\UserHashPassword;
@@ -257,8 +257,8 @@ final class UserTest extends TestCase
 class ConcreteHash implements HashService
 {
 
-    public function hashing(StringValueObject $raw): UserHashPassword
+    public function hashing(Password $raw):UserHashPassword
     {
-        return UserHashPassword::of(hash('sha256', $raw->value()));
+        return UserHashPassword::of(hash('sha256', (string) $raw->value()));
     }
 }

@@ -8,5 +8,4 @@ use Base\RoleObjectSupport\RoleObject;
 
 final class Assignee implements RoleObject
 {
-
 }

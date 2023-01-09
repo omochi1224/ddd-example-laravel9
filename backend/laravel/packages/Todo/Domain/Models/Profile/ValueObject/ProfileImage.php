@@ -32,12 +32,15 @@ final readonly class ProfileImage extends StringValueObject
         if (! filter_var($value, FILTER_VALIDATE_URL)) {
             throw new ProfileInvalidImageUrlException(ProfileInvalidImageUrlException::MESSAGE);
         }
+        if ($value === null) {
+            $value = self::EMPTY_IMAGE_URL;
+        }
         parent::__construct($value);
     }
 
     /**
-     *
      * @return $this
+     *
      * @throws ProfileInvalidImageUrlException
      */
     public static function of(string $value = self::EMPTY_IMAGE_URL): static

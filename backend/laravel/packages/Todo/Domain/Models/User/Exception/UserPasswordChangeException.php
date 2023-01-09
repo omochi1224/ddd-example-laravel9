@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Todo\Domain\Models\User\Exception;
 
-
 use Base\AttributeSupport\HttpStatusCode;
 use Base\ExceptionSupport\DomainException;
 

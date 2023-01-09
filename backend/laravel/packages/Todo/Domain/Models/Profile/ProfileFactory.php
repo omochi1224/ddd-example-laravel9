@@ -6,7 +6,6 @@ namespace Todo\Domain\Models\Profile;
 
 use Base\DomainSupport\Exception\InvalidUuidException;
 use Base\FactorySupport\Factory;
-use Todo\Application\UseCases\User\Adapter\DefinitiveRegisterUserInput;
 use Todo\Domain\Models\Profile\Exception\ProfileGenderException;
 use Todo\Domain\Models\Profile\Exception\ProfileInvalidImageUrlException;
 use Todo\Domain\Models\Profile\ValueObject\ProfileBirthDay;
@@ -18,15 +17,12 @@ use Todo\Domain\Models\Profile\ValueObject\ProfileName;
 final readonly class ProfileFactory implements Factory
 {
     /**
-     * @param DefinitiveRegisterUserInput $input
-     *
-     *
      * @throws InvalidUuidException
      * @throws ProfileGenderException
      * @throws ProfileInvalidImageUrlException
      */
     public static function definitive(
-        DefinitiveRegisterUserInput $input
+        object $input
     ): IProfile {
         return Profile::definitive(
             ProfileName::of(
@@ -41,8 +37,6 @@ final readonly class ProfileFactory implements Factory
 
     /**
      * 永続化からの復帰
-     *
-     *
      *
      * @throws InvalidUuidException
      * @throws ProfileInvalidImageUrlException|ProfileGenderException

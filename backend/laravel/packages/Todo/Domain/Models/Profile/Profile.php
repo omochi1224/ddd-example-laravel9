@@ -36,8 +36,6 @@ final class Profile implements IProfile
     /**
      * 本登録用のプロフィール作成
      *
-     *
-     *
      * @throws InvalidUuidException
      */
     public static function definitive(

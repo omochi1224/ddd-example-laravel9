@@ -27,7 +27,7 @@ enum UserStatus: int implements ValueObject
 
     public function equals(self|ValueObject $valueObject): bool
     {
-        return $this->value === $valueObject->value;
+        return $this->value() === $valueObject->value();
     }
 
     public function value(): int
@@ -48,8 +48,6 @@ enum UserStatus: int implements ValueObject
     }
 
     /**
-     *
-     *
      * @throws \Exception
      */
     public static function of(string $value): UserStatus

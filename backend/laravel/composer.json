@@ -70,7 +70,7 @@
         "sniffer": [
             "./vendor/bin/phpcs -s --standard=phpcs.xml ./packages/"
         ],
-        "sniffer-rewrite": [
+        "sniffer-fix": [
             "./vendor/bin/phpcbf --standard=phpcs.xml ./packages/"
         ],
         "sniffer-report-csv": [
@@ -97,12 +97,24 @@
         "rector-fix": [
             "./vendor/bin/rector process packages/Todo/"
         ],
+        "psalm": [
+            "./vendor/bin/psalm --show-info=true"
+        ],
+        "psalm-fix": [
+            "./vendor/bin/psalm --alter --issues=InvalidReturnType,MismatchingDocblockReturnType,InvalidNullableReturnType,MissingReturnType"
+        ],
+        "all-fix": [
+            "@composer insights-fix",
+            "@composer psalm-fix",
+            "@composer sniffer-fix",
+            "@composer rector-fix"
+        ],
+        "all-check": [
+        ],
         "all" : [
-            "./vendor/bin/phpcbf --standard=phpcs.xml ./packages/Todo",
             "./vendor/bin/phpcs --standard=phpcs.xml ./packages/Todo",
             "./vendor/bin/phpstan analyse -c phpstan.neon",
-            "@php artisan insights packages/Todo --fix",
-            "@php artisan insights packages/Todo",
+            "@composer psalm",
             "@php vendor/bin/deptrac analyse",
             "./vendor/bin/phpunit"
         ],

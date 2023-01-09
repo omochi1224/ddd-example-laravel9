@@ -4,11 +4,18 @@ declare(strict_types=1);
 
 namespace Todo\Domain\Models\User\ValueObject;
 
-use Base\DomainSupport\ValueObject\NullValueObject;
-
 /**
  *
  */
-final readonly class SocialLoginNoPassword extends NullValueObject implements Password
+final readonly class SocialLoginNoPassword extends Password
 {
+    public static function of(): SocialLoginNoPassword
+    {
+        return new SocialLoginNoPassword(null);
+    }
+
+    public function value(): string|null
+    {
+        return $this->value;
+    }
 }

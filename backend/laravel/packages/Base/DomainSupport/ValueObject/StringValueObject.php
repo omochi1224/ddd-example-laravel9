@@ -8,9 +8,9 @@ namespace Base\DomainSupport\ValueObject;
  * 文字列根底抽象クラス
  */
 
-readonly abstract class StringValueObject implements ValueObject, \Stringable
+abstract readonly class StringValueObject implements ValueObject, \Stringable
 {
-    public function __construct(protected string $value)
+    protected function __construct(protected string $value)
     {
     }
 
