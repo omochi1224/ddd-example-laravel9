@@ -30,7 +30,7 @@ interface IUser extends Domain
         UserEmail $userEmail,
         UserRawPassword $userPassword,
         HashService $hashService,
-    ): User;
+    ): IUser;
 
     /**
      * ソーシャルログイン　仮登録
@@ -39,12 +39,17 @@ interface IUser extends Domain
      */
     public static function socialTemporaryRegister(
         UserEmail $userEmail,
-    ): User;
+    ): IUser;
 
     /**
      * 仮登録から本登録に変更
      */
     public function changeDefinitiveRegister(Profile $profile): void;
+
+    /**
+     * 未登録ユーザ　
+     */
+    public static function anonymous(): IUser;
 
     /**
      * 退会
@@ -60,7 +65,7 @@ interface IUser extends Domain
         UserHashPassword $userHashPassword,
         UserStatus $userStatus,
         ?IProfile $profile,
-    ): User;
+    ): IUser;
 
     /**
      * パスワードの変更

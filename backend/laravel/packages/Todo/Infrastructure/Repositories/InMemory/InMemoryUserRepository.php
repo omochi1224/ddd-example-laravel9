@@ -12,10 +12,9 @@ use Todo\Domain\Models\User\ValueObject\UserId;
 
 final class InMemoryUserRepository implements UserRepository
 {
-    /**
-     * @var array<User>
-     */
-    private array $users = [];
+    public function __construct(private array $users)
+    {
+    }
 
     public function create(User $user): void
     {

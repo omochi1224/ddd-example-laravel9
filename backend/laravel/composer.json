@@ -16,6 +16,7 @@
         "vyuldashev/laravel-openapi": "^1.8"
     },
     "require-dev": {
+        "brianium/paratest": "^6.8",
         "fakerphp/faker": "^1.9.1",
         "jetbrains/phpstorm-attributes": "^1.0",
         "knuckleswtf/scribe": "^4.10",
@@ -64,7 +65,7 @@
         "test": [
             "@php artisan test"
         ],
-        "test:coverage": [
+        "test-coverage": [
             "phpunit --coverage-html coverage"
         ],
         "sniffer": [
@@ -104,7 +105,6 @@
             "./vendor/bin/psalm --alter --issues=InvalidReturnType,MismatchingDocblockReturnType,InvalidNullableReturnType,MissingReturnType"
         ],
         "all-fix": [
-            "@composer insights-fix",
             "@composer psalm-fix",
             "@composer sniffer-fix",
             "@composer rector-fix"

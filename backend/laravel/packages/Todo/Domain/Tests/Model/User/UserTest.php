@@ -14,6 +14,7 @@ use Todo\Domain\Models\Profile\ValueObject\ProfileId;
 use Todo\Domain\Models\Profile\ValueObject\ProfileImage;
 use Todo\Domain\Models\Profile\ValueObject\ProfileName;
 use Todo\Domain\Models\User\Exception\PasswordEncryptionException;
+use Todo\Domain\Models\User\Exception\PasswordNotChangeException;
 use Todo\Domain\Models\User\Exception\PasswordStrengthException;
 use Todo\Domain\Models\User\Exception\UserAlreadyDefinitiveException;
 use Todo\Domain\Models\User\HashService;
@@ -25,6 +26,8 @@ use Todo\Domain\Models\User\ValueObject\UserHashPassword;
 use Todo\Domain\Models\User\ValueObject\UserId;
 use Todo\Domain\Models\User\ValueObject\UserRawPassword;
 use Todo\Domain\Models\User\ValueObject\UserStatus;
+
+use function PHPUnit\Framework\assertSame;
 
 final class UserTest extends TestCase
 {
@@ -39,6 +42,38 @@ final class UserTest extends TestCase
         self::assertTrue($pass->value() === $user->userPassword->value());
     }
 
+    public function test_SNS認証の場合パスワードが変更できない(): void
+    {
+        $hashService = new ConcreteHash();
+        $email = UserEmail::of('example@example.com');
+        $pass = UserRawPassword::of('AAccddssAA1234!3%ja');
+        $user = User::socialTemporaryRegister($email);
+
+        self::assertSame($email->value(), $user->userEmail->value());
+        self::assertFalse($pass->value() === $user->userPassword->value());
+        self::assertEquals(UserStatus::Temporary->value(), $user->userStatus->value());
+
+        $name = ProfileName::of('田中', '太郎　');
+        $birthDay = ProfileBirthday::of(new \DateTime());
+        $gender = ProfileGender::Man;
+        $image = ProfileImage::of('https://example.com/test.jpg');
+
+        $profile = Profile::definitive(
+            $name,
+            $birthDay,
+            $gender,
+            $image,
+        );
+
+        //本登録へ切り替える
+        $user->changeDefinitiveRegister($profile);
+
+
+        $this->expectException(PasswordNotChangeException::class);
+        $this->expectExceptionMessage(PasswordNotChangeException::MESSAGE);
+        $user->changePassword(UserRawPassword::of('ExamplePassword1234!@#$'), $hashService);
+    }
+
 
     public function test_仮登録(): void
     {
@@ -49,6 +84,13 @@ final class UserTest extends TestCase
 
         self::assertSame($email->value(), $user->userEmail->value());
         self::assertFalse($pass->value() === $user->userPassword->value());
+    }
+
+    public function test_匿名ユーザの生成(): void
+    {
+        $user = User::anonymous();
+
+        assertSame(UserStatus::Anonymous, $user->userStatus);
     }
 
     public function test_仮登録から本登録へ変更(): void
@@ -104,6 +146,7 @@ final class UserTest extends TestCase
             $image,
         );
 
+        //本登録へ切り替える
         $user->changeDefinitiveRegister($profile);
 
         self::assertEquals(UserStatus::Definitive->value(), $user->userStatus->value());
@@ -251,6 +294,74 @@ final class UserTest extends TestCase
         $method = $reflection->getMethod('changeHashPassword');
         $method->setAccessible(true);
         $result = $method->invoke($user, new ConcreteHash());
+    }
+
+    public function test_SNS認証の状態でパスワードをハッシュ化しようとすると例外が発生(): void
+    {
+        $email = UserEmail::of('example@example.com');
+        $pass = SocialLoginNoPassword::of();
+        $user = User::socialTemporaryRegister($email);
+
+        $this->expectException(PasswordNotChangeException::class);
+        $this->expectExceptionMessage(PasswordNotChangeException::MESSAGE);
+
+        $reflection = new \ReflectionClass($user);
+        $method = $reflection->getMethod('changeHashPassword');
+        $method->setAccessible(true);
+        $result = $method->invoke($user, new ConcreteHash());
+    }
+
+    public function test_退会処理(): void
+    {
+        $email = UserEmail::of('example@example.com');
+        $pass = SocialLoginNoPassword::of();
+        $user = User::socialTemporaryRegister($email);
+
+        self::assertSame($email->value(), $user->userEmail->value());
+        self::assertTrue($pass->value() === $user->userPassword->value());
+
+        $user->unsubscribe();
+
+        self::assertSame(UserStatus::Unsubscribe, $user->userStatus);
+    }
+
+    public function test_ステータス比較(): void
+    {
+        self::assertTrue(UserStatus::Unsubscribe->equals(UserStatus::Unsubscribe));
+        self::assertTrue(UserStatus::Temporary->equals(UserStatus::Temporary));
+        self::assertTrue(UserStatus::Ban->equals(UserStatus::Ban));
+        self::assertTrue(UserStatus::Definitive->equals(UserStatus::Definitive));
+    }
+
+    public function test_ステータスの詳細情報取得(): void
+    {
+        $r = new \ReflectionEnum(UserStatus::class);
+        foreach ($r->getCases() as $case){
+            /** @var UserStatus $enum */
+            $enum = $case->getValue();
+            assertSame($enum->description(), UserStatus::of($case->getValue()->name)->description());
+        }
+    }
+
+    public function test_パスワード比較(): void
+    {
+        $password = UserRawPassword::of('Example1234!@#');
+        self::assertTrue(UserRawPassword::of('Example1234!@#')->equals($password));
+    }
+
+
+    public function test_ステータス変更(): void
+    {
+        $email = UserEmail::of('example@example.com');
+        $pass = SocialLoginNoPassword::of();
+        $user = User::socialTemporaryRegister($email);
+
+        self::assertSame($email->value(), $user->userEmail->value());
+        self::assertTrue($pass->value() === $user->userPassword->value());
+
+        $user->changeStatus(UserStatus::Ban);
+
+        assertSame(UserStatus::Ban, $user->userStatus);
     }
 }
 

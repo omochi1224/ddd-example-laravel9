@@ -19,6 +19,9 @@ enum UserStatus: int implements ValueObject
     #[Text('本登録')]
     case Definitive = 100;
 
+    #[Text('匿名')]
+    case Anonymous = 200;
+
     #[Text('禁止')]
     case Ban = 400;
 
@@ -55,6 +58,7 @@ enum UserStatus: int implements ValueObject
         return match ($value) {
             'Temporary' => UserStatus::Temporary,
             'Definitive' => UserStatus::Definitive,
+            'Anonymous' => UserStatus::Anonymous,
             'Unsubscribe' => UserStatus::Unsubscribe,
             'Ban' => UserStatus::Ban,
             default => throw new \Exception('Unexpected match value')

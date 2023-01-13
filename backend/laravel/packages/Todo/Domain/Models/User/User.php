@@ -10,6 +10,8 @@ use Base\DomainSupport\Exception\InvalidUuidException;
 use Todo\Domain\Models\Profile\IProfile;
 use Todo\Domain\Models\Profile\Profile;
 use Todo\Domain\Models\User\Exception\PasswordEncryptionException;
+use Todo\Domain\Models\User\Exception\PasswordNotChangeException;
+use Todo\Domain\Models\User\Exception\PasswordStrengthException;
 use Todo\Domain\Models\User\Exception\UserAlreadyDefinitiveException;
 use Todo\Domain\Models\User\Exception\UserPasswordChangeException;
 use Todo\Domain\Models\User\ValueObject\Password;
@@ -47,7 +49,7 @@ final class User implements IUser
      */
     public static function socialTemporaryRegister(
         UserEmail $userEmail,
-    ): User {
+    ): IUser {
         return new User(
             UserId::generate(),
             $userEmail,
@@ -58,16 +60,18 @@ final class User implements IUser
     }
 
     /**
-     *  仮登録
+     *  メールアドレス、パスワード仮登録
      *
      * @throws InvalidUuidException
      * @throws PasswordEncryptionException
+     * @throws PasswordNotChangeException
+     * @throws UserPasswordChangeException
      */
     public static function emailAndPasswordTemporaryRegister(
         UserEmail $userEmail,
         UserRawPassword $userPassword,
         HashService $hashService,
-    ): User {
+    ): IUser {
         $user = new User(
             UserId::generate(),
             $userEmail,
@@ -81,13 +85,17 @@ final class User implements IUser
         return $user;
     }
 
+
+    /**
+     * 永続化から復帰
+     */
     public static function restoreFromDB(
         UserId $userId,
         UserEmail $userEmail,
         UserHashPassword $userHashPassword,
         UserStatus $userStatus,
         ?IProfile $profile,
-    ): User {
+    ): IUser {
         return new User(
             $userId,
             $userEmail,
@@ -97,6 +105,9 @@ final class User implements IUser
         );
     }
 
+    /**
+     * 退会
+     */
     public function unsubscribe(): void
     {
         $this->userStatus = UserStatus::Unsubscribe;
@@ -109,9 +120,14 @@ final class User implements IUser
 
     /**
      * @throws UserPasswordChangeException
+     * @throws PasswordNotChangeException
      */
     public function changePassword(Password $password, ?HashService $hashService = null): void
     {
+        if ($this->userPassword instanceof SocialLoginNoPassword) {
+            throw new PasswordNotChangeException(PasswordNotChangeException::MESSAGE);
+        }
+
         if ($password instanceof UserRawPassword) {
             if ($hashService === null) {
                 throw new UserPasswordChangeException(UserPasswordChangeException::MESSAGE);
@@ -144,24 +160,38 @@ final class User implements IUser
     }
 
     /**
-     * @throws PasswordEncryptionException
      * @throws UserPasswordChangeException
+     * @throws PasswordEncryptionException
+     * @throws PasswordNotChangeException
      */
     private function changeHashPassword(HashService $hashService): void
     {
+        if ($this->userPassword instanceof SocialLoginNoPassword) {
+            throw new PasswordNotChangeException(PasswordNotChangeException::MESSAGE);
+        }
+
         if ($this->userPassword instanceof UserHashPassword) {
             throw new PasswordEncryptionException(PasswordEncryptionException::MESSAGE);
         }
 
-        $password = $this->userPassword->value();
-        if ($password === null) {
-            throw new UserPasswordChangeException(UserPasswordChangeException::MESSAGE);
-        }
-
         try {
-            $this->userPassword = $hashService->hashing(UserRawPassword::of($password));
-        } catch (Exception\PasswordStrengthException $e) {
+            $this->userPassword = $hashService->hashing($this->userPassword);
+        } catch (PasswordStrengthException $e) {
             throw new UserPasswordChangeException($e->getMessage());
         }
+    }
+
+    /**
+     * 未登録ユーザ　
+     */
+    public static function anonymous(): IUser
+    {
+        return new User(
+            UserId::generate(),
+            UserEmail::of('anonymous@example.com'),
+            SocialLoginNoPassword::of(),
+            UserStatus::Anonymous,
+            null,
+        );
     }
 }

@@ -14,12 +14,12 @@ use Exception;
  * @package Basic\UseCaseSupport
  */
 
-readonly final class UseCaseResult
+final readonly class UseCaseResult
 {
     /**
      * UseCaseResult constructor.
      */
-    public function __construct(
+    private function __construct(
         private ?AdapterOutput $resultValue = null,
         private ?ErrorCode $errorCode = null,
     ) {

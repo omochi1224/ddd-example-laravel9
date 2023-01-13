@@ -12,6 +12,9 @@ interface UserRepository
 {
     public function create(User $user): void;
 
+    /**
+     * @throws UserNotFoundException
+     */
     public function update(User $user): void;
 
     public function findByEmail(UserEmail $userEmail): ?User;

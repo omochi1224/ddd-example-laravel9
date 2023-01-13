@@ -9,13 +9,18 @@ namespace Todo\Domain\Models\User\ValueObject;
  */
 final readonly class SocialLoginNoPassword extends Password
 {
-    public static function of(): SocialLoginNoPassword
+    private function __construct()
     {
-        return new SocialLoginNoPassword(null);
+        parent::__construct(null);
     }
 
-    public function value(): string|null
+    public function value(): null
     {
-        return $this->value;
+        return null;
+    }
+
+    public static function of(): SocialLoginNoPassword
+    {
+        return new SocialLoginNoPassword();
     }
 }
