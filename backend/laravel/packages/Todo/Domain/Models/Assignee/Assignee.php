@@ -6,6 +6,7 @@ namespace Todo\Domain\Models\Assignee;
 
 use Base\RoleObjectSupport\RoleObject;
 
-final class Assignee implements RoleObject
+final readonly class Assignee implements RoleObject
 {
 }
+

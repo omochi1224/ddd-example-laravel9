@@ -78,7 +78,7 @@
             "./vendor/bin/phpcs --standard=phpcs.xml --report=csv --report-file=./sniffer-reports/report.csv ./packages/"
         ],
         "static-type-check": [
-            "./vendor/bin/phpstan analyse -c phpstan.neon"
+            "./vendor/bin/phpstan analyse -c phpstan.neon --xdebug"
         ],
         "document-generator": [
             "@php artisan scribe:generate"
@@ -110,6 +110,10 @@
             "@composer rector-fix"
         ],
         "all-check": [
+            "@composer sniffer",
+            "@composer test",
+            "@composer static-type-check",
+            "@composer psalm"
         ],
         "all" : [
             "./vendor/bin/phpcs --standard=phpcs.xml ./packages/Todo",

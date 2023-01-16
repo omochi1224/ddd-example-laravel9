@@ -6,6 +6,6 @@ namespace Todo\Domain\Models\User\ValueObject;
 
 use Base\DomainSupport\ValueObject\EmailValueObject;
 
-readonly final class UserEmail extends EmailValueObject
+final readonly class UserEmail extends EmailValueObject
 {
 }

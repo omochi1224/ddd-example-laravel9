@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Todo\Domain\Tests\Model;
+namespace Todo\Domain\Tests\Model\User;
 
 
 use Base\DomainSupport\Exception\InvalidEmailAddressException;
@@ -66,8 +66,7 @@ final class UserTest extends TestCase
         );
 
         //本登録へ切り替える
-        $user->changeDefinitiveRegister($profile);
-
+        $user->definitiveRegister($profile);
 
         $this->expectException(PasswordNotChangeException::class);
         $this->expectExceptionMessage(PasswordNotChangeException::MESSAGE);
@@ -117,7 +116,7 @@ final class UserTest extends TestCase
         );
 
         //本登録へ切り替える
-        $user->changeDefinitiveRegister($profile);
+        $user = $user->definitiveRegister($profile);
 
         self::assertEquals(UserStatus::Definitive->value(), $user->userStatus->value());
     }
@@ -147,23 +146,20 @@ final class UserTest extends TestCase
         );
 
         //本登録へ切り替える
-        $user->changeDefinitiveRegister($profile);
+        $user = $user->definitiveRegister($profile);
 
         self::assertEquals(UserStatus::Definitive->value(), $user->userStatus->value());
 
         //再度本登録
         $this->expectException(UserAlreadyDefinitiveException::class);
         $this->expectExceptionMessage(UserAlreadyDefinitiveException::MESSAGE);
-        $user->changeDefinitiveRegister($profile);
+        $user = $user->definitiveRegister($profile);
     }
 
     public function test_適切なパスワードではない(): never
     {
-        $email = UserEmail::of('example@example.com');
-
         $this->expectException(PasswordStrengthException::class);
         $this->expectExceptionMessage(PasswordStrengthException::MESSAGE);
-
         $pass = UserRawPassword::of('123');
         $this->fail('パスワードの設定がおかしくなっています。');
     }
@@ -320,7 +316,7 @@ final class UserTest extends TestCase
         self::assertSame($email->value(), $user->userEmail->value());
         self::assertTrue($pass->value() === $user->userPassword->value());
 
-        $user->unsubscribe();
+        $user = $user->unsubscribe();
 
         self::assertSame(UserStatus::Unsubscribe, $user->userStatus);
     }
@@ -359,7 +355,7 @@ final class UserTest extends TestCase
         self::assertSame($email->value(), $user->userEmail->value());
         self::assertTrue($pass->value() === $user->userPassword->value());
 
-        $user->changeStatus(UserStatus::Ban);
+        $user = $user->changeStatus(UserStatus::Ban);
 
         assertSame(UserStatus::Ban, $user->userStatus);
     }

@@ -11,7 +11,6 @@ use Todo\Domain\Models\Profile\IProfile;
 use Todo\Domain\Models\Profile\Profile;
 use Todo\Domain\Models\User\Exception\PasswordEncryptionException;
 use Todo\Domain\Models\User\Exception\PasswordNotChangeException;
-use Todo\Domain\Models\User\Exception\PasswordStrengthException;
 use Todo\Domain\Models\User\Exception\UserAlreadyDefinitiveException;
 use Todo\Domain\Models\User\Exception\UserPasswordChangeException;
 use Todo\Domain\Models\User\ValueObject\Password;
@@ -23,19 +22,19 @@ use Todo\Domain\Models\User\ValueObject\UserRawPassword;
 use Todo\Domain\Models\User\ValueObject\UserStatus;
 
 /**
- * @property-read  UserId                           $userId
- * @property-read  UserEmail                        $userEmail
- * @property-read  UserRawPassword|UserHashPassword $userPassword
- * @property-read  UserStatus                       $userStatus
- * @property-read  ?Profile                         $profile
+ * @property  UserId                           $userId
+ * @property  UserEmail                        $userEmail
+ * @property  UserRawPassword|UserHashPassword $userPassword
+ * @property  UserStatus                       $userStatus
+ * @property  null|Profile                     $profile
  */
-final class User implements IUser
+final readonly class User implements IUser
 {
     use Getter;
 
     private function __construct(
-        private readonly UserId $userId,
-        private readonly UserEmail $userEmail,
+        private UserId $userId,
+        private UserEmail $userEmail,
         private Password $userPassword,
         private UserStatus $userStatus,
         private ?IProfile $profile,
@@ -72,19 +71,14 @@ final class User implements IUser
         UserRawPassword $userPassword,
         HashService $hashService,
     ): IUser {
-        $user = new User(
+        return (new User(
             UserId::generate(),
             $userEmail,
             $userPassword,
             UserStatus::Temporary,
             null,
-        );
-
-        $user->changeHashPassword($hashService);
-
-        return $user;
+        ))->changeHashPassword($hashService);
     }
-
 
     /**
      * 永続化から復帰
@@ -106,23 +100,53 @@ final class User implements IUser
     }
 
     /**
-     * 退会
+     * 本登録
+     *
+     * @throws UserAlreadyDefinitiveException
      */
-    public function unsubscribe(): void
+    public function definitiveRegister(IProfile $profile): User
     {
-        $this->userStatus = UserStatus::Unsubscribe;
+        if ($this->isDefinitive()) {
+            throw new UserAlreadyDefinitiveException(UserAlreadyDefinitiveException::MESSAGE);
+        }
+        return $this->changeAttributes(userStatus: UserStatus::Definitive);
     }
 
-    public function changeStatus(UserStatus $userStatus): void
+
+    /**
+     * 未登録ユーザ　
+     *
+     * @throws InvalidUuidException
+     */
+    public static function anonymous(): IUser
     {
-        $this->userStatus = $userStatus;
+        return new User(
+            UserId::generate(),
+            UserEmail::of('anonymous@example.com'),
+            SocialLoginNoPassword::of(),
+            UserStatus::Anonymous,
+            null,
+        );
+    }
+
+    /**
+     * 退会
+     */
+    public function unsubscribe(): User
+    {
+        return $this->changeAttributes(userStatus: UserStatus::Unsubscribe);
+    }
+
+    public function changeStatus(UserStatus $userStatus): User
+    {
+        return $this->changeAttributes(userStatus: $userStatus);
     }
 
     /**
      * @throws UserPasswordChangeException
      * @throws PasswordNotChangeException
      */
-    public function changePassword(Password $password, ?HashService $hashService = null): void
+    public function changePassword(Password $password, ?HashService $hashService = null): User
     {
         if ($this->userPassword instanceof SocialLoginNoPassword) {
             throw new PasswordNotChangeException(PasswordNotChangeException::MESSAGE);
@@ -134,7 +158,8 @@ final class User implements IUser
             }
             $password = $hashService->hashing($password);
         }
-        $this->userPassword = $password;
+
+        return $this->changeAttributes(password: $password);
     }
 
     public function equals(self|Domain $domain): bool
@@ -142,21 +167,9 @@ final class User implements IUser
         return $this->userId->equals($domain->userId);
     }
 
-    /**
-     * @throws UserAlreadyDefinitiveException
-     */
-    public function changeDefinitiveRegister(IProfile $profile): void
+    private function isDefinitive(): bool
     {
-        if ($this->isTemporary()) {
-            throw new UserAlreadyDefinitiveException(UserAlreadyDefinitiveException::MESSAGE);
-        }
-        $this->userStatus = UserStatus::Definitive;
-        $this->profile = $profile;
-    }
-
-    private function isTemporary(): bool
-    {
-        return $this->profile !== null;
+        return $this->userStatus === UserStatus::Definitive;
     }
 
     /**
@@ -164,7 +177,7 @@ final class User implements IUser
      * @throws PasswordEncryptionException
      * @throws PasswordNotChangeException
      */
-    private function changeHashPassword(HashService $hashService): void
+    private function changeHashPassword(HashService $hashService): User
     {
         if ($this->userPassword instanceof SocialLoginNoPassword) {
             throw new PasswordNotChangeException(PasswordNotChangeException::MESSAGE);
@@ -174,24 +187,24 @@ final class User implements IUser
             throw new PasswordEncryptionException(PasswordEncryptionException::MESSAGE);
         }
 
-        try {
-            $this->userPassword = $hashService->hashing($this->userPassword);
-        } catch (PasswordStrengthException $e) {
-            throw new UserPasswordChangeException($e->getMessage());
-        }
+        $hasPassword = $hashService->hashing($this->userPassword);
+        return $this->changePassword($hasPassword);
     }
 
-    /**
-     * 未登録ユーザ　
-     */
-    public static function anonymous(): IUser
-    {
+
+    private function changeAttributes(
+        ?UserId $userId = null,
+        ?UserEmail $userEmail = null,
+        ?Password $password = null,
+        ?UserStatus $userStatus = null,
+        ?IProfile $profile = null,
+    ): User {
         return new User(
-            UserId::generate(),
-            UserEmail::of('anonymous@example.com'),
-            SocialLoginNoPassword::of(),
-            UserStatus::Anonymous,
-            null,
+            $userId ?? $this->userId,
+            $userEmail ?? $this->userEmail,
+            $password ?? $this->userPassword,
+            $userStatus ?? $this->userStatus,
+            $profile ?? $this->profile,
         );
     }
 }

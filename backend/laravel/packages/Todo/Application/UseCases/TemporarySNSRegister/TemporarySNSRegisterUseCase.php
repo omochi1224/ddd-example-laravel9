@@ -36,7 +36,9 @@ final readonly class TemporarySNSRegisterUseCase
             $this->userRepository->create($user);
 
             $output = new TemporarySNSRegisterOutputAdapter($user);
+
             $this->transaction->commit();
+
             return UseCaseResult::success($output);
         } catch (DomainException $exception) {
             $this->transaction->rollback();

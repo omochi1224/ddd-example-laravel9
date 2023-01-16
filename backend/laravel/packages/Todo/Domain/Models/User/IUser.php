@@ -15,11 +15,12 @@ use Todo\Domain\Models\User\ValueObject\UserRawPassword;
 use Todo\Domain\Models\User\ValueObject\UserStatus;
 
 /**
- * @property-read  UserId                           $userId
- * @property-read  UserEmail                        $userEmail
- * @property-read  UserRawPassword|UserHashPassword $userPassword
- * @property-read  UserStatus                       $userStatus
- * @property-read  ?Profile                         $profile
+ * @property  UserId                           $userId
+ * @property  UserEmail                        $userEmail
+ * @property  UserRawPassword|UserHashPassword $userPassword
+ * @property  UserStatus                       $userStatus
+ * @property  null|Profile                     $profile
+ * @psalm-seal-properties
  */
 interface IUser extends Domain
 {
@@ -44,7 +45,7 @@ interface IUser extends Domain
     /**
      * 仮登録から本登録に変更
      */
-    public function changeDefinitiveRegister(Profile $profile): void;
+    public function definitiveRegister(Profile $profile): IUser;
 
     /**
      * 未登録ユーザ　
@@ -54,7 +55,7 @@ interface IUser extends Domain
     /**
      * 退会
      */
-    public function unsubscribe(): void;
+    public function unsubscribe(): IUser;
 
     /**
      * DBからの復帰
@@ -73,7 +74,7 @@ interface IUser extends Domain
     public function changePassword(
         UserHashPassword|UserRawPassword $password,
         ?HashService $hashService = null
-    ): void;
+    ): IUser;
 
-    public function changeStatus(UserStatus $userStatus): void;
+    public function changeStatus(UserStatus $userStatus): IUser;
 }

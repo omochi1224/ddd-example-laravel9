@@ -43,18 +43,10 @@ final class ProfileNameTest extends TestCase
 
 class DevilValueObject implements ValueObject
 {
-    /**
-     * @param ValueObject $valueObject
-     *
-     * @return bool
-     */
     public function equals(ValueObject $valueObject): bool
     {
     }
 
-    /**
-     * @return mixed
-     */
     public function value(): mixed
     {
     }
