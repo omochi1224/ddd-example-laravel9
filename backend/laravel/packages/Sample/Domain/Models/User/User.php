@@ -174,7 +174,7 @@ final class User implements IUser
      */
     public function changeDefinitiveRegister(IProfile $profile): void
     {
-        if ($this->isTemporary()) {
+        if (!$this->isTemporary()) {
             throw new UserAlreadyDefinitiveException(UserAlreadyDefinitiveException::MESSAGE);
         }
 
@@ -182,13 +182,11 @@ final class User implements IUser
         $this->profile = $profile;
     }
 
-    /**
-     * @return bool
-     */
     private function isTemporary(): bool
     {
-        return $this->profile !== null;
+        return $this->userStatus->equals(UserStatus::Temporary);
     }
+
 
     /**
      * @param HashService $hashService
