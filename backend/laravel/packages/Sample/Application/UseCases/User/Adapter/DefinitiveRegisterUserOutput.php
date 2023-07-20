@@ -11,8 +11,6 @@ final readonly class DefinitiveRegisterUserOutput implements AdapterOutput
 {
     /**
      * @codingStandardsIgnoreFile
-     *
-     * @param IUser $user
      */
     public function __construct(
         public IUser $user

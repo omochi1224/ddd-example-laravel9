@@ -18,26 +18,19 @@ enum ProfileGender: int implements ValueObject
 
     /**
      * @param ProfileGender $valueObject
-     *
-     * @return bool
      */
     public function equals(ValueObject $valueObject): bool
     {
         return $this->value === $valueObject->value;
     }
 
-    /**
-     * @return int
-     */
     public function value(): int
     {
         return $this->value;
     }
 
     /**
-     * @param int $genderValue
      *
-     * @return ProfileGender
      *
      * @throws ProfileGenderException
      */

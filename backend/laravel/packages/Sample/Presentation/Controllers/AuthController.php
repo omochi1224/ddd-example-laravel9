@@ -16,18 +16,14 @@ final class AuthController extends Controller
 {
     /**
      * CookieAuthenticationController constructor.
-     *
-     * @param Auth $auth
      */
     public function __construct(
-        private Auth $auth,
+        private readonly Auth $auth,
     ) {
     }
 
     /**
-     * @param Request $request
      *
-     * @return JsonResponse
      *
      * @throws Exception
      */
@@ -47,11 +43,6 @@ final class AuthController extends Controller
         throw new Exception('ログインに失敗しました。再度お試しください');
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
     public function logout(Request $request): JsonResponse
     {
         $this->getGuard()->logout();

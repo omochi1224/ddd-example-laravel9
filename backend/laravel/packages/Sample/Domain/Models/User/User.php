@@ -30,13 +30,6 @@ final class User implements IUser
 {
     use Getter;
 
-    /**
-     * @param UserId        $userId
-     * @param UserEmail     $userEmail
-     * @param Password      $userPassword
-     * @param UserStatus    $userStatus
-     * @param IProfile|null $profile
-     */
     private function __construct(
         private readonly UserId $userId,
         private readonly UserEmail $userEmail,
@@ -49,9 +42,7 @@ final class User implements IUser
     /**
      * ソーシャルログイン　仮登録
      *
-     * @param UserEmail $userEmail
      *
-     * @return User
      *
      * @throws InvalidUuidException
      */
@@ -70,11 +61,7 @@ final class User implements IUser
     /**
      *  仮登録
      *
-     * @param UserEmail       $userEmail
-     * @param UserRawPassword $userPassword
-     * @param HashService     $hashService
      *
-     * @return User
      *
      * @throws InvalidUuidException
      * @throws PasswordEncryptionException
@@ -97,15 +84,6 @@ final class User implements IUser
         return $user;
     }
 
-    /**
-     * @param UserId           $userId
-     * @param UserEmail        $userEmail
-     * @param UserHashPassword $userHashPassword
-     * @param UserStatus       $userStatus
-     * @param IProfile|null    $profile
-     *
-     * @return self
-     */
     public static function restoreFromDB(
         UserId $userId,
         UserEmail $userEmail,
@@ -122,30 +100,16 @@ final class User implements IUser
         );
     }
 
-    /**
-     * @return void
-     */
     public function unsubscribe(): void
     {
         $this->userStatus = UserStatus::Unsubscribe;
     }
 
-    /**
-     * @param UserStatus $userStatus
-     *
-     * @return void
-     */
     public function changeStatus(UserStatus $userStatus): void
     {
         $this->userStatus = $userStatus;
     }
 
-    /**
-     * @param Password         $password
-     * @param HashService|null $hashService
-     *
-     * @return void
-     */
     public function changePassword(Password $password, ?HashService $hashService = null): void
     {
         if ($password instanceof UserRawPassword || $hashService !== null) {
@@ -157,8 +121,6 @@ final class User implements IUser
 
     /**
      * @param User $domain
-     *
-     * @return bool
      */
     public function equals(Domain $domain): bool
     {
@@ -166,9 +128,7 @@ final class User implements IUser
     }
 
     /**
-     * @param IProfile $profile
      *
-     * @return void
      *
      * @throws UserAlreadyDefinitiveException
      */
@@ -189,9 +149,7 @@ final class User implements IUser
 
 
     /**
-     * @param HashService $hashService
      *
-     * @return void
      *
      * @throws PasswordEncryptionException
      */

@@ -27,25 +27,18 @@ enum UserStatus: int implements ValueObject
 
     /**
      * @param UserStatus $valueObject
-     *
-     * @return bool
      */
     public function equals(ValueObject $valueObject): bool
     {
         return $this->value === $valueObject->value;
     }
 
-    /**
-     * @return int
-     */
     public function value(): int
     {
         return $this->value;
     }
 
     /**
-     * @return string
-     *
      * @throws \ReflectionException
      */
     public function description(): string
@@ -58,9 +51,7 @@ enum UserStatus: int implements ValueObject
     }
 
     /**
-     * @param string $value
      *
-     * @return UserStatus
      *
      * @throws \Exception
      */

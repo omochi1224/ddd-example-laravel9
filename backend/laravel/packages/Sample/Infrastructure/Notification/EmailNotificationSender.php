@@ -12,11 +12,6 @@ use Sample\Domain\Models\Notification\NotificationSender;
  */
 final class EmailNotificationSender implements NotificationSender
 {
-    /**
-     * @param Notification $notification
-     *
-     * @return void
-     */
     public function send(Notification $notification): void
     {
     }

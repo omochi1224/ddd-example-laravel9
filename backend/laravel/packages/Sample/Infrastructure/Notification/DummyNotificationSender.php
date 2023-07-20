@@ -10,11 +10,6 @@ use Sample\Domain\Models\Notification\NotificationSender;
 
 final class DummyNotificationSender implements NotificationSender
 {
-    /**
-     * @param Notification $notification
-     *
-     * @return void
-     */
     public function send(Notification $notification): void
     {
         $n = $notification;

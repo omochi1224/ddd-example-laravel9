@@ -9,10 +9,5 @@ namespace Sample\Presentation\Sender;
  */
 interface Sender
 {
-    /**
-     * @param object $object
-     *
-     * @return void
-     */
     public function send(object $object): void;
 }

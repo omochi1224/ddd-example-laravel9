@@ -20,11 +20,6 @@ final class InMemoryUserRepository implements UserRepository
      */
     private array $users = [];
 
-    /**
-     * @param User $user
-     *
-     * @return void
-     */
     public function create(User $user): void
     {
         $this->users[$user->userId->value()] = $user;
@@ -42,16 +37,9 @@ final class InMemoryUserRepository implements UserRepository
         $this->users[$user->userId->value()] = $user;
     }
 
-    /**
-     * @param UserEmail $userEmail
-     *
-     * @return User|null
-     */
     public function findByEmail(UserEmail $userEmail): ?User
     {
-        $users = array_filter($this->users, function (User $user) use ($userEmail) {
-            return $user->userEmail->equals($userEmail);
-        });
+        $users = array_filter($this->users, fn(User $user) => $user->userEmail->equals($userEmail));
 
         if (count($users) === 0) {
             return null;
@@ -61,9 +49,7 @@ final class InMemoryUserRepository implements UserRepository
     }
 
     /**
-     * @param UserId $userId
      *
-     * @return User
      *
      * @throws UserNotFoundException
      */

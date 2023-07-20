@@ -11,12 +11,9 @@ use Base\DomainSupport\ValueObject\StringValueObject;
  */
 final readonly class AccessToken extends StringValueObject
 {
-    /**
-     * @return AccessToken
-     */
     public static function generate(): AccessToken
     {
-        $token = sha1(uniqid((string) mt_rand(), true));
+        $token = sha1(uniqid((string) random_int(0, mt_getrandmax()), true));
         return new AccessToken($token);
     }
 }

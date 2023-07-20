@@ -11,9 +11,6 @@ use Illuminate\Http\Request;
  */
 abstract readonly class BaseRequest
 {
-    /**
-     * @param Request $request
-     */
     public function __construct(protected Request $request)
     {
         $this->request->validate($this->rules());

@@ -18,11 +18,6 @@ use Sample\Domain\Services\UserDomainService;
 
 final readonly class DefinitiveRegisterUserUseCase
 {
-    /**
-     * @param Transaction $transaction
-     * @param UserRepository $userRepository
-     * @param UserDomainService $userDomainService
-     */
     public function __construct(
         private Transaction $transaction,
         private UserRepository $userRepository,
@@ -31,8 +26,6 @@ final readonly class DefinitiveRegisterUserUseCase
     }
 
     /**
-     * @param DefinitiveRegisterUserInput $input
-     *
      * @return UseCaseResult
      */
     public function __invoke(DefinitiveRegisterUserInput $input): UseCaseResult

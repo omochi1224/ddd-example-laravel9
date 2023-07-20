@@ -18,9 +18,7 @@ use Sample\Domain\Models\Profile\ValueObject\ProfileName;
 final readonly class ProfileFactory implements Factory
 {
     /**
-     * @param DefinitiveRegisterUserInput $input
      *
-     * @return IProfile
      *
      * @throws InvalidUuidException
      * @throws ProfileGenderException
@@ -43,9 +41,7 @@ final readonly class ProfileFactory implements Factory
     /**
      * 永続化からの復帰
      *
-     * @param object $ormObject
      *
-     * @return Profile
      *
      * @throws InvalidUuidException
      * @throws ProfileInvalidImageUrlException|ProfileGenderException

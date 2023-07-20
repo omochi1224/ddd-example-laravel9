@@ -24,13 +24,6 @@ final class Profile implements IProfile
 {
     use Getter;
 
-    /**
-     * @param ProfileId       $id
-     * @param ProfileName     $name
-     * @param ProfileBirthDay $birthDay
-     * @param ProfileGender   $gender
-     * @param ProfileImage    $image
-     */
     private function __construct(
         private readonly ProfileId $id,
         private ProfileName $name,
@@ -43,12 +36,7 @@ final class Profile implements IProfile
     /**
      * 本登録用のプロフィール作成
      *
-     * @param ProfileName     $name
-     * @param ProfileBirthDay $birthDay
-     * @param ProfileGender   $gender
-     * @param ProfileImage    $image
      *
-     * @return Profile
      *
      * @throws InvalidUuidException
      */
@@ -67,15 +55,6 @@ final class Profile implements IProfile
         );
     }
 
-    /**
-     * @param ProfileId       $id
-     * @param ProfileName     $name
-     * @param ProfileBirthDay $birthDay
-     * @param ProfileGender   $gender
-     * @param ProfileImage    $image
-     *
-     * @return Profile
-     */
     public static function restoreFromDB(
         ProfileId $id,
         ProfileName $name,
@@ -94,41 +73,27 @@ final class Profile implements IProfile
 
     /**
      * @param Profile $domain
-     *
-     * @return bool
      */
     public function equals(Domain $domain): bool
     {
         return $this->id->equals($domain->id);
     }
 
-    /**
-     * @param ProfileName $name
-     */
     public function changeName(ProfileName $name): void
     {
         $this->name = $name;
     }
 
-    /**
-     * @param ProfileBirthDay $birthDay
-     */
     public function changeBirthDay(ProfileBirthDay $birthDay): void
     {
         $this->birthDay = $birthDay;
     }
 
-    /**
-     * @param ProfileGender $gender
-     */
     public function changeGender(ProfileGender $gender): void
     {
         $this->gender = $gender;
     }
 
-    /**
-     * @param ProfileImage $image
-     */
     public function changeImage(ProfileImage $image): void
     {
         $this->image = $image;

@@ -6,16 +6,10 @@ namespace Base\AttributeSupport;
 
 #[\Attribute] final class HttpStatusCode
 {
-    /**
-     * @param int $status
-     */
-    public function __construct(private int $status)
+    public function __construct(private readonly int $status)
     {
     }
 
-    /**
-     * @return int
-     */
     public function value(): int
     {
         return $this->status;

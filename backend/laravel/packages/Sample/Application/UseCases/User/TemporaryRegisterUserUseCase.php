@@ -23,12 +23,6 @@ use Sample\Domain\Services\UserDomainService;
  */
 final readonly class TemporaryRegisterUserUseCase
 {
-    /**
-     * @param Transaction       $transaction
-     * @param UserDomainService $userDomainService
-     * @param UserRepository    $userRepository
-     * @param HashService       $hashService
-     */
     final public function __construct(
         private Transaction $transaction,
         private UserDomainService $userDomainService,
@@ -38,8 +32,6 @@ final readonly class TemporaryRegisterUserUseCase
     }
 
     /**
-     * @param TemporaryRegisterUserInput $registerUserDto
-     *
      * @return UseCaseResult
      */
     public function __invoke(TemporaryRegisterUserInput $registerUserDto): UseCaseResult

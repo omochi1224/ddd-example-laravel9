@@ -11,11 +11,6 @@ use Sample\Domain\Models\User\ValueObject\UserHashPassword;
 
 final class PasswordHashEncryption implements HashService
 {
-    /**
-     * @param StringValueObject $raw
-     *
-     * @return UserHashPassword
-     */
     public function hashing(StringValueObject $raw): UserHashPassword
     {
         return UserHashPassword::of(Hash::make($raw->value()));

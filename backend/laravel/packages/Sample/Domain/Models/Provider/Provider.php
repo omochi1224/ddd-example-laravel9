@@ -10,8 +10,6 @@ final class Provider implements Domain
 {
     /**
      * @param static $domain
-     *
-     * @return bool
      */
     public function equals(Domain $domain): bool
     {

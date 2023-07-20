@@ -12,10 +12,6 @@ use Sample\Presentation\Resource\RegisterUserResource;
 readonly final class RegisterUserController
 {
     /**
-     * @param TemporaryRegisterUserInput   $input
-     * @param TemporaryRegisterUserUseCase $useCase
-     * @param RegisterUserResource         $resource
-     *
      * @return RegisterUserResource
      *
      * @throws ToFrameworkException

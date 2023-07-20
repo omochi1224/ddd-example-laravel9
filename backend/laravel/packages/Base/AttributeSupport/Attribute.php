@@ -14,18 +14,16 @@ use ReflectionException;
 final class Attribute
 {
     /**
-     * @param string $attributeClass
      *
-     * @return object
      *
      * @throws ReflectionException
      */
     final public function getAttribute(string $attributeClass): object
     {
-        $reflection = new ReflectionClass($this::class);
+        $reflection = new ReflectionClass(self::class);
         $constants = $reflection->getConstants();
         $key = array_search($this, $constants, false);
-        $constantReflection = new ReflectionClassConstant($this::class, $key);
+        $constantReflection = new ReflectionClassConstant(self::class, $key);
         $attribute = $constantReflection->getAttributes($attributeClass)[0];
         return $attribute->newInstance();
     }

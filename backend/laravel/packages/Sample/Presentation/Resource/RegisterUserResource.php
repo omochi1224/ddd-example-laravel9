@@ -10,9 +10,6 @@ use Sample\Domain\Models\Notification\NotificationSender;
 
 readonly final class RegisterUserResource extends Resource
 {
-    /**
-     * @param NotificationSender $sender
-     */
     public function __construct(
         private NotificationSender $sender
     ) {

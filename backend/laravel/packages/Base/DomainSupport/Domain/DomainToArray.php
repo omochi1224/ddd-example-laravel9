@@ -16,9 +16,7 @@ trait DomainToArray
     /**
      * ドメインを配列['propertyName'=>value]に変換します
      *
-     * @param Domain        $domain
      * @param array<string> $hiddenOption
-     *
      * @return array<string, mixed>
      */
     public function domainToArray(Domain $domain, array $hiddenOption = []): array
@@ -28,6 +26,7 @@ trait DomainToArray
                 'array_merge',
                 array_map(
                     function ($property) use ($domain) {
+                        $array = [];
                         $propertyName = $property->name;
                         if ($domain->$propertyName?->value() instanceof Domain) {
                             $array[$this->underscore($propertyName)] = $this->domainToArray(
@@ -51,9 +50,7 @@ trait DomainToArray
     }
 
     /**
-     * @param array         $array
      * @param array<string> $hiddenOption
-     *
      * @return array<string, mixed>
      */
     protected function filterArray(array $array, array $hiddenOption = []): array
@@ -72,7 +69,6 @@ trait DomainToArray
     /**
      * キャメルケースをスネークケースに変換します。
      *
-     * @param string $str
      *
      * @return string
      */

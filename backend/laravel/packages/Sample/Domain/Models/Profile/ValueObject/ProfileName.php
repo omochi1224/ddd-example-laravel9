@@ -11,22 +11,12 @@ use Base\DomainSupport\ValueObject\ValueObject;
  */
 final readonly class ProfileName implements ValueObject
 {
-    /**
-     * @param ProfileLastName  $lastName
-     * @param ProfileFirstName $firstName
-     */
     public function __construct(
         private ProfileLastName $lastName,
         private ProfileFirstName $firstName,
     ) {
     }
 
-    /**
-     * @param string $lastName
-     * @param string $firstName
-     *
-     * @return ProfileName
-     */
     public static function of(string $lastName, string $firstName): ProfileName
     {
         return new ProfileName(
@@ -37,8 +27,6 @@ final readonly class ProfileName implements ValueObject
 
     /**
      * @param ProfileName $valueObject
-     *
-     * @return bool
      */
     public function equals(ValueObject $valueObject): bool
     {

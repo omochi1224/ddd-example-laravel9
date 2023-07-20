@@ -30,11 +30,6 @@ final class EloquentUserRepository implements UserRepository
 {
     use DomainToArray;
 
-    /**
-     * @param User $user
-     *
-     * @return void
-     */
     public function create(User $user): void
     {
         $model = new EloquentUser();
@@ -43,11 +38,6 @@ final class EloquentUserRepository implements UserRepository
             ->save();
     }
 
-    /**
-     * @param User $user
-     *
-     * @return void
-     */
     public function update(User $user): void
     {
         EloquentUser::where('user_id', $user->userId->value())
@@ -55,9 +45,7 @@ final class EloquentUserRepository implements UserRepository
     }
 
     /**
-     * @param UserEmail $userEmail
      *
-     * @return User|null
      *
      * @throws InvalidUuidException|ProfileInvalidImageUrlException
      */
@@ -89,11 +77,6 @@ final class EloquentUserRepository implements UserRepository
         );
     }
 
-    /**
-     * @param UserId $userId
-     *
-     * @return User
-     */
     public function getByUserId(UserId $userId): User
     {
         $user = EloquentUser::where('user_id', $userId->value())
@@ -103,8 +86,6 @@ final class EloquentUserRepository implements UserRepository
     }
 
     /**
-     * @param User $user
-     *
      * @return array<string, mixed>
      */
     private function toArray(User $user): array

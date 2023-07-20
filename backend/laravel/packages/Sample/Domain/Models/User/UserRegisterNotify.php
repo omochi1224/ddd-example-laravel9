@@ -34,11 +34,6 @@ final readonly class UserRegisterNotify extends Email
         );
     }
 
-    /**
-     * @param IUser $user
-     *
-     * @return UserRegisterNotify
-     */
     public static function of(IUser $user): UserRegisterNotify
     {
         return new UserRegisterNotify($user);

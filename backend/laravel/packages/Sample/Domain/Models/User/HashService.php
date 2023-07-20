@@ -13,8 +13,6 @@ use Sample\Domain\Models\User\ValueObject\UserHashPassword;
 interface HashService
 {
     /**
-     * @param StringValueObject $raw
-     *
      * @return UserHashPassword
      */
     public function hashing(StringValueObject $raw): StringValueObject;

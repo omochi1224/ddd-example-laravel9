@@ -10,16 +10,10 @@ namespace Base\AttributeSupport;
 #[\Attribute]
 final class Text
 {
-    /**
-     * @param string $value
-     */
-    public function __construct(private string $value)
+    public function __construct(private readonly string $value)
     {
     }
 
-    /**
-     * @return string
-     */
     public function value(): string
     {
         return $this->value;

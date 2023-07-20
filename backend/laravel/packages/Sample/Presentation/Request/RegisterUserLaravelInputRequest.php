@@ -22,17 +22,11 @@ final readonly class RegisterUserLaravelInputRequest extends BaseRequest impleme
         ];
     }
 
-    /**
-     * @return string
-     */
     public function getEmail(): string
     {
         return $this->request->get('email');
     }
 
-    /**
-     * @return string
-     */
     public function getPassword(): string
     {
         return $this->request->get('password');

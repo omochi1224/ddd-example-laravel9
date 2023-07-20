@@ -63,9 +63,6 @@ readonly class ConcreteDefinitiveRegisterUserInput implements DefinitiveRegister
     ) {
     }
 
-    /**
-     * @return string
-     */
     public function getUserId(): string
     {
         return $this->userId;
@@ -79,25 +76,16 @@ readonly class ConcreteDefinitiveRegisterUserInput implements DefinitiveRegister
         return $this->name;
     }
 
-    /**
-     * @return \DateTime
-     */
     public function getBirthday(): \DateTime
     {
         return $this->birthday;
     }
 
-    /**
-     * @return string
-     */
     public function getImage(): string
     {
         return $this->image;
     }
 
-    /**
-     * @return int
-     */
     public function getGender(): int
     {
         return $this->gender;

@@ -20,14 +20,6 @@ use Sample\Domain\Models\Profile\ValueObject\ProfileName;
  */
 interface IProfile extends Domain
 {
-    /**
-     * @param ProfileName     $name
-     * @param ProfileBirthDay $birthDay
-     * @param ProfileGender   $gender
-     * @param ProfileImage    $image
-     *
-     * @return Profile
-     */
     public static function definitive(
         ProfileName $name,
         ProfileBirthDay $birthDay,
@@ -35,15 +27,6 @@ interface IProfile extends Domain
         ProfileImage $image,
     ): Profile;
 
-    /**
-     * @param ProfileId       $id
-     * @param ProfileName     $name
-     * @param ProfileBirthDay $birthDay
-     * @param ProfileGender   $gender
-     * @param ProfileImage    $image
-     *
-     * @return Profile
-     */
     public static function restoreFromDB(
         ProfileId $id,
         ProfileName $name,
@@ -52,31 +35,11 @@ interface IProfile extends Domain
         ProfileImage $image,
     ): Profile;
 
-    /**
-     * @param ProfileName $name
-     *
-     * @return void
-     */
     public function changeName(ProfileName $name): void;
 
-    /**
-     * @param ProfileBirthDay $birthDay
-     *
-     * @return void
-     */
     public function changeBirthDay(ProfileBirthDay $birthDay): void;
 
-    /**
-     * @param ProfileGender $gender
-     *
-     * @return void
-     */
     public function changeGender(ProfileGender $gender): void;
 
-    /**
-     * @param ProfileImage $image
-     *
-     * @return void
-     */
     public function changeImage(ProfileImage $image): void;
 }

@@ -114,7 +114,7 @@ final class UserTest extends TestCase
         $user->changeDefinitiveRegister($profile);
     }
 
-    public function test_適切なパスワードではない()
+    public function test_適切なパスワードではない(): never
     {
         $email = UserEmail::of('example@example.com');
 
@@ -125,7 +125,7 @@ final class UserTest extends TestCase
         $this->fail('パスワードの設定がおかしくなっています。');
     }
 
-    public function test_適切なメールアドレスが設定されていない()
+    public function test_適切なメールアドレスが設定されていない(): never
     {
         $this->expectException(InvalidEmailAddressException::class);
         $this->expectExceptionMessage(InvalidEmailAddressException::MESSAGE);
@@ -257,11 +257,6 @@ final class UserTest extends TestCase
 class ConcreteHash implements HashService
 {
 
-    /**
-     * @param StringValueObject $raw
-     *
-     * @return UserHashPassword
-     */
     public function hashing(StringValueObject $raw): UserHashPassword
     {
         return UserHashPassword::of(hash('sha256', $raw->value()));
