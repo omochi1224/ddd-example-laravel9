@@ -32,10 +32,17 @@ final readonly class UserDomainService
     }
 
     /**
-     * @throws UserNotFoundException
+     * @param UserId $userId
+     *
+     * @return bool
      */
-    public function isIdAlready(UserId $userId): IUser
+    public function doesUserIdExist(UserId $userId): bool
     {
-        return $this->userRepository->getByUserId($userId);
+        try {
+            $this->userRepository->getByUserId($userId);
+            return true;
+        } catch (UserNotFoundException $exception) {
+            return false;
+        }
     }
 }

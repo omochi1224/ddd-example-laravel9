@@ -7,9 +7,11 @@ namespace Sample\Application\UseCases\User;
 use Base\ExceptionSupport\DomainException;
 use Base\TransactionSupport\Transaction;
 use Base\UseCaseSupport\UseCaseResult;
+use Illuminate\Support\Facades\DB;
 use Sample\Application\UseCases\User\Adapter\DefinitiveRegisterUserInput;
 use Sample\Application\UseCases\User\Adapter\DefinitiveRegisterUserOutput;
 use Sample\Domain\Models\Profile\ProfileFactory;
+use Sample\Domain\Models\User\Exception\UserNotFoundException;
 use Sample\Domain\Models\User\UserRepository;
 use Sample\Domain\Models\User\ValueObject\UserId;
 use Sample\Domain\Services\UserDomainService;
@@ -17,12 +19,10 @@ use Sample\Domain\Services\UserDomainService;
 final readonly class DefinitiveRegisterUserUseCase
 {
     /**
-     * @param Transaction       $transaction
-     * @param UserRepository    $userRepository
+     * @param UserRepository $userRepository
      * @param UserDomainService $userDomainService
      */
     public function __construct(
-        private Transaction $transaction,
         private UserRepository $userRepository,
         private UserDomainService $userDomainService,
     ) {
@@ -35,10 +35,15 @@ final readonly class DefinitiveRegisterUserUseCase
      */
     public function __invoke(DefinitiveRegisterUserInput $input): UseCaseResult
     {
+
         try {
-            $this->transaction->begin();
-            $user = $this->userDomainService
-                ->isIdAlready(UserId::of($input->getUserId()));
+            $userId = UserId::of($input->getUserId());
+
+            if (!$this->userDomainService->doesUserIdExist($userId)) {
+                throw new UserNotFoundException(UserNotFoundException::MESSAGE);
+            }
+
+            $user = $this->userRepository->getByUserId($userId);
 
             //Profile生成
             $profile = ProfileFactory::definitive($input);
@@ -46,16 +51,12 @@ final readonly class DefinitiveRegisterUserUseCase
             //本登録へ変更
             $user->changeDefinitiveRegister($profile);
 
-            //永続化
-            $this->userRepository->update($user);
+            return DB::transaction(function () use ($user): UseCaseResult {
+                $this->userRepository->update($user);
+                return UseCaseResult::success(new DefinitiveRegisterUserOutput($user));
+            });
 
-            $output = new DefinitiveRegisterUserOutput($user);
-
-            $this->transaction->commit();
-
-            return UseCaseResult::success($output);
         } catch (DomainException $domainException) {
-            $this->transaction->rollback();
             return UseCaseResult::fail($domainException);
         }
     }
