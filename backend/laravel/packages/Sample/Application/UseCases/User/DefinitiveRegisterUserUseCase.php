@@ -19,10 +19,12 @@ use Sample\Domain\Services\UserDomainService;
 final readonly class DefinitiveRegisterUserUseCase
 {
     /**
+     * @param Transaction $transaction
      * @param UserRepository $userRepository
      * @param UserDomainService $userDomainService
      */
     public function __construct(
+        private Transaction $transaction,
         private UserRepository $userRepository,
         private UserDomainService $userDomainService,
     ) {
@@ -51,7 +53,7 @@ final readonly class DefinitiveRegisterUserUseCase
             //本登録へ変更
             $user->changeDefinitiveRegister($profile);
 
-            return DB::transaction(function () use ($user): UseCaseResult {
+            return $this->transaction->scope(function () use ($user): UseCaseResult {
                 $this->userRepository->update($user);
                 return UseCaseResult::success(new DefinitiveRegisterUserOutput($user));
             });

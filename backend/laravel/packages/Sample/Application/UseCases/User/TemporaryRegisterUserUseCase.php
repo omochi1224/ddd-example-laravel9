@@ -44,7 +44,6 @@ final readonly class TemporaryRegisterUserUseCase
      */
     public function __invoke(TemporaryRegisterUserInput $registerUserDto): UseCaseResult
     {
-        $this->transaction->begin();
         try {
             $user = User::temporaryRegister(
                 UserEmail::of($registerUserDto->getEmail()),
@@ -60,17 +59,14 @@ final readonly class TemporaryRegisterUserUseCase
             //通知
             $notify = UserRegisterNotify::of($user);
 
-            $output = new TemporaryRegisterUserOutput($user, $notify);
-
-            //ユーザを永続化
-            $this->userRepository->create($user);
-
-            $this->transaction->commit();
+            return $this->transaction->scope(function () use ($user, $notify) {
+                $output = new TemporaryRegisterUserOutput($user, $notify);
+                $this->userRepository->create($user);
+                return UseCaseResult::success($output);
+            });
         } catch (DomainException $exception) {
-            $this->transaction->rollback();
             return UseCaseResult::fail($exception);
         }
 
-        return UseCaseResult::success($output);
     }
 }
