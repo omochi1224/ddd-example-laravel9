@@ -4,17 +4,11 @@ declare(strict_types=1);
 
 namespace Sample\Domain\Models\Email;
 
-use Base\DomainSupport\Domain\Getter;
 use Sample\Domain\Models\Notification\Email as IEmail;
 use Sample\Domain\Models\Notification\Notification;
 
-/**
- *
- */
 abstract readonly class Email implements Notification, IEmail
 {
-    use Getter;
-
     /**
      * @param string       $toEmailAddress
      * @param string       $fromEmailAddress

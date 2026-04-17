@@ -6,35 +6,26 @@ namespace App\Providers\ServiceProvider;
 
 use App\lib\LaravelDbTransaction;
 use App\lib\LaravelLogger;
-use Auth\Application\UseCases\Register\Adapter\RegisterUserInput;
-use Auth\Domain\Models\User\HashService;
-use Auth\Domain\Models\User\UserRegisterNotifyMailRepository;
-use Auth\Domain\Models\User\UserRepository;
-use Auth\Infrastructure\Encryption\PasswordHashEncryption;
-use Auth\Infrastructure\Repositories\Eloquent\EloquentUserRepository;
-use Auth\Infrastructure\Repositories\InMemory\InMemoryUserRegisterNotifyMail;
-use Auth\Presentation\Request\RegisterUserLaravelInputRequest;
 use Base\LoggerSupport\Logger;
 use Base\RequestSupport\Request;
 use Base\TransactionSupport\Transaction;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Http\FormRequest;
+use Sample\Application\UseCases\User\Adapter\TemporaryRegisterUserInput;
+use Sample\Domain\Models\Notification\NotificationSender;
+use Sample\Domain\Models\User\HashService;
+use Sample\Domain\Models\User\UserRepository;
+use Sample\Infrastructure\Encryption\PasswordHashEncryption;
+use Sample\Infrastructure\Notification\DummyNotificationSender;
+use Sample\Infrastructure\Repositories\Eloquent\EloquentUserRepository;
+use Sample\Presentation\Request\RegisterUserLaravelInputRequest;
 
-/**
- *
- */
 final class StagingServiceProvider implements Provider
 {
-    /**
-     * @param Application $app
-     */
     public function __construct(private readonly Application $app)
     {
     }
 
-    /**
-     *
-     */
     public function register(): void
     {
         $this->registerLibrary();
@@ -44,56 +35,35 @@ final class StagingServiceProvider implements Provider
         $this->registerIO();
 
         $this->app->bind(HashService::class, PasswordHashEncryption::class);
-        $this->app->bind();
+        $this->app->bind(NotificationSender::class, DummyNotificationSender::class);
     }
 
-    /**
-     * LibraryのIoc
-     *
-     * @return void
-     */
     public function registerLibrary(): void
     {
         $this->app->bind(Transaction::class, LaravelDbTransaction::class);
         $this->app->bind(Logger::class, LaravelLogger::class);
         $this->app->bind(Request::class, FormRequest::class);
-        $this->app->bind(UserRegisterNotifyMailRepository::class, InMemoryUserRegisterNotifyMail::class);
     }
 
-    /**
-     * @return void
-     */
     public function registerFactory(): void
     {
     }
 
-    /**
-     * @return void
-     */
     public function registerRepositories(): void
     {
         $this->app->bind(UserRepository::class, EloquentUserRepository::class);
     }
 
-    /**
-     * @return void
-     */
     public function registerQueryService(): void
     {
     }
 
-    /**
-     *
-     */
     public function boot(): void
     {
     }
 
-    /**
-     * @return void
-     */
     public function registerIO(): void
     {
-        $this->app->bind(RegisterUserInput::class, RegisterUserLaravelInputRequest::class);
+        $this->app->bind(TemporaryRegisterUserInput::class, RegisterUserLaravelInputRequest::class);
     }
 }

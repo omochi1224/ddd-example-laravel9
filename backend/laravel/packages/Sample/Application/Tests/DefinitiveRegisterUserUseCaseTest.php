@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Sample\Application\Tests;
 
-
 use Sample\Application\UseCases\User\Adapter\DefinitiveRegisterUserInput;
 use Sample\Application\UseCases\User\Adapter\DefinitiveRegisterUserOutput;
 use Sample\Application\UseCases\User\DefinitiveRegisterUserUseCase;
@@ -53,11 +52,10 @@ final class DefinitiveRegisterUserUseCaseTest extends TestCase
 
 readonly class ConcreteDefinitiveRegisterUserInput implements DefinitiveRegisterUserInput
 {
-
     public function __construct(
         private string $userId = '48bc9625-62e9-40b3-b229-9ba371e3304a',
         private array $name = ['lastName' => '田中', 'firstName' => '太郎'],
-        private \DateTime $birthday = new \DateTime(),
+        private \DateTime $birthday = new \DateTime('-25 years'),
         private string $image = 'https://example.com/user1.jpg',
         private int $gender = 0,
     ) {

@@ -15,6 +15,6 @@ final class ProfileInvalidIDException extends DomainException
     /**
      *
      */
-    #[HttpStatusCode(500)]
+    #[HttpStatusCode(422)]
     public const MESSAGE = '仮登録のプロフィールIDと合致しません。';
 }

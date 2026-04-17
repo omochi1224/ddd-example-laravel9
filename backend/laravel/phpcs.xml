@@ -26,4 +26,12 @@
     <exclude-pattern>/tests/</exclude-pattern>
     <exclude-pattern>/app/</exclude-pattern>
     <exclude-pattern>/packages/Base/</exclude-pattern>
+
+    <!-- テストディレクトリ: 日本語メソッド名・ヘルパークラスを許容 -->
+    <rule ref="Generic.NamingConventions.CamelCapsFunctionName">
+        <exclude-pattern>*/Tests/*</exclude-pattern>
+    </rule>
+    <rule ref="PSR1.Classes.ClassDeclaration">
+        <exclude-pattern>*/Tests/*</exclude-pattern>
+    </rule>
 </ruleset>

@@ -36,8 +36,7 @@ final readonly class ProfileImage extends StringValueObject
     }
 
     /**
-     *
-     * @return $this
+     * @return static
      * @throws ProfileInvalidImageUrlException
      */
     public static function of(string $value = self::EMPTY_IMAGE_URL): static

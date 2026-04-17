@@ -1,12 +1,12 @@
-FROM php:8.2-fpm
+FROM php:8.5-fpm
 COPY php.ini /usr/local/etc/php/
 
 RUN apt-get update \
-    && apt-get install -y zlib1g-dev libzip-dev mariadb-client git\
-    && docker-php-ext-install zip pdo_mysql
+    && apt-get install -y zlib1g-dev libzip-dev mariadb-client git libicu-dev\
+    && docker-php-ext-install zip pdo_mysql intl
 
 #Xdebug
-RUN pecl install xdebug-3.2.0 && docker-php-ext-enable xdebug
+RUN pecl install xdebug && docker-php-ext-enable xdebug
 
 #Redis
 RUN git clone https://github.com/phpredis/phpredis.git /usr/src/php/ext/redis

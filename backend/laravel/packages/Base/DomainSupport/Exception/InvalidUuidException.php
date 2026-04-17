@@ -13,5 +13,5 @@ use Base\ExceptionSupport\DomainException;
 final class InvalidUuidException extends DomainException
 {
     #[HttpStatusCode(422)]
-    private const MESSAGE = 'UUIDの形式が間違っています。';
+    public const MESSAGE = 'UUIDの形式が間違っています。';
 }

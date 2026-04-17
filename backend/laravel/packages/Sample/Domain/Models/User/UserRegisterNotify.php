@@ -27,8 +27,8 @@ final readonly class UserRegisterNotify extends Email
     private function __construct(IUser $user)
     {
         parent::__construct(
-            self::FROM,
             $user->userEmail->value(),
+            self::FROM,
             self::SUBJECT,
             '新規登録ありがとうございます。',
         );

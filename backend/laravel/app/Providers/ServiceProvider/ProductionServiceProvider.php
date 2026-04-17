@@ -44,7 +44,6 @@ final readonly class ProductionServiceProvider implements Provider
         $this->registerIO();
 
         $this->app->bind(HashService::class, PasswordHashEncryption::class);
-//        $this->app->bind(Sender::class, EmailTransfer::class);
         $this->app->bind(NotificationSender::class, DummyNotificationSender::class);
     }
 

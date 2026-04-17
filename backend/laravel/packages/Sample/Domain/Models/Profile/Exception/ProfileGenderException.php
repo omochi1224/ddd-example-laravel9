@@ -9,6 +9,6 @@ use Base\ExceptionSupport\DomainException;
 
 final class ProfileGenderException extends DomainException
 {
-    #[HttpStatusCode(500)]
+    #[HttpStatusCode(422)]
     public const MESSAGE = '設定されていない性別を選択されました。';
 }

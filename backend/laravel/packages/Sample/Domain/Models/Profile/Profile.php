@@ -55,7 +55,7 @@ final class Profile implements IProfile
         );
     }
 
-    public static function restoreFromDB(
+    public static function restoreFromDb(
         ProfileId $id,
         ProfileName $name,
         ProfileBirthDay $birthDay,
@@ -71,11 +71,12 @@ final class Profile implements IProfile
         );
     }
 
-    /**
-     * @param Profile $domain
-     */
     public function equals(Domain $domain): bool
     {
+        if (! $domain instanceof self) {
+            return false;
+        }
+
         return $this->id->equals($domain->id);
     }
 

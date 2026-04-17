@@ -5,31 +5,24 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
-        "php": "^8.2.0",
-        "fruitcake/laravel-cors": "^2.0.5",
-        "guzzlehttp/guzzle": "^7.2",
-        "laravel/framework": "^9.1",
-        "laravel/sanctum": "^2.14",
-        "laravel/tinker": "^2.7",
-        "paquettg/php-html-parser": "^3.1",
-        "php-open-source-saver/jwt-auth": "^1.4.1",
-        "vyuldashev/laravel-openapi": "^1.8"
+        "php": "^8.3",
+        "guzzlehttp/guzzle": "^7.9",
+        "laravel/framework": "^12.0",
+        "laravel/sanctum": "^4.0"
     },
     "require-dev": {
-        "fakerphp/faker": "^1.9.1",
-        "jetbrains/phpstorm-attributes": "^1.0",
-        "knuckleswtf/scribe": "^4.10",
-        "laravel/sail": "^1.0.1",
-        "mockery/mockery": "^1.4.4",
-        "nunomaduro/collision": "^6.1",
-        "nunomaduro/larastan": "^2.0",
+        "fakerphp/faker": "^1.24",
+        "knuckleswtf/scribe": "^5.0",
+        "larastan/larastan": "^3.0",
+        "laravel/tinker": "^2.10",
+        "mockery/mockery": "^1.6",
+        "nunomaduro/collision": "^8.0",
         "nunomaduro/phpinsights": "^2.6",
-        "phpstan/phpstan-strict-rules": "^1.1",
-        "phpunit/phpunit": "^9.5.10",
+        "phpstan/phpstan-strict-rules": "^2.0",
+        "phpunit/phpunit": "^11.5",
         "qossmic/deptrac-shim": "^1.0.2",
-        "rector/rector": "^0.15.10",
-        "spatie/laravel-ignition": "^1.0",
-        "squizlabs/php_codesniffer": "3.7.1"
+        "rector/rector": "^2.0",
+        "squizlabs/php_codesniffer": "^3.11"
     },
     "autoload": {
         "psr-4": {
@@ -77,27 +70,19 @@
         "static-type-check": [
             "./vendor/bin/phpstan analyse -c phpstan.neon"
         ],
+        "deptrac": [
+            "@php vendor/bin/deptrac analyse"
+        ],
         "document-generator": [
             "@php artisan scribe:generate"
         ],
         "insights": [
-            "@php artisan insights packages/Sample -v"
+            "@php vendor/bin/phpinsights analyse --no-interaction"
         ],
-        "insights-fix": [
-            "@php artisan insights packages/Sample --fix"
-        ],
-        "insights-github": [
-            "@php artisan insights packages/Sample -n --ansi --format=github-action"
-        ],
-        "deptrac": [
-            "@php vendor/bin/deptrac analyse"
-        ],
-        "all" : [
+        "all": [
             "./vendor/bin/phpcbf --standard=phpcs.xml ./packages/Sample",
             "./vendor/bin/phpcs --standard=phpcs.xml ./packages/Sample",
             "./vendor/bin/phpstan analyse -c phpstan.neon",
-            "@php artisan insights packages/Sample --fix",
-            "@php artisan insights packages/Sample",
             "@php vendor/bin/deptrac analyse",
             "./vendor/bin/phpunit"
         ],
@@ -107,8 +92,6 @@
             "@php artisan route:clear",
             "@php artisan view:clear",
             "@composer dump-autoload",
-            "@php artisan clear-compiled",
-            "@php artisan optimize",
             "@php artisan config:cache"
         ]
     },
@@ -122,7 +105,8 @@
         "preferred-install": "dist",
         "sort-packages": true,
         "allow-plugins": {
-            "dealerdirect/phpcodesniffer-composer-installer": true
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "php-http/discovery": true
         }
     },
     "minimum-stability": "dev",

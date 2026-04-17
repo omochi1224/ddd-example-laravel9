@@ -12,7 +12,7 @@ jobs:
         working-directory: backend/laravel
     services:
       mysql:
-        image: mysql:8.0.19
+        image: mysql:8.0
         ports:
           - 3306:3306
         options: --health-cmd "mysqladmin ping -h localhost" --health-interval 20s --health-timeout 10s --health-retries 10
@@ -27,19 +27,18 @@ jobs:
       DB_USERNAME: root
       DB_PASSWORD: pass
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2'
+          php-version: '8.5'
           coverage: xdebug
-
-      - name: composer install
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: composer install -n --prefer-dist
 
       - name: copy .env
         run: cp .env.example .env
+
+      - name: composer install
+        run: composer install -n --prefer-dist
 
       - name: generate key
         run: php artisan key:generate
@@ -51,7 +50,7 @@ jobs:
         run: php ./vendor/bin/phpunit --coverage-clover storage/logs/coverage.xml
 
       - name: upload coverage
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./backend/laravel/storage/logs/coverage.xml
@@ -64,7 +63,7 @@ jobs:
         working-directory: backend/laravel
     services:
       mysql:
-        image: mysql:8.0.19
+        image: mysql:8.0
         ports:
           - 3306:3306
         options: --health-cmd "mysqladmin ping -h localhost" --health-interval 20s --health-timeout 10s --health-retries 10
@@ -79,19 +78,18 @@ jobs:
       DB_USERNAME: root
       DB_PASSWORD: pass
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2'
+          php-version: '8.5'
           coverage: xdebug
-
-      - name: composer install
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: composer install -n --prefer-dist
 
       - name: copy .env
         run: cp .env.example .env
+
+      - name: composer install
+        run: composer install -n --prefer-dist
 
       - name: generate key
         run: php artisan key:generate
@@ -110,7 +108,7 @@ jobs:
         working-directory: backend/laravel
     services:
       mysql:
-        image: mysql:8.0.19
+        image: mysql:8.0
         ports:
           - 3306:3306
         options: --health-cmd "mysqladmin ping -h localhost" --health-interval 20s --health-timeout 10s --health-retries 10
@@ -125,19 +123,18 @@ jobs:
       DB_USERNAME: root
       DB_PASSWORD: pass
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2'
+          php-version: '8.5'
           coverage: xdebug
-
-      - name: composer install
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: composer install -n --prefer-dist
 
       - name: copy .env
         run: cp .env.example .env
+
+      - name: composer install
+        run: composer install -n --prefer-dist
 
       - name: generate key
         run: php artisan key:generate
@@ -145,12 +142,9 @@ jobs:
       - name: deptrac
         run: composer deptrac
 
-      - name: insights
-        run: composer insights-github
-
   slack-notify:
     if: always()
-    needs: [ Testing,  Coverage, Analysis ]
+    needs: [ Testing, Coverage, Analysis ]
     name: workflow notification to slack
     runs-on: ubuntu-latest
     steps:

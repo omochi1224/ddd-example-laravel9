@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Sample\Application\Tests;
 
-
 use Base\DomainSupport\Exception\InvalidEmailAddressException;
 use Sample\Application\UseCases\User\Adapter\TemporaryRegisterUserOutput;
 use Sample\Application\UseCases\User\TemporaryRegisterUserUseCase;
@@ -17,10 +16,8 @@ use Sample\Infrastructure\Repositories\InMemory\InMemoryUserRepository;
 use Tests\ConcreteTemporaryRegisterUserInput;
 use Tests\TestCase;
 
-
 final class TemporaryRegisterUserUseCaseTest extends TestCase
 {
-
     public function test_仮登録()
     {
         /** @var TemporaryRegisterUserUseCase $useCase */
@@ -88,22 +85,4 @@ final class TemporaryRegisterUserUseCaseTest extends TestCase
         self::assertInstanceOf(PasswordStrengthException::class, $result->getException());
         self::assertSame(PasswordStrengthException::MESSAGE, $result->getException()->getMessage());
     }
-
-    public function test_メールアドレス重複()
-    {
-        /** @var TemporaryRegisterUserUseCase $useCase */
-        $useCase = app(TemporaryRegisterUserUsecase::class);
-
-        $inputAdapter = new ConcreteTemporaryRegisterUserInput(password: 'test');
-
-        $result = $useCase($inputAdapter);
-
-        self::assertTrue($result->isError());
-
-        self::assertInstanceOf(PasswordStrengthException::class, $result->getException());
-        self::assertSame(PasswordStrengthException::MESSAGE, $result->getException()->getMessage());
-    }
-
-
 }
-

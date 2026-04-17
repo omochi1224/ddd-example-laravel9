@@ -84,7 +84,7 @@ final class User implements IUser
         return $user;
     }
 
-    public static function restoreFromDB(
+    public static function restoreFromDb(
         UserId $userId,
         UserEmail $userEmail,
         UserHashPassword $userHashPassword,
@@ -119,11 +119,12 @@ final class User implements IUser
         $this->userPassword = $password;
     }
 
-    /**
-     * @param User $domain
-     */
     public function equals(Domain $domain): bool
     {
+        if (! $domain instanceof self) {
+            return false;
+        }
+
         return $this->userId->equals($domain->userId);
     }
 

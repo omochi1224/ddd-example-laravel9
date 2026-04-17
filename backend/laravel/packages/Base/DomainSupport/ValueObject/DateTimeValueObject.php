@@ -41,7 +41,7 @@ readonly abstract class DateTimeValueObject implements ValueObject
      */
     public function equals(ValueObject $valueObject): bool
     {
-        return $valueObject->value() === $this->value;
+        return $valueObject->value(true)->getTimestamp() === $this->value->getTimestamp();
     }
 
     /**

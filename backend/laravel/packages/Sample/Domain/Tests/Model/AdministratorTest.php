@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Sample\Domain\Tests\Model;
 
-
 use PHPUnit\Framework\TestCase;
 use Sample\Domain\Models\Administrator\Administrator;
 use Sample\Domain\Models\User\IUser;
@@ -18,28 +17,34 @@ final class AdministratorTest extends TestCase
     {
         $user = $this->fakeUser();
         $admin = Administrator::of($user);
+        $admin->accountBan();
 
-        $accountBanUser = $this->fakeUser();
-        $admin->accountBan($accountBanUser);
-
-        self::assertSame(UserStatus::Ban, $accountBanUser->userStatus);
+        self::assertSame(UserStatus::Ban, $user->userStatus);
     }
 
     public function test_管理者がユーザを退会させる()
     {
-        $unsubscribeUser = $this->fakeUser();
-
         $user = $this->fakeUser();
-
         $admin = Administrator::of($user);
-        $admin->unsubscribe($unsubscribeUser);
+        $admin->unsubscribe();
 
-        self::assertSame(UserStatus::Unsubscribe, $unsubscribeUser->userStatus);
+        self::assertSame(UserStatus::Unsubscribe, $user->userStatus);
+    }
+
+    public function test_別ユーザのステータスには影響しない()
+    {
+        $targetUser = $this->fakeUser('target@example.com');
+        $otherUser = $this->fakeUser('other@example.com');
+
+        $admin = Administrator::of($targetUser);
+        $admin->accountBan();
+
+        self::assertSame(UserStatus::Ban, $targetUser->userStatus);
+        self::assertSame(UserStatus::Temporary, $otherUser->userStatus);
     }
 
     private function fakeUser(string $email = 'fake@example.com'): IUser
     {
-        $email = UserEmail::of($email);
-        return User::socialTemporaryRegister($email);
+        return User::socialTemporaryRegister(UserEmail::of($email));
     }
 }

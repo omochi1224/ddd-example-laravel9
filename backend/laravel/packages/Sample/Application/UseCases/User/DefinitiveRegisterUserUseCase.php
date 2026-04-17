@@ -7,10 +7,13 @@ namespace Sample\Application\UseCases\User;
 use Base\ExceptionSupport\DomainException;
 use Base\TransactionSupport\Transaction;
 use Base\UseCaseSupport\UseCaseResult;
-use Illuminate\Support\Facades\DB;
 use Sample\Application\UseCases\User\Adapter\DefinitiveRegisterUserInput;
 use Sample\Application\UseCases\User\Adapter\DefinitiveRegisterUserOutput;
 use Sample\Domain\Models\Profile\ProfileFactory;
+use Sample\Domain\Models\Profile\ValueObject\ProfileBirthDay;
+use Sample\Domain\Models\Profile\ValueObject\ProfileGender;
+use Sample\Domain\Models\Profile\ValueObject\ProfileImage;
+use Sample\Domain\Models\Profile\ValueObject\ProfileName;
 use Sample\Domain\Models\User\Exception\UserNotFoundException;
 use Sample\Domain\Models\User\UserRepository;
 use Sample\Domain\Models\User\ValueObject\UserId;
@@ -30,7 +33,6 @@ final readonly class DefinitiveRegisterUserUseCase
      */
     public function __invoke(DefinitiveRegisterUserInput $input): UseCaseResult
     {
-
         try {
             $userId = UserId::of($input->getUserId());
 
@@ -40,8 +42,13 @@ final readonly class DefinitiveRegisterUserUseCase
 
             $user = $this->userRepository->getByUserId($userId);
 
-            //Profile生成
-            $profile = ProfileFactory::definitive($input);
+            $name = $input->getName();
+            $profile = ProfileFactory::definitive(
+                ProfileName::of($name['lastName'], $name['firstName']),
+                ProfileBirthDay::of($input->getBirthday()),
+                ProfileGender::of($input->getGender()),
+                ProfileImage::of($input->getImage()),
+            );
 
             //本登録へ変更
             $user->changeDefinitiveRegister($profile);
@@ -50,7 +57,6 @@ final readonly class DefinitiveRegisterUserUseCase
                 $this->userRepository->update($user);
                 return UseCaseResult::success(new DefinitiveRegisterUserOutput($user));
             });
-
         } catch (DomainException $domainException) {
             return UseCaseResult::fail($domainException);
         }

@@ -9,6 +9,6 @@ use Base\ExceptionSupport\DomainException;
 
 final class PasswordEncryptionException extends DomainException
 {
-    #[HttpStatusCode(500)]
+    #[HttpStatusCode(422)]
     public const MESSAGE = 'パスワードはすでに暗号化されています。';
 }

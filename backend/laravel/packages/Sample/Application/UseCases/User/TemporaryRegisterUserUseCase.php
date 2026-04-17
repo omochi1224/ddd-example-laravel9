@@ -9,6 +9,7 @@ use Base\TransactionSupport\Transaction;
 use Base\UseCaseSupport\UseCaseResult;
 use Sample\Application\UseCases\User\Adapter\TemporaryRegisterUserInput;
 use Sample\Application\UseCases\User\Adapter\TemporaryRegisterUserOutput;
+use Sample\Domain\Models\Notification\NotificationSender;
 use Sample\Domain\Models\User\Exception\UserEmailAlreadyException;
 use Sample\Domain\Models\User\HashService;
 use Sample\Domain\Models\User\User;
@@ -23,11 +24,12 @@ use Sample\Domain\Services\UserDomainService;
  */
 final readonly class TemporaryRegisterUserUseCase
 {
-    final public function __construct(
+    public function __construct(
         private Transaction $transaction,
         private UserDomainService $userDomainService,
         private UserRepository $userRepository,
         private HashService $hashService,
+        private NotificationSender $notificationSender,
     ) {
     }
 
@@ -54,11 +56,11 @@ final readonly class TemporaryRegisterUserUseCase
             return $this->transaction->scope(function () use ($user, $notify) {
                 $output = new TemporaryRegisterUserOutput($user, $notify);
                 $this->userRepository->create($user);
+                $this->notificationSender->send($notify);
                 return UseCaseResult::success($output);
             });
         } catch (DomainException $exception) {
             return UseCaseResult::fail($exception);
         }
-
     }
 }

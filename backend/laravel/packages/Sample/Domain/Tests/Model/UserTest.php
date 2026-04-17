@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Sample\Domain\Tests\Model;
 
-
 use Base\DomainSupport\Exception\InvalidEmailAddressException;
 use Base\DomainSupport\ValueObject\StringValueObject;
 use PHPUnit\Framework\TestCase;
@@ -28,7 +27,6 @@ use Sample\Domain\Models\User\ValueObject\UserStatus;
 
 final class UserTest extends TestCase
 {
-
     public function test_SNS認証からの仮登録()
     {
         $email = UserEmail::of('example@example.com');
@@ -63,7 +61,7 @@ final class UserTest extends TestCase
         self::assertEquals(UserStatus::Temporary->value(), $user->userStatus->value());
 
         $name = ProfileName::of('田中', '太郎　');
-        $birthDay = ProfileBirthday::of(new \DateTime());
+        $birthDay = ProfileBirthDay::of((new \DateTime())->modify('-1 year'));
         $gender = ProfileGender::Man;
         $image = ProfileImage::of('https://example.com/test.jpg');
 
@@ -93,7 +91,7 @@ final class UserTest extends TestCase
 
 
         $name = ProfileName::of('田中', '太郎　');
-        $birthDay = ProfileBirthday::of(new \DateTime());
+        $birthDay = ProfileBirthDay::of((new \DateTime())->modify('-1 year'));
         $gender = ProfileGender::Man;
         $image = ProfileImage::of('https://example.com/test.jpg');
 
@@ -168,7 +166,7 @@ final class UserTest extends TestCase
 
     public function test_永続化からの復帰()
     {
-        $user = User::restoreFromDB(
+        $user = User::restoreFromDb(
             UserId::generate(),
             UserEmail::of('example@example.com'),
             UserHashPassword::of('example'),
@@ -178,15 +176,15 @@ final class UserTest extends TestCase
 
         self::assertInstanceOf(User::class, $user);
 
-        $profile = Profile::restoreFromDB(
+        $profile = Profile::restoreFromDb(
             ProfileId::generate(),
             ProfileName::of('exampleName', 'exampleFirst'),
-            ProfileBirthDay::of(new \DateTime()),
+            ProfileBirthDay::of((new \DateTime())->modify('-1 year')),
             ProfileGender::Other,
             ProfileImage::of('https://example.com/image.jpg')
         );
 
-        $user = User::restoreFromDB(
+        $user = User::restoreFromDb(
             UserId::generate(),
             UserEmail::of('example@example.com'),
             UserHashPassword::of('example'),
@@ -201,7 +199,7 @@ final class UserTest extends TestCase
 
     public function test_ユーザ同士で同じIDの比較()
     {
-        $user = User::restoreFromDB(
+        $user = User::restoreFromDb(
             UserId::generate(),
             UserEmail::of('example@example.com'),
             UserHashPassword::of('example'),
@@ -214,7 +212,7 @@ final class UserTest extends TestCase
 
     public function test_別のユーザの比較()
     {
-        $user = User::restoreFromDB(
+        $user = User::restoreFromDb(
             UserId::generate(),
             UserEmail::of('example@example.com'),
             UserHashPassword::of('example'),
@@ -223,7 +221,7 @@ final class UserTest extends TestCase
         );
 
 
-        $diffUser = User::restoreFromDB(
+        $diffUser = User::restoreFromDb(
             UserId::generate(),
             UserEmail::of('example@example.com'),
             UserHashPassword::of('example'),
@@ -236,7 +234,7 @@ final class UserTest extends TestCase
 
     public function test_二重でパスワードをハッシュ化しようとすると例外出ることを確認()
     {
-        $user = User::restoreFromDB(
+        $user = User::restoreFromDb(
             UserId::generate(),
             UserEmail::of('example@example.com'),
             UserHashPassword::of('example'),
@@ -249,14 +247,12 @@ final class UserTest extends TestCase
 
         $reflection = new \ReflectionClass($user);
         $method = $reflection->getMethod('changeHashPassword');
-        $method->setAccessible(true);
         $result = $method->invoke($user, new ConcreteHash());
     }
 }
 
 class ConcreteHash implements HashService
 {
-
     public function hashing(StringValueObject $raw): UserHashPassword
     {
         return UserHashPassword::of(hash('sha256', $raw->value()));

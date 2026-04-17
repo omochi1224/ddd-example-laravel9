@@ -1,3 +1,5 @@
+COMPOSE=docker compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.mail.yml
+
 init:
 	bash init.sh
 	@make up
@@ -5,43 +7,43 @@ init:
 	@make refresh_seeder
 	@make key
 ps:
-	docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.mail.yml ps
+	$(COMPOSE) ps
 install:
-	docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.mail.yml exec php composer install -vvv
+	$(COMPOSE) exec php composer install -vvv
 migrate:
-	docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.mail.yml exec php php artisan migrate
+	$(COMPOSE) exec php php artisan migrate
 refresh_seeder:
-	docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.mail.yml exec php php artisan migrate:refresh --seed
+	$(COMPOSE) exec php php artisan migrate:refresh --seed
 up:
-	docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.mail.yml up -d
+	$(COMPOSE) up -d
 build:
-	docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.mail.yml build
+	$(COMPOSE) build
 stop:
-	docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.mail.yml stop
+	$(COMPOSE) stop
 down:
-	docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.mail.yml down
+	$(COMPOSE) down
 
 restart:
 	@make down
 	@make up
 
 product-build-up:
-	docker-compose build
-	docker-compose up -d
+	docker compose build
+	docker compose up -d
 
 clear:
-	docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.mail.yml exec php composer cache:clear
+	$(COMPOSE) exec php composer cache:clear
 
 test:
-	docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.mail.yml exec php php artisan test
+	$(COMPOSE) exec php php artisan test
 
 app:
-	docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.mail.yml exec php bash
+	$(COMPOSE) exec php bash
 
 tinker:
-	docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.mail.yml exec php php artisan tinker
+	$(COMPOSE) exec php php artisan tinker
 key:
-	docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.mail.yml exec php php artisan key:gen
+	$(COMPOSE) exec php php artisan key:generate
 
 jwt-key:
-	docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.mail.yml exec php php artisan jwt:secret
+	$(COMPOSE) exec php php artisan jwt:secret

@@ -27,7 +27,7 @@ interface IProfile extends Domain
         ProfileImage $image,
     ): Profile;
 
-    public static function restoreFromDB(
+    public static function restoreFromDb(
         ProfileId $id,
         ProfileName $name,
         ProfileBirthDay $birthDay,

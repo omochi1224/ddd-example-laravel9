@@ -4,17 +4,7 @@ declare(strict_types=1);
 
 namespace Sample\Infrastructure\Repositories\Eloquent;
 
-use Base\DomainSupport\Domain\DomainToArray;
-use Base\DomainSupport\Exception\InvalidUuidException;
-use Sample\Domain\Models\Profile\Exception\ProfileInvalidImageUrlException;
-use Sample\Domain\Models\Profile\Profile;
-use Sample\Domain\Models\Profile\ValueObject\ProfileBirthDay;
-use Sample\Domain\Models\Profile\ValueObject\ProfileFirstName;
-use Sample\Domain\Models\Profile\ValueObject\ProfileGender;
-use Sample\Domain\Models\Profile\ValueObject\ProfileId;
-use Sample\Domain\Models\Profile\ValueObject\ProfileImage;
-use Sample\Domain\Models\Profile\ValueObject\ProfileLastName;
-use Sample\Domain\Models\Profile\ValueObject\ProfileName;
+use Sample\Domain\Models\User\Exception\UserNotFoundException;
 use Sample\Domain\Models\User\User;
 use Sample\Domain\Models\User\UserRepository;
 use Sample\Domain\Models\User\ValueObject\UserEmail;
@@ -28,27 +18,30 @@ use Sample\Infrastructure\EloquentModels\EloquentUser;
  */
 final class EloquentUserRepository implements UserRepository
 {
-    use DomainToArray;
-
     public function create(User $user): void
     {
         $model = new EloquentUser();
-        $model
-            ->fill($this->toArray($user))
-            ->save();
+        $model->user_id = $user->userId->value();
+        $model->email = $user->userEmail->value();
+        $model->password = $user->userPassword->value();
+        $model->status = $user->userStatus->value();
+        $model->save();
     }
 
     public function update(User $user): void
     {
-        EloquentUser::where('user_id', $user->userId->value())
-            ->update($this->toArray($user));
+        $affected = EloquentUser::where('user_id', $user->userId->value())
+            ->update([
+                'email' => $user->userEmail->value(),
+                'password' => $user->userPassword->value(),
+                'status' => $user->userStatus->value(),
+            ]);
+
+        if ($affected === 0) {
+            throw new UserNotFoundException(UserNotFoundException::MESSAGE);
+        }
     }
 
-    /**
-     *
-     *
-     * @throws InvalidUuidException|ProfileInvalidImageUrlException
-     */
     public function findByEmail(UserEmail $userEmail): ?User
     {
         $user = EloquentUser::where('email', $userEmail->value())
@@ -58,22 +51,12 @@ final class EloquentUserRepository implements UserRepository
             return null;
         }
 
-        $firstName = ProfileFirstName::of($user->profile_last_name);
-        $lastName = ProfileLastName::of($user->profile_first_name);
-        $profile = Profile::restoreFromDB(
-            ProfileId::of($user->profile_id),
-            ProfileName::of($firstName->value(), $lastName->value()),
-            ProfileBirthDay::of($user->profile_birthday),
-            ProfileGender::Other,
-            ProfileImage::of($user->profile_image)
-        );
-
-        return User::restoreFromDB(
+        return User::restoreFromDb(
             UserId::of($user->user_id),
             UserEmail::of($user->email),
             UserHashPassword::of($user->password),
-            UserStatus::of($user->status),
-            $profile,
+            UserStatus::from($user->status),
+            null,
         );
     }
 
@@ -82,26 +65,16 @@ final class EloquentUserRepository implements UserRepository
         $user = EloquentUser::where('user_id', $userId->value())
             ->first();
 
-        dd($user);
-    }
+        if ($user === null) {
+            throw new UserNotFoundException(UserNotFoundException::MESSAGE);
+        }
 
-    /**
-     * @return array<string, mixed>
-     */
-    private function toArray(User $user): array
-    {
-        $profile = $user->profile;
-
-        return [
-            'user_id' => $user->userId->value(),
-            'email' => $user->userEmail->value(),
-            'password' => $user->userPassword->value(),
-            'profile_id' => $profile->id->value(),
-            'profile_last_name' => $profile->name->value()['lastName'],
-            'profile_first_name' => $profile->name->value()['firstName'],
-            'profile_birth_day' => $profile->birthDay->value(),
-            'profile_gender' => $profile->gender->value(),
-            'profile_image' => $profile->image->value(),
-        ];
+        return User::restoreFromDb(
+            UserId::of($user->user_id),
+            UserEmail::of($user->email),
+            UserHashPassword::of($user->password),
+            UserStatus::from($user->status),
+            null,
+        );
     }
 }

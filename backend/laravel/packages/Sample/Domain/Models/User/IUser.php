@@ -78,7 +78,7 @@ interface IUser extends Domain
      *
      * @return User
      */
-    public static function restoreFromDB(
+    public static function restoreFromDb(
         UserId $userId,
         UserEmail $userEmail,
         UserHashPassword $userHashPassword,
