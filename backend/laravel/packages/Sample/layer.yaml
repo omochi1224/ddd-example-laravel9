@@ -6,28 +6,28 @@ deptrac:
   layers:
     - name: Sample_Infrastructure
       collectors:
-        - type: className
-          regex: .*Sample\\Infrastructure\\.*
+        - type: glob
+          value: '*Sample/Infrastructure*'
 
     - name: Sample_Presentation
       collectors:
-        - type: className
-          regex: .*Sample\\Presentation\\.*
+        - type: glob
+          value: '*Sample/Presentation*'
 
     - name: Sample_Application
       collectors:
-        - type: className
-          regex: .*Sample\\Application\\.*
+        - type: glob
+          value: '*Sample/Application*'
 
     - name: Sample_Domain
       collectors:
-        - type: className
-          regex: .*Sample\\Domain\\.*
+        - type: glob
+          value: '*Sample/Domain*'
 
     - name: Base
       collectors:
-        - type: className
-          regex: Base\\.*\\.*
+        - type: glob
+          value: '*Base*'
 
   ruleset:
     Sample_Domain:

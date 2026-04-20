@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cd6ce5c5e72c388badd8be181f92f6da",
+    "content-hash": "202651a0b0def5efd903533312e2501f",
     "packages": [
         {
             "name": "brick/math",
@@ -725,7 +725,7 @@
                     "homepage": "https://github.com/Nyholm"
                 },
                 {
-                    "name": "Márk Sági-Kazár",
+                    "name": "M\u00e1rk S\u00e1gi-Kaz\u00e1r",
                     "email": "mark.sagikazar@gmail.com",
                     "homepage": "https://github.com/sagikazarmark"
                 },
@@ -921,7 +921,7 @@
                     "homepage": "https://github.com/Nyholm"
                 },
                 {
-                    "name": "Márk Sági-Kazár",
+                    "name": "M\u00e1rk S\u00e1gi-Kaz\u00e1r",
                     "email": "mark.sagikazar@gmail.com",
                     "homepage": "https://github.com/sagikazarmark"
                 },
@@ -931,7 +931,7 @@
                     "homepage": "https://github.com/Tobion"
                 },
                 {
-                    "name": "Márk Sági-Kazár",
+                    "name": "M\u00e1rk S\u00e1gi-Kaz\u00e1r",
                     "email": "mark.sagikazar@gmail.com",
                     "homepage": "https://sagikazarmark.hu"
                 }
@@ -2280,7 +2280,7 @@
                     "homepage": "https://nette.org/contributors"
                 }
             ],
-            "description": "📐 Nette Schema: validating data structures against a given Schema.",
+            "description": "\ud83d\udcd0 Nette Schema: validating data structures against a given Schema.",
             "homepage": "https://nette.org",
             "keywords": [
                 "config",
@@ -2359,7 +2359,7 @@
                     "homepage": "https://nette.org/contributors"
                 }
             ],
-            "description": "🛠  Nette Utils: lightweight utilities for string & array manipulation, image handling, safe JSON encoding/decoding, validation, slug or strong password generating etc.",
+            "description": "\ud83d\udee0  Nette Utils: lightweight utilities for string & array manipulation, image handling, safe JSON encoding/decoding, validation, slug or strong password generating etc.",
             "homepage": "https://nette.org",
             "keywords": [
                 "array",
@@ -3366,7 +3366,7 @@
                     "email": "fabien@symfony.com"
                 },
                 {
-                    "name": "Jean-François Simon",
+                    "name": "Jean-Fran\u00e7ois Simon",
                     "email": "jeanfrancois.simon@sensiolabs.com"
                 },
                 {
@@ -4941,7 +4941,7 @@
             ],
             "authors": [
                 {
-                    "name": "Grégoire Pineau",
+                    "name": "Gr\u00e9goire Pineau",
                     "email": "lyrixx@lyrixx.info"
                 },
                 {
@@ -5518,7 +5518,7 @@
             ],
             "authors": [
                 {
-                    "name": "Grégoire Pineau",
+                    "name": "Gr\u00e9goire Pineau",
                     "email": "lyrixx@lyrixx.info"
                 },
                 {
@@ -5896,7 +5896,7 @@
             ],
             "authors": [
                 {
-                    "name": "Christian Lück",
+                    "name": "Christian L\u00fcck",
                     "email": "christian@clue.engineering"
                 }
             ],
@@ -6310,6 +6310,54 @@
             "time": "2025-11-11T04:32:07+00:00"
         },
         {
+            "name": "deptrac/deptrac",
+            "version": "2.0.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/deptrac/deptrac.git",
+                "reference": "815c349a027ed4f0c866405b783f4d4623f1960c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/deptrac/deptrac/zipball/815c349a027ed4f0c866405b783f4d4623f1960c",
+                "reference": "815c349a027ed4f0c866405b783f4d4623f1960c",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": "^8.1"
+            },
+            "suggest": {
+                "ext-dom": "For using the JUnit output formatter"
+            },
+            "bin": [
+                "bin/deptrac",
+                "deptrac.phar"
+            ],
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "bootstrap.php"
+                ],
+                "psr-4": {
+                    "Qossmic\\Deptrac\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Deptrac is a static code analysis tool that helps to enforce rules for dependencies between software layers.",
+            "keywords": [
+                "static analysis"
+            ],
+            "support": {
+                "issues": "https://github.com/deptrac/deptrac/issues",
+                "source": "https://github.com/deptrac/deptrac/tree/2.0.7"
+            },
+            "time": "2025-03-07T14:29:19+00:00"
+        },
+        {
             "name": "ergebnis/agent-detector",
             "version": "1.1.1",
             "source": {
@@ -6364,7 +6412,7 @@
             ],
             "authors": [
                 {
-                    "name": "Andreas Möller",
+                    "name": "Andreas M\u00f6ller",
                     "email": "am@localheinz.com",
                     "homepage": "https://localheinz.com"
                 }
@@ -6414,7 +6462,7 @@
                     "email": "igor@wiedler.ch"
                 }
             ],
-            "description": "Événement is a very simple event dispatching library for PHP",
+            "description": "\u00c9v\u00e9nement is a very simple event dispatching library for PHP",
             "keywords": [
                 "event-dispatcher",
                 "event-emitter"
@@ -6473,7 +6521,7 @@
             ],
             "authors": [
                 {
-                    "name": "François Zaninotto"
+                    "name": "Fran\u00e7ois Zaninotto"
                 }
             ],
             "description": "Faker is a PHP library that generates fake data for you.",
@@ -6528,7 +6576,7 @@
             ],
             "authors": [
                 {
-                    "name": "Théo FIDRY",
+                    "name": "Th\u00e9o FIDRY",
                     "email": "theo.fidry@gmail.com"
                 }
             ],
@@ -6702,7 +6750,7 @@
                     "email": "fabien@symfony.com"
                 },
                 {
-                    "name": "Dariusz Rumiński",
+                    "name": "Dariusz Rumi\u0144ski",
                     "email": "dariusz.ruminski@gmail.com"
                 }
             ],
@@ -6891,7 +6939,7 @@
                     "name": "Shalvah"
                 }
             ],
-            "description": "Generate API documentation for humans from your Laravel codebase.✍",
+            "description": "Generate API documentation for humans from your Laravel codebase.\u270d",
             "homepage": "https://github.com/knuckleswtf/scribe",
             "keywords": [
                 "api",
@@ -7192,7 +7240,7 @@
             ],
             "authors": [
                 {
-                    "name": "Pádraic Brady",
+                    "name": "P\u00e1draic Brady",
                     "email": "padraic.brady@gmail.com",
                     "homepage": "https://github.com/padraic",
                     "role": "Author"
@@ -7872,11 +7920,11 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "2.1.49",
+            "version": "2.1.50",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/d0082955396e7f5ba19cf298224b85e1099f0ed8",
-                "reference": "d0082955396e7f5ba19cf298224b85e1099f0ed8",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/d452086fb4cf648c6b2d8cf3b639351f79e4f3e2",
+                "reference": "d452086fb4cf648c6b2d8cf3b639351f79e4f3e2",
                 "shasum": ""
             },
             "require": {
@@ -7921,7 +7969,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-04-16T21:10:58+00:00"
+            "time": "2026-04-17T13:10:32+00:00"
         },
         {
             "name": "phpstan/phpstan-strict-rules",
@@ -8560,62 +8608,6 @@
             "time": "2026-03-22T23:03:24+00:00"
         },
         {
-            "name": "qossmic/deptrac-shim",
-            "version": "1.0.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/qossmic/deptrac-shim.git",
-                "reference": "3179a2c4978654add865309e3c280ef3d60f0043"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/qossmic/deptrac-shim/zipball/3179a2c4978654add865309e3c280ef3d60f0043",
-                "reference": "3179a2c4978654add865309e3c280ef3d60f0043",
-                "shasum": ""
-            },
-            "require": {
-                "ext-json": "*",
-                "ext-tokenizer": "*",
-                "ext-zlib": "*",
-                "php": "^8.1"
-            },
-            "replace": {
-                "qossmic/deptrac": "self.version"
-            },
-            "suggest": {
-                "ext-dom": "For using the JUnit output formatter"
-            },
-            "bin": [
-                "deptrac"
-            ],
-            "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Tim Glabisch"
-                },
-                {
-                    "name": "Simon Mönch",
-                    "email": "simon.moench@qossmic.com"
-                },
-                {
-                    "name": "Denis Brumann",
-                    "email": "denis.brumann@qossmic.com",
-                    "role": "maintainer"
-                }
-            ],
-            "description": "deptrac phar distribution",
-            "support": {
-                "issues": "https://github.com/qossmic/deptrac-shim/issues",
-                "source": "https://github.com/qossmic/deptrac-shim/tree/1.0.2"
-            },
-            "abandoned": "qossmic/deptrac",
-            "time": "2022-12-02T11:47:53+00:00"
-        },
-        {
             "name": "react/cache",
             "version": "v1.2.0",
             "source": {
@@ -8648,7 +8640,7 @@
             ],
             "authors": [
                 {
-                    "name": "Christian Lück",
+                    "name": "Christian L\u00fcck",
                     "email": "christian@clue.engineering",
                     "homepage": "https://clue.engineering/"
                 },
@@ -8724,7 +8716,7 @@
             ],
             "authors": [
                 {
-                    "name": "Christian Lück",
+                    "name": "Christian L\u00fcck",
                     "email": "christian@clue.engineering",
                     "homepage": "https://clue.engineering/"
                 },
@@ -8799,7 +8791,7 @@
             ],
             "authors": [
                 {
-                    "name": "Christian Lück",
+                    "name": "Christian L\u00fcck",
                     "email": "christian@clue.engineering",
                     "homepage": "https://clue.engineering/"
                 },
@@ -8873,7 +8865,7 @@
             ],
             "authors": [
                 {
-                    "name": "Christian Lück",
+                    "name": "Christian L\u00fcck",
                     "email": "christian@clue.engineering",
                     "homepage": "https://clue.engineering/"
                 },
@@ -8951,7 +8943,7 @@
                     "homepage": "https://sorgalla.com/"
                 },
                 {
-                    "name": "Christian Lück",
+                    "name": "Christian L\u00fcck",
                     "email": "christian@clue.engineering",
                     "homepage": "https://clue.engineering/"
                 },
@@ -9023,7 +9015,7 @@
             ],
             "authors": [
                 {
-                    "name": "Christian Lück",
+                    "name": "Christian L\u00fcck",
                     "email": "christian@clue.engineering",
                     "homepage": "https://clue.engineering/"
                 },
@@ -9098,7 +9090,7 @@
             ],
             "authors": [
                 {
-                    "name": "Christian Lück",
+                    "name": "Christian L\u00fcck",
                     "email": "christian@clue.engineering",
                     "homepage": "https://clue.engineering/"
                 },

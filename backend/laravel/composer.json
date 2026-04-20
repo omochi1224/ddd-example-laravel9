@@ -2,7 +2,10 @@
     "name": "laravel/laravel",
     "type": "project",
     "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "keywords": [
+        "framework",
+        "laravel"
+    ],
     "license": "MIT",
     "require": {
         "php": "^8.3",
@@ -11,6 +14,7 @@
         "laravel/sanctum": "^4.0"
     },
     "require-dev": {
+        "deptrac/deptrac": "^2.0",
         "fakerphp/faker": "^1.24",
         "knuckleswtf/scribe": "^5.0",
         "larastan/larastan": "^3.0",
@@ -20,7 +24,6 @@
         "nunomaduro/phpinsights": "^2.6",
         "phpstan/phpstan-strict-rules": "^2.0",
         "phpunit/phpunit": "^11.5",
-        "qossmic/deptrac-shim": "^1.0.2",
         "rector/rector": "^2.0",
         "squizlabs/php_codesniffer": "^3.11"
     },
