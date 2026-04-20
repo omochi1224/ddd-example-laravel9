@@ -35,14 +35,7 @@ DDD / Clean Architecture. All business logic in `packages/`, framework-agnostic.
 - Infrastructure → Domain, Base
 - Presentation → Application, Domain, Base
 
-### DI / Environment Binding
-`AppServiceProvider` delegates to env-specific providers in `app/Providers/ServiceProvider/`:
-- **Local**: Eloquent repos, DummyNotificationSender
-- **Test**: InMemory repos, DummyNotificationSender
-- **Production**: InMemory repos (placeholder)
-- **Staging**: Eloquent repos
-
-### Layer Dependency Rules (enforced by Deptrac via `layer.yaml`)
+### Key Patterns
 - Entities: `final readonly class`, private constructors with static named constructors (`User::temporaryRegister()`, `User::restoreFromDb()`), `Getter` trait for magic property access
 - Role Objects: `RoleObject` marker interface in `Base/RoleObjectSupport/`. Entities can express roles (e.g., `Administrator`) via composition.
 - Use Cases: `final readonly class`, `__invoke()`, return `UseCaseResult`
@@ -63,7 +56,7 @@ DDD / Clean Architecture. All business logic in `packages/`, framework-agnostic.
 ## Gotchas
 
 - PHPStan needs `-d memory_limit=512M` (level max + Larastan is memory-hungry)
-- Deptrac uses `qossmic/deptrac-shim` v1.0.2 (PHP 8.5 deprecated warnings from bundled Symfony, but functional)
+- Deptrac uses `deptrac/deptrac` v2.0.7 (PHP 8.5 deprecated warnings from bundled Symfony, but functional)
 - `ProfileBirthDay` validates birthday must be strictly before now — tests must use past dates like `(new \DateTime())->modify('-1 year')`
 - PHPUnit tests live inside `packages/Sample/*/Tests/` (Unit suite) AND `tests/*/Feature/` (Feature suite)
 - Some domain tests extend `Tests\TestCase` (Laravel bootstrap) while others extend `PHPUnit\Framework\TestCase` directly (pure unit)
