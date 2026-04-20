@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Sample\Domain\Tests\ValueObject;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Sample\Domain\Models\Profile\Exception\ProfileGenderException;
 use Sample\Domain\Models\Profile\ValueObject\ProfileGender;
@@ -17,9 +18,7 @@ final class ProfileGenderTest extends TestCase
         self::assertSame(2, ProfileGender::Other->value());
     }
 
-    /**
-     * @dataProvider validGenderProvider
-     */
+    #[DataProvider('validGenderProvider')]
     public function test_ofで整数値から生成できる(int $value, ProfileGender $expected)
     {
         self::assertSame($expected, ProfileGender::of($value));

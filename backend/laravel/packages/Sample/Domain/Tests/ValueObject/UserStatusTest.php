@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Sample\Domain\Tests\ValueObject;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Sample\Domain\Models\User\ValueObject\UserStatus;
 
@@ -31,9 +32,7 @@ final class UserStatusTest extends TestCase
         self::assertSame(100, UserStatus::Definitive->value());
     }
 
-    /**
-     * @dataProvider fromProvider
-     */
+    #[DataProvider('fromProvider')]
     public function test_fromで文字列から生成できる(string $name, UserStatus $expected)
     {
         self::assertSame($expected, UserStatus::of($name));

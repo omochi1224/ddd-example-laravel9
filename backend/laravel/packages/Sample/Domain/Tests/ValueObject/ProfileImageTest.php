@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Sample\Domain\Tests\ValueObject;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Sample\Domain\Models\Profile\Exception\ProfileInvalidImageUrlException;
 use Sample\Domain\Models\Profile\ValueObject\ProfileImage;
@@ -40,9 +41,7 @@ final class ProfileImageTest extends TestCase
         ProfileImage::of('');
     }
 
-    /**
-     * @dataProvider invalidUrlProvider
-     */
+    #[DataProvider('invalidUrlProvider')]
     public function test_不正なURL形式は全て例外(string $url)
     {
         $this->expectException(ProfileInvalidImageUrlException::class);
