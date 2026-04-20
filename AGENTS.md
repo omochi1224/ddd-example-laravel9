@@ -42,7 +42,7 @@ DDD / Clean Architecture. All business logic in `packages/`, framework-agnostic.
 - **Production**: InMemory repos (placeholder)
 - **Staging**: Eloquent repos
 
-### Key Patterns
+### Layer Dependency Rules (enforced by Deptrac via `layer.yaml`)
 - Entities: `final readonly class`, private constructors with static named constructors (`User::temporaryRegister()`, `User::restoreFromDb()`), `Getter` trait for magic property access
 - Role Objects: `RoleObject` marker interface in `Base/RoleObjectSupport/`. Entities can express roles (e.g., `Administrator`) via composition.
 - Use Cases: `final readonly class`, `__invoke()`, return `UseCaseResult`
